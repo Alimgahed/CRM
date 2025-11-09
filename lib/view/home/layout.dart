@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/layout.dart/layout.dart';
-import 'package:crm/gloable/gloable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

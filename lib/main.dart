@@ -3,6 +3,7 @@
 import 'package:crm/cache/cache.dart';
 import 'package:crm/controller/language/language.dart';
 import 'package:crm/gloable/gloable.dart';
+import 'package:crm/theme/theme.dart';
 import 'package:crm/view/home/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,28 +50,7 @@ class _MyAppState extends State<MyApp> {
         translations: MyTranslations(),
         locale: Locale(languageController.currentLanguage ?? 'ar'),
           fallbackLocale: Locale(Cache.getdata(key: "lang") ?? "ar"),
-          theme: ThemeData(
-            // Default app color set to white
-            scaffoldBackgroundColor: Colors.white,
-            primaryColor: Colors.white,
-            fontFamily: 'Alexandria',
-            colorScheme: ColorScheme.light(
-          primary: Colors.white,
-          surface: Colors.white,
-          onPrimary: Colors.black,
-            ),    // fontFamily: GoogleFonts.almarai().fontFamily,
-          appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        titleTextStyle: TextStyle(color: appColor, fontSize: 22),
-          ),
-          progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: appColor, // Set CircularProgressIndicator color here
-          ),
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-        ),
-        debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
         home: Layout()
  
     );
