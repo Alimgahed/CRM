@@ -66,10 +66,10 @@ class Users extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              const Center(
+               Center(
                 child: Text(
-                  "عرض الجميع ",
-                  style: TextStyle(
+                  "Show All".tr,
+                  style: const TextStyle(
                     color: buttonColor,
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,

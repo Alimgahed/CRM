@@ -59,17 +59,17 @@ class SalesPerformanceStages extends StatelessWidget {
               const SizedBox(height: 12),
               Expanded(
                 child: Salesperformance(
-                  title: "صفقات معلقة".tr,
+                  title: "Pending Deals".tr,
                   amount: "40",
                   ratio: 0.15,
                   color: Color(0xFF2D384C),
                 ),
               ),
-              const Center(
+              Center(
                 child: Text(
-                  "عرض التفاصيل",
-                  style: TextStyle(
-                    color: appColor,
+                  "View Details".tr,
+                  style: const TextStyle(
+                    color: buttonColor,
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
                     fontSize: 14,
@@ -90,7 +90,6 @@ class Salesperformance extends StatelessWidget {
   final String amount;
   final double ratio; // e.g. 0.75 for 75%
   final Color color;
-  
 
   const Salesperformance({
     super.key,

@@ -26,9 +26,10 @@ class Home extends StatelessWidget {
                   height: 260, // Space for the overlapping search bar
                   child: TotalsSection(),
                 ),
-                SizedBox(height: 340, child: SalesPerformanceStages()),
-                SizedBox(height: 430, child: Clients()),
-                SizedBox(height: 430, child: Users()),
+                const SizedBox(height: 340, child: SalesPerformanceStages()),
+                const SizedBox(height: 430, child: Clients()),
+                const SizedBox(height: 430, child: Users()),
+                const SizedBox(height: 100),
               ],
             ),
           );

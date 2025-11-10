@@ -1,166 +1,126 @@
-// ignore_for_file: must_be_immutable
-
-import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/layout.dart/layout.dart';
+import 'package:crm/my_widget/layout_widget.dart/layout_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 
 class Layout extends StatelessWidget {
   const Layout({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return GetBuilder<LayoutController>(
       init: LayoutController(),
       builder: (controller) {
         return Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: _buildCenterFloatingButton(controller),
-          bottomNavigationBar: _buildBottomNavigationBar(controller),
+          backgroundColor: Colors.transparent,
+          extendBody: true,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: SizedBox(
+            width: width,
+            height: 80,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                // Background custom painter
+                CustomPaint(size: Size(width, 80), painter: BNBCustomPainter()),
+
+                // Center FAB
+                Center(heightFactor: 0.6, child: CenterFAB()),
+
+                // Bottom Nav Items
+                SizedBox(
+                  width: width,
+                  height: 80,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Left side icons
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            BottomNavBarItem(
+                              icon: Icons.home_outlined,
+                              label: 'Home'.tr,
+                              isSelected: controller.currentIndex == 0,
+                              onTap: () => controller.change(0),
+                            ),
+                            BottomNavBarItem(
+                              icon: Icons.people_outline,
+                              label: 'Clients'.tr,
+                              isSelected: controller.currentIndex == 1,
+                              onTap: () => controller.change(1),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(width: 80), // Space for center FAB
+                      // Right side icons
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            BottomNavBarItem(
+                              icon: Icons.calendar_month_outlined,
+                              label: 'Calendar'.tr,
+                              isSelected: controller.currentIndex == 2,
+                              onTap: () => controller.change(2),
+                            ),
+                            BottomNavBarItem(
+                              icon: Icons.more_horiz_outlined,
+                              label: 'More'.tr,
+                              isSelected: controller.currentIndex == 3,
+                              onTap: () => controller.change(3),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           body: controller.screens[controller.currentIndex],
         );
       },
     );
   }
+}
 
-  Widget _buildCenterFloatingButton(LayoutController controller) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: (const Color.fromARGB(255, 199, 230, 255)),
-          width: 6,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: CircleAvatar(
-        radius: 28,
-        backgroundColor: appColor,
-        child: IconButton(
-          onPressed: () {
-            // Add your action here
-          },
-          icon: const Icon(
-            Icons.add_box_rounded,
-            color: Colors.white,
-            size: 28,
-          ),
-        ),
-      ),
-    );
+// =======================
+// Custom Painter for Bottom Navigation Bar
+// =======================
+class BNBCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final path = Path()
+      ..moveTo(0, 20)
+      ..quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0)
+      ..quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 20)
+      ..arcToPoint(
+        Offset(size.width * 0.60, 20),
+        radius: const Radius.circular(20),
+        clockwise: false,
+      )
+      ..quadraticBezierTo(size.width * 0.60, 0, size.width * 0.65, 0)
+      ..quadraticBezierTo(size.width * 0.80, 0, size.width, 20)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    canvas.drawShadow(path, Colors.black, 5, true);
+    canvas.drawPath(path, paint);
   }
 
-  Widget _buildBottomNavigationBar(LayoutController controller) {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 4,
-      clipBehavior: Clip.antiAlias,
-      color: Colors.white,
-      elevation: 4,
-      child: SizedBox(
-        height: 80,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Left side icons
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildNavItem(
-                    controller,
-                    Icons.home_outlined,
-                    'Home'.tr,
-                    0,
-                  ),
-                  _buildNavItem(
-                    controller,
-                    Icons.people_outline,
-                    'Clients'.tr,
-                    1,
-                  ),
-                ],
-              ),
-            ),
-            
-            // Center spacer for FAB
-            const SizedBox(width: 80),
-            
-            // Right side icons
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildNavItem(
-                    controller,
-                    Icons.calendar_today_outlined,
-                    'Calendar'.tr,
-                    2,
-                  ),
-                  _buildNavItem(
-                    controller,
-                    Icons.more_horiz_outlined,
-                    'More'.tr,
-                    3,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(
-    LayoutController controller,
-    IconData icon,
-    String label,
-    int index,
-  ) {
-    final isSelected = controller.currentIndex == index;
-    final color = isSelected ? appColor : Colors.grey;
-
-    return Expanded(
-      child: InkWell(
-        onTap: () => controller.change(index),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: color,
-                size: 24,
-              ),
-              const SizedBox(height: 2),
-              Flexible(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                    color: color,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
