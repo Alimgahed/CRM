@@ -3,6 +3,7 @@ import 'package:crm/controller/language/language.dart';
 import 'package:crm/theme/theme.dart';
 import 'package:crm/view/home/layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 double height = 0.0;
@@ -40,6 +41,12 @@ class _MyAppState extends State<MyApp> {
 
       translations: MyTranslations(),
       locale: Locale(languageController.currentLanguage ?? 'ar'),
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       fallbackLocale: Locale(Cache.getdata(key: "lang") ?? "ar"),
       theme: AppTheme.lightTheme,
       home: Layout(),

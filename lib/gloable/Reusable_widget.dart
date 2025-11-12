@@ -21,18 +21,19 @@ class FloatingCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 0, // above container
-      left: 0,
-      right: 0,
-      child: Center(
-        child: FloatingActionButton(
-          mini: mini,
-          backgroundColor: backgroundColor,
-          elevation: elevation,
-          onPressed: () {
-            Get.back();
-          },
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          Get.back();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+
+            shape: BoxShape.circle,
+          ),
+
           child: Icon(Icons.close, color: iconColor),
         ),
       ),

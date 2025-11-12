@@ -10,10 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
   cupertino_icons: ^1.0.8
+  intl: ^0.20.2
   dio: ^5.4.3+1
   get: ^4.6.6
   file_picker: ^8.1.2
+  table_calendar: ^3.1.2
   shared_preferences: ^2.5.3
 
 dev_dependencies:
@@ -24,7 +30,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  # Add Alexandria Variable Font
   fonts:
     - family: Alexandria
       fonts:

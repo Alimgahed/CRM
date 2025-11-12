@@ -10,17 +10,18 @@ class AddClient extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(AddClientController(), permanent: false);
 
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 32),
-          padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          ),
-          child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const FloatingCloseButton(),
+
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(top: 8),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -162,11 +163,10 @@ class AddClient extends StatelessWidget {
               ],
             ),
           ),
-        ),
 
-        // Floating Close Button (reusable)
-        const FloatingCloseButton(),
-      ],
+          // Floating Close Button (reusable)
+        ],
+      ),
     );
   }
 }

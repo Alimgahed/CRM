@@ -4,6 +4,7 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/gloable/Reusable_widget.dart';
 import 'package:crm/view/actions/add_client.dart';
+import 'package:crm/view/actions/add_project.dart';
 import 'package:crm/view/actions/add_task.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,18 +43,19 @@ class CustomBottomSheetDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(DialogController(), permanent: false);
 
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        // Bottom Sheet Container
-        Container(
-          margin: const EdgeInsets.only(top: 32), // space for FAB
-          padding: const EdgeInsets.fromLTRB(16, 48, 16, 32),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          ),
-          child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const FloatingCloseButton(),
+
+          // Bottom Sheet Container
+          Container(
+            margin: const EdgeInsets.only(top: 10), // space for FAB
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: items.asMap().entries.map((entry) {
@@ -84,13 +86,11 @@ class CustomBottomSheetDialog extends StatelessWidget {
                           Radio<int>(
                             value: idx,
                             groupValue: controller.selectedIndex.value,
-                            fillColor:
-                                WidgetStateProperty.resolveWith<Color?>(
-                                  (states) =>
-                                      controller.selectedIndex.value == idx
-                                      ? appColor
-                                      : Colors.grey,
-                                ),
+                            fillColor: WidgetStateProperty.resolveWith<Color?>(
+                              (states) => controller.selectedIndex.value == idx
+                                  ? appColor
+                                  : Colors.grey,
+                            ),
                             onChanged: (value) {
                               controller.selectIndex(value!);
                               Get.back();
@@ -116,11 +116,10 @@ class CustomBottomSheetDialog extends StatelessWidget {
               }).toList(),
             ),
           ),
-        ),
 
-        // Floating Close Button
-        FloatingCloseButton(),
-      ],
+          // Floating Close Button
+        ],
+      ),
     );
   }
 }
@@ -154,7 +153,11 @@ class CenterFAB extends StatelessWidget {
                 onTap: () {
                   // Open AddClient as bottom sheet
                   Get.bottomSheet(
-                    const AddClient(),
+                    FractionallySizedBox(
+                      heightFactor: 0.8, // 👈 controls height (80% of screen)
+                      child: const AddClient(),
+                    ),
+
                     isScrollControlled: true, // Makes it full height if needed
                     backgroundColor: Colors.transparent,
                   );
@@ -163,17 +166,35 @@ class CenterFAB extends StatelessWidget {
               DialogItem(
                 icon: Icons.work_outline, // Project
                 text: 'Add New Project'.tr,
-                onTap: () {},
+                onTap: () {
+                  Get.bottomSheet(
+                    FileUploadScreen(text: "Upload Project Details".tr),
+                    isScrollControlled: true, // Makes it full height if needed
+                    backgroundColor: Colors.transparent,
+                  );
+                },
               ),
               DialogItem(
                 icon: Icons.apartment, // Property
                 text: 'Add New Property'.tr,
-                onTap: () {},
+                onTap: () {
+                  Get.bottomSheet(
+                    FileUploadScreen(text: "Upload Property Details".tr),
+                    isScrollControlled: true, // Makes it full height if needed
+                    backgroundColor: Colors.transparent,
+                  );
+                },
               ),
               DialogItem(
                 icon: Icons.engineering, // Developer
                 text: 'Add New Developer'.tr,
-                onTap: () {},
+                onTap: () {
+                  Get.bottomSheet(
+                    FileUploadScreen(text: "Upload Developer Details".tr),
+                    isScrollControlled: true, // Makes it full height if needed
+                    backgroundColor: Colors.transparent,
+                  );
+                },
               ),
             ],
           ),

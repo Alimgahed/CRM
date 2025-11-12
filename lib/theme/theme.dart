@@ -5,7 +5,8 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       // Default app color set to white
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.grey.shade100,
+
       primaryColor: Colors.white,
       fontFamily: 'Alexandria',
       colorScheme: ColorScheme.light(
