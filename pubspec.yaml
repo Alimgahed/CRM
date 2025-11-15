@@ -21,6 +21,8 @@ dependencies:
   file_picker: ^8.1.2
   table_calendar: ^3.1.2
   shared_preferences: ^2.5.3
+  url_launcher: ^6.1.11
+
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +36,6 @@ flutter:
     - family: Alexandria
       fonts:
         - asset: lib/fonts/Alexandria-VariableFont_wght.ttf
+    - family: MyFlutterApp
+      fonts:
+        - asset: lib/fonts/MyFlutterApp.ttf

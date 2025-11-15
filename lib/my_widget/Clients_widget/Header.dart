@@ -1,5 +1,9 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/Clients/Clients_controller.dart';
+import 'package:crm/controller/Clients/Clients_search.dart';
+import 'package:crm/gloable/Reusable_widget/fields.dart';
+import 'package:crm/gloable/buttons.dart';
+import 'package:crm/view/actions/add_client.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +27,7 @@ class ClientsHeader extends StatelessWidget {
     );
   }
 }
+
 class ClientsTitleRow extends StatelessWidget {
   const ClientsTitleRow({super.key});
 
@@ -41,7 +46,14 @@ class ClientsTitleRow extends StatelessWidget {
         const Spacer(),
         IconButton(
           onPressed: () {
-            // Add client action
+            Get.bottomSheet(
+              const FractionallySizedBox(
+                heightFactor: 0.88,
+                child: AddClient(),
+              ),
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+            );
           },
           icon: const Icon(Icons.add_box_rounded, color: Colors.white),
         ),
@@ -49,6 +61,7 @@ class ClientsTitleRow extends StatelessWidget {
     );
   }
 }
+
 class ClientsSearchBar extends StatelessWidget {
   const ClientsSearchBar({super.key});
 
@@ -57,6 +70,7 @@ class ClientsSearchBar extends StatelessWidget {
     final controller = Get.find<ClientsController>();
 
     return Container(
+      height: 50,
       margin: const EdgeInsets.only(left: 8.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -84,7 +98,205 @@ class ClientsSearchBar extends StatelessWidget {
               style: const TextStyle(fontSize: 13),
             ),
           ),
-          Icon(Icons.filter_list, color: secondaryTextColor, size: 20),
+          IconButton(
+            icon: const Icon(Icons.filter_list, size: 20),
+            color: secondaryTextColor,
+            onPressed: () {
+              Get.bottomSheet(
+                FractionallySizedBox(
+                  heightFactor: 0.9,
+                  child: const ResultFilter(),
+                ),
+                isScrollControlled: true, // Makes it full height if needed
+                backgroundColor: Colors.transparent,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ResultFilter extends StatelessWidget {
+  const ResultFilter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Initialize the controller once
+    final controller = Get.put(ResultFilterController());
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const FloatingCloseButton(),
+
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(top: 8),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// Header
+                Row(
+                  children: [
+                    const Icon(Icons.filter_list, size: 24),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Filter Results'.tr,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 16),
+
+                /// Start & End Date
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                        text: 'Start date'.tr,
+                        labelText: 'Enter Start Date Here'.tr,
+                        controller: controller.startDateController,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: CustomTextFormField(
+                        text: 'End date'.tr,
+                        labelText: 'Enter End Date Here'.tr,
+                        controller: controller.endDateController,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+
+                /// Status Dropdown
+                Obx(
+                  () => CustomDropdownFormField<String>(
+                    text: 'Status'.tr,
+                    labelText: 'All Statuses'.tr,
+                    value: controller.status.value.isEmpty
+                        ? null
+                        : controller.status.value,
+                    items: const [
+                      DropdownMenuItem(value: 'low', child: Text('Low')),
+                      DropdownMenuItem(value: 'medium', child: Text('Medium')),
+                      DropdownMenuItem(value: 'high', child: Text('High')),
+                    ],
+                    onChanged: (val) => controller.status.value = val ?? '',
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                /// Source Dropdown
+                Obx(
+                  () => CustomDropdownFormField<String>(
+                    text: 'Source'.tr,
+                    labelText: 'All Sources'.tr,
+                    value: controller.source.value.isEmpty
+                        ? null
+                        : controller.source.value,
+                    items: const [
+                      DropdownMenuItem(value: 'social', child: Text('Social')),
+                      DropdownMenuItem(
+                        value: 'referral',
+                        child: Text('Referral'),
+                      ),
+                      DropdownMenuItem(value: 'direct', child: Text('Direct')),
+                    ],
+                    onChanged: (val) => controller.source.value = val ?? '',
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                /// Project Dropdown
+                Obx(
+                  () => CustomDropdownFormField<String>(
+                    text: 'Project'.tr,
+                    labelText: 'All Projects'.tr,
+                    value: controller.project.value.isEmpty
+                        ? null
+                        : controller.project.value,
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'project1',
+                        child: Text('Project 1'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'project2',
+                        child: Text('Project 2'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'project3',
+                        child: Text('Project 3'),
+                      ),
+                    ],
+                    onChanged: (val) => controller.project.value = val ?? '',
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                /// Developer Dropdown
+                Obx(
+                  () => CustomDropdownFormField<String>(
+                    text: 'Developer'.tr,
+                    labelText: 'All Developers'.tr,
+                    value: controller.developer.value.isEmpty
+                        ? null
+                        : controller.developer.value,
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'dev1',
+                        child: Text('Developer 1'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'dev2',
+                        child: Text('Developer 2'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'dev3',
+                        child: Text('Developer 3'),
+                      ),
+                    ],
+                    onChanged: (val) => controller.developer.value = val ?? '',
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                /// Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        text: "Confirm".tr,
+                        onPressed: controller.applyFilters,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: CustomButton(
+                        backgroundColor: Colors.white,
+                        textColor: appColor,
+                        text: "Reset".tr,
+                        onPressed: controller.resetFilters,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

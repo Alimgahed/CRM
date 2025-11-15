@@ -1,12 +1,9 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/Clients/Clients_controller.dart';
-import 'package:crm/gloable/Reusable_widget.dart';
+import 'package:crm/gloable/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// ==================== SEARCH BAR WIDGET ====================
-
-// ==================== FILTER SECTION WIDGET ====================
 class ClientsFilterSection extends StatelessWidget {
   const ClientsFilterSection({super.key});
 
@@ -69,8 +66,17 @@ class FilterButton extends StatelessWidget {
   final int index;
   final IconData? icon;
   final String? label;
+  final double? width;
+  final VoidCallback? onTap;
 
-  const FilterButton({super.key, required this.index, this.icon, this.label});
+  const FilterButton({
+    super.key,
+    required this.index,
+    this.icon,
+    this.label,
+    this.width,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +88,25 @@ class FilterButton extends StatelessWidget {
       return InkWell(
         onTap: () {
           controller.selectedFilter.value = index;
+          onTap?.call();
 
           if (controller.selectedFilter.value == 0) {
             Get.bottomSheet(
               FractionallySizedBox(
-                heightFactor: 0.9,
+                heightFactor: 0.93,
                 child: const allClientFiliter(),
               ),
-              isScrollControlled: true, // Makes it full height if needed
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+            );
+          }
+          if (controller.selectedFilter.value == 17) {
+            Get.bottomSheet(
+              FractionallySizedBox(
+                heightFactor: 0.93,
+                child: const allClientDetailsFiliter(),
+              ),
+              isScrollControlled: true,
               backgroundColor: Colors.transparent,
             );
           }
@@ -97,6 +114,7 @@ class FilterButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Container(
           height: 40,
+          width: width ?? (icon != null ? 40 : null),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: isSelected ? appColor : Colors.white,
@@ -110,7 +128,7 @@ class FilterButton extends StatelessWidget {
                     size: 20,
                   )
                 : Text(
-                    label!,
+                    label ?? '',
                     style: TextStyle(
                       color: isSelected ? Colors.white : secondaryTextColor,
                       fontWeight: FontWeight.w500,
@@ -194,6 +212,72 @@ class allClientFiliter extends StatelessWidget {
                   FilterButton(index: 15, label: "New".tr),
                   const SizedBox(height: 8),
                   FilterButton(index: 16, label: "Cancel".tr),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ignore: camel_case_types
+class allClientDetailsFiliter extends StatelessWidget {
+  const allClientDetailsFiliter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const FloatingCloseButton(),
+
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.now_widgets_outlined),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Table of Contents".tr,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  FilterButton(index: 18, label: "Details".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 19, label: "Comments".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 20, label: "Attachments".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 21, label: "Timeline".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 22, label: "Deals".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 23, label: "Chances".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 24, label: "Cli Request".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 25, label: "Contracts".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 26, label: "Payment Plan".tr),
+                  const SizedBox(width: 8),
+                  FilterButton(index: 27, label: "Check In".tr),
                 ],
               ),
             ),

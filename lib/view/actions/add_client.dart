@@ -1,5 +1,6 @@
 import 'package:crm/controller/actions/add_client.dart';
-import 'package:crm/gloable/Reusable_widget.dart';
+import 'package:crm/gloable/Reusable_widget/fields.dart';
+import 'package:crm/gloable/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

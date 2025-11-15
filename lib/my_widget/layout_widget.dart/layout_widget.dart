@@ -2,7 +2,7 @@
 // Model: Dialog Item
 // =======================
 import 'package:crm/constant/colors.dart';
-import 'package:crm/gloable/Reusable_widget.dart';
+import 'package:crm/gloable/buttons.dart';
 import 'package:crm/view/actions/add_client.dart';
 import 'package:crm/view/actions/add_project.dart';
 import 'package:crm/view/actions/add_task.dart';
@@ -164,7 +164,7 @@ class CenterFAB extends StatelessWidget {
                 },
               ),
               DialogItem(
-                icon: Icons.work_outline, // Project
+                icon: Icons.business_sharp, // Project
                 text: 'Add New Project'.tr,
                 onTap: () {
                   Get.bottomSheet(
