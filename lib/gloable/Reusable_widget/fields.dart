@@ -23,7 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     this.text,
     this.hintText,
-     this.labelText,
+    this.labelText,
     this.onTap,
     this.onChanged,
     this.onEditingComplete,
@@ -39,62 +39,78 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        // Label
         Padding(
           padding: const EdgeInsets.only(right: 4, left: 4),
           child: Text(
             text ?? "",
             style: const TextStyle(
               fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
               fontSize: 14,
               height: 1.5,
-              letterSpacing: 0,
             ),
           ),
         ),
-        SizedBox(height: 10),
+
+        const SizedBox(height: 10),
+
         Container(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(8.0),
           decoration: BoxDecoration(
-            color: inputFieldColor, // Gray background
+            color: inputFieldColor,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: TextFormField(
-            controller: controller,
-            onTap: onTap,
-            readOnly: readOnly ?? false,
-            obscureText: obscureText,
-            keyboardType: allowOnlyDigits
-                ? TextInputType.number
-                : TextInputType.text,
-            inputFormatters: allowOnlyDigits
-                ? <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-                  ]
-                : null,
-            style: const TextStyle(fontSize: 16),
-            decoration: InputDecoration(
-              labelText: labelText,
-              labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-              hintText: hintText,
-              prefixIcon: iconData != null
-                  ? Icon(iconData, color: appColor)
-                  : null,
-              border: InputBorder.none, // Remove default border
+
+          // 🔥 Default height 48, expands automatically
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: 40, // default height
+              maxHeight: double.infinity, // allow growth
             ),
-            validator: useValidator
-                ? validator ??
-                      (value) {
-                        if (value == null || value.isEmpty) {
-                          return "This field cannot be empty".tr;
+
+            child: TextFormField(
+              controller: controller,
+              onTap: onTap,
+              readOnly: readOnly ?? false,
+              obscureText: obscureText,
+
+              minLines: 1,
+              maxLines: obscureText ? 1 : null, // auto-expand if not password
+
+              keyboardType: allowOnlyDigits
+                  ? TextInputType.number
+                  : TextInputType.multiline,
+
+              inputFormatters: allowOnlyDigits
+                  ? [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))]
+                  : null,
+
+              style: const TextStyle(fontSize: 12),
+
+              decoration: InputDecoration(
+                labelText: labelText,
+                labelStyle: const TextStyle(color: Colors.grey, fontSize: 12),
+                hintText: hintText,
+                prefixIcon: iconData != null
+                    ? Icon(iconData, color: appColor)
+                    : null,
+                border: InputBorder.none,
+              ),
+
+              validator: useValidator
+                  ? validator ??
+                        (value) {
+                          if (value == null || value.isEmpty) {
+                            return "This field cannot be empty".tr;
+                          }
+                          return null;
                         }
-                        return null;
-                      }
-                : null,
-            onChanged: onChanged,
-            onEditingComplete: onEditingComplete,
+                  : null,
+
+              onChanged: onChanged,
+              onEditingComplete: onEditingComplete,
+            ),
           ),
         ),
       ],
@@ -167,7 +183,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
                 : null,
             decoration: InputDecoration(
               labelText: labelText,
-              labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+              labelStyle: const TextStyle(color: Colors.grey, fontSize: 12),
               hintText: hintText,
               prefixIcon: iconData != null
                   ? Icon(iconData, color: appColor)
@@ -182,6 +198,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
     );
   }
 }
+
 class GlobalPopupMenu extends StatelessWidget {
   /// List of menu items
   final List<PopupMenuItemModel> items;

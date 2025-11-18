@@ -1,6 +1,7 @@
 
 import 'package:crm/view/Calender/Calender.dart';
 import 'package:crm/view/Clients/ClientsScreen.dart';
+import 'package:crm/view/More/More.dart';
 import 'package:crm/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,10 +17,8 @@ class LayoutController extends GetxController {
 
 
     Calendar(),
-    // Dev_Home(),
-    // AllReq(),
-    // AllCampaigns(),
-    // more_Dev(),
+    MoreScreen(),
+    
   ];
   void change(int index) {
     currentIndex = index;

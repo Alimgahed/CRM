@@ -1,8 +1,8 @@
 import 'package:crm/constant/colors.dart';
-import 'package:crm/controller/Clients/Clients_controller.dart';
 import 'package:crm/controller/Clients/Clients_search.dart';
 import 'package:crm/gloable/Reusable_widget/fields.dart';
 import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/gloable.dart';
 import 'package:crm/view/actions/add_client.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,12 +16,25 @@ class ClientsHeader extends StatelessWidget {
       width: double.infinity,
       color: appColor,
       padding: const EdgeInsets.all(8.0),
-      child: const Column(
+      child: Column(
         children: [
-          SizedBox(height: 40),
-          ClientsTitleRow(),
-          SizedBox(height: 8),
-          ClientsSearchBar(),
+          const SizedBox(height: 40),
+          const ClientsTitleRow(),
+          const SizedBox(height: 8),
+          SearchBarWidget(
+            prefixIcon: Icons.search,
+            suffixIcon: Icons.filter_list,
+            onSuffixTap: () {
+              Get.bottomSheet(
+                const FractionallySizedBox(
+                  heightFactor: 0.9,
+                  child: ResultFilter(),
+                ),
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+              );
+            },
+          ),
         ],
       ),
     );
@@ -58,62 +71,6 @@ class ClientsTitleRow extends StatelessWidget {
           icon: const Icon(Icons.add_box_rounded, color: Colors.white),
         ),
       ],
-    );
-  }
-}
-
-class ClientsSearchBar extends StatelessWidget {
-  const ClientsSearchBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<ClientsController>();
-
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.only(left: 8.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Row(
-        children: [
-          Icon(Icons.search, color: secondaryTextColor, size: 20),
-          const SizedBox(width: 8),
-          Expanded(
-            child: TextFormField(
-              controller: controller.searchController,
-              decoration: InputDecoration(
-                hintText: "Search about client".tr,
-                hintStyle: TextStyle(
-                  color: secondaryTextColor,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 12,
-                ),
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              style: const TextStyle(fontSize: 13),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.filter_list, size: 20),
-            color: secondaryTextColor,
-            onPressed: () {
-              Get.bottomSheet(
-                FractionallySizedBox(
-                  heightFactor: 0.9,
-                  child: const ResultFilter(),
-                ),
-                isScrollControlled: true, // Makes it full height if needed
-                backgroundColor: Colors.transparent,
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 }

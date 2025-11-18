@@ -3,6 +3,9 @@ import 'package:crm/my_widget/Clients_widget/ClientsFiliter.dart';
 import 'package:crm/view/Clients/Clients_add/AddBuyRequest.dart';
 import 'package:crm/view/Clients/Clients_add/AddChance.dart';
 import 'package:crm/view/Clients/Clients_add/AddCliRequest.dart';
+import 'package:crm/view/Clients/Clients_add/DeleteClient.dart';
+import 'package:crm/view/Clients/Clients_add/RefferTo.dart';
+import 'package:crm/view/Clients/ContactAction/contact_action.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -70,19 +73,73 @@ class Clientmore extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 8),
-                  FilterButton(index: 34, label: "Add Buy Request".tr,onTap: () {
-                    Get.back();
+                  FilterButton(
+                    index: 34,
+                    label: "Add Buy Request".tr,
+                    onTap: () {
+                      Get.back();
                       Get.bottomSheet(
-                        FractionallySizedBox(child: const Addbuyrequest(),
-                        heightFactor: 0.9,
+                        FractionallySizedBox(
+                          heightFactor: 0.9,
+                          child: const Addbuyrequest(),
                         ),
                         isScrollControlled:
                             true, // Makes it full height if needed
                         backgroundColor: Colors.transparent,
                       );
-                  },),
+                    },
+                  ),
                   const SizedBox(height: 8),
-                  FilterButton(index: 35, label: "Refer to another Agent".tr),
+                  FilterButton(
+                    index: 35,
+                    label: "Refer to another Agent".tr,
+                    onTap: () {
+                      Get.back();
+                      Get.bottomSheet(
+                        FractionallySizedBox(
+                          // heightFactor: 0.9,
+                          child: const ReferToAnotherAgent(),
+                        ),
+                        isScrollControlled:
+                            true, // Makes it full height if needed
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  FilterButton(
+                    index: 36,
+                    label: "Add Action".tr,
+                    onTap: () {
+                      Get.back();
+                      Get.bottomSheet(
+                        FractionallySizedBox(
+                          // heightFactor: 0.9,
+                          child: const ContactAction(),
+                        ),
+                        isScrollControlled:
+                            true, // Makes it full height if needed
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  FilterButton(
+                    index: 39,
+                    label: "Remove Client Data?".tr,
+                    onTap: () {
+                      Get.back();
+                      Get.bottomSheet(
+                        FractionallySizedBox(
+                          // heightFactor: 0.9,
+                          child: const DeleteClient(),
+                        ),
+                        isScrollControlled:
+                            true, // Makes it full height if needed
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

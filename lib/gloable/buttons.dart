@@ -49,9 +49,11 @@ class CustomButton extends StatelessWidget {
   final Gradient? gradient;
   final Color? backgroundColor;
   final Color textColor;
+  final Color bordercolor;
 
   const CustomButton({
     super.key,
+    this.bordercolor = appColor,
     required this.text,
     required this.onPressed,
     this.height = 54,
@@ -70,9 +72,7 @@ class CustomButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? appColor,
         borderRadius: BorderRadius.circular(borderRadius),
-        border: backgroundColor == appColor
-            ? null
-            : Border.all(color: appColor),
+        border: Border.all(color: bordercolor),
         // boxShadow: const [
         //   BoxShadow(
         //     offset: Offset(0, 10),
