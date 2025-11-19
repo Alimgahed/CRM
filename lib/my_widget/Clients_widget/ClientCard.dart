@@ -136,9 +136,9 @@ class ClientCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              _ActionButton(icon: Icons.call_outlined, onTap: onCall),
+              ActionButton(icon: Icons.call_outlined, onTap: onCall),
               const SizedBox(width: 10),
-              _ActionButton(icon: MyFlutterApp.whatsapp, onTap: onWhatsapp),
+              ActionButton(icon: MyFlutterApp.whatsapp, onTap: onWhatsapp),
             ],
           ),
         ],
@@ -211,24 +211,3 @@ class StatusTag extends StatelessWidget {
   }
 }
 
-class _ActionButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-
-  const _ActionButton({required this.icon, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: appColor),
-        ),
-        padding: const EdgeInsets.all(8),
-        child: Icon(icon, color: appColor),
-      ),
-    );
-  }
-}

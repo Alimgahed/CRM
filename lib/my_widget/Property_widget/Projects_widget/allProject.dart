@@ -1,41 +1,16 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/gloable/buttons.dart';
+import 'package:crm/my_widget/Property_widget/Gloable_widget.dart';
 import 'package:crm/view/Projects/ProjectDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AllprojectWidget extends StatelessWidget {
   const AllprojectWidget({super.key});
-  static const TextStyle _titleStyle = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 16,
-    height: 1.5,
-    letterSpacing: -1,
-  );
 
-  static const TextStyle _smallStyle = TextStyle(
-    fontWeight: FontWeight.w400,
-    fontSize: 10,
-    height: 1.5,
-  );
 
   // Reusable icon + text widget
-  Widget _infoChip(IconData icon, String text, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.grey.shade100,
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 15, color: color),
-          const SizedBox(width: 5),
-          Text(text, style: _smallStyle.copyWith(color: color)),
-        ],
-      ),
-    );
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +41,7 @@ class AllprojectWidget extends StatelessWidget {
             // Title
             Text(
               'مارفل بالمز - Marvel Palms',
-              style: _titleStyle.copyWith(color: textColor),
+              style: titleStyle.copyWith(color: textColor),
             ),
 
             const SizedBox(height: 10),
@@ -79,7 +54,7 @@ class AllprojectWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'كمبوند مارفل بالمز – التجمع الخامس، القاهرة الجديدة',
-                    style: _smallStyle.copyWith(color: textColor),
+                    style: smallStyle.copyWith(color: textColor),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -92,19 +67,19 @@ class AllprojectWidget extends StatelessWidget {
             // Info chips
             Row(
               children: [
-                _infoChip(
+                infoChip(
                   Icons.monetization_on_outlined,
                   '1.2 - 6.3 مليون',
                   textColor,
                 ),
                 const SizedBox(width: 10),
-                _infoChip(
+                infoChip(
                   Icons.architecture_outlined,
                   '60م² - 120م²',
                   textColor,
                 ),
                 const SizedBox(width: 10),
-                _infoChip(Icons.business, 'أمكان', textColor),
+                infoChip(Icons.business, 'أمكان', textColor),
               ],
             ),
             Center(

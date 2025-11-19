@@ -1,5 +1,11 @@
 import 'package:crm/my_widget/More_widget.dart/more.dart';
+import 'package:crm/view/%20Commisions/allCommisions.dart';
+import 'package:crm/view/%20Users/User_managment.dart';
+import 'package:crm/view/Developer/AllDeveloper.dart';
+import 'package:crm/view/Owners/allOwner.dart';
 import 'package:crm/view/Projects/Allprojects.dart';
+import 'package:crm/view/Reports/ReportsHome.dart';
+import 'package:crm/view/Units/AllUnit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,13 +30,15 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.apartment,
               text: 'Units'.tr,
               onTap: () {
-                // Handle tap
+                Get.to(() => const AllUnits());
               },
             ),
             MoreWidget(
               icon: Icons.engineering_outlined,
               text: 'Developers Companies'.tr,
               onTap: () {
+                Get.to(() => const AllDevelopers());
+
                 // Handle tap
               },
             ),
@@ -38,13 +46,21 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.people_outline_outlined,
               text: 'Owners'.tr,
               onTap: () {
-                // Handle tap
+                Get.to(() => const AllOwners());
+              },
+            ),
+            MoreWidget(
+              icon: Icons.monetization_on_outlined,
+              text: 'Commisions'.tr,
+              onTap: () {
+                Get.to(() => const AllCommisions());
               },
             ),
             MoreWidget(
               icon: Icons.analytics_outlined,
               text: 'Reports'.tr,
               onTap: () {
+                Get.to(() => const Reportshome());
                 // Handle tap
               },
             ),
@@ -52,6 +68,7 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.people_alt_outlined,
               text: 'Users and permissions'.tr,
               onTap: () {
+                Get.to(() => const UserManagement());
                 // Handle tap
               },
             ),

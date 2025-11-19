@@ -1,15 +1,15 @@
 import 'package:crm/gloable/gloable.dart';
-import 'package:crm/my_widget/Property_widget/Projects_widget/allProject.dart';
+import 'package:crm/my_widget/Users/UserMannagment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Allprojects extends StatelessWidget {
-  const Allprojects({super.key});
+class UserManagement extends StatelessWidget {
+  const UserManagement({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Projects'.tr)),
+      appBar: AppBar(title: Text('Users and permissions'.tr)),
       body: Column(
         children: [
           Padding(
@@ -22,7 +22,7 @@ class Allprojects extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
-                return const AllprojectWidget();
+                return const UserManagementWidget();
               },
               itemCount: 10,
             ),

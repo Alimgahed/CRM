@@ -104,5 +104,28 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+class ActionButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final Color color;
+
+  const ActionButton({super.key, required this.icon, required this.onTap, this.color = appColor});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: color),
+        ),
+        padding: const EdgeInsets.all(8),
+        child: Icon(icon, color: color),
+      ),
+    );
+  }
+}
+
 
 /// A reusable PopupMenuButton widget that supports any number of items

@@ -13,7 +13,7 @@ class TotalsSection extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _TotalCard(
+                child: TotalCard(
                   title: "New Deals".tr,
                   amount: "40",
                   ratio: 0.15,
@@ -22,7 +22,7 @@ class TotalsSection extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _TotalCard(
+                child: TotalCard(
                   title: "conversion rate".tr,
                   amount: "18",
                   ratio: 0.10,
@@ -35,7 +35,7 @@ class TotalsSection extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: _TotalCard(
+                child: TotalCard(
                   title: "Active Clients".tr,
                   amount: "45",
                   ratio: 0.20,
@@ -44,7 +44,7 @@ class TotalsSection extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _TotalCard(
+                child: TotalCard(
                   title: "total sales".tr,
                   amount: "\$25,000",
                   ratio: 0.12,
@@ -59,13 +59,13 @@ class TotalsSection extends StatelessWidget {
   }
 }
 
-class _TotalCard extends StatelessWidget {
+class TotalCard extends StatelessWidget {
   final String title;
   final String amount;
   final double ratio;
   final String date;
 
-  const _TotalCard({
+  const TotalCard({super.key, 
     required this.title,
     required this.amount,
     required this.ratio,

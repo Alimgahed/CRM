@@ -1,4 +1,5 @@
 import 'package:crm/gloable/gloable.dart';
+import 'package:crm/my_widget/Property_widget/Gloable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,79 +11,20 @@ class ProjectDetails extends StatelessWidget {
   const ProjectDetails({super.key});
 
   // ==================== Constants ====================
-  static const double _standardPadding = 12.0;
-  static const double _itemSpacing = 10.0;
-  static const double _borderRadius = 10.0;
-  static const int _gridCrossAxisCount = 3;
-  static const double _gridSpacing = 6.0;
+  
+
 
   // ==================== Reusable Components ====================
 
   /// Builds a key-value information row
-  Widget _buildInfoRow(String key, String value, {bool isLink = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Key (English)
-          Expanded(
-            child: Text(
-              key.tr,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-          const SizedBox(width: _itemSpacing),
-          // Value (Arabic/Localized)
-          Expanded(
-            flex: 2,
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: isLink ? Colors.blue : Colors.black,
-                decoration: isLink ? TextDecoration.underline : null,
-                decorationColor: Colors.blue,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Builds a styled container wrapper
-  Widget _buildCard({required Widget child}) {
-    return Container(
-      padding: const EdgeInsets.all(_standardPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        border: Border.all(color: Colors.grey.shade300),
-      ),
-      child: child,
-    );
-  }
-
-  /// Builds section title
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title.tr,
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-    );
-  }
+  
 
   // ==================== Header Section ====================
   Widget _buildHeader() {
     return const Row(
       children: [
         Icon(Icons.business_outlined, size: 35),
-        SizedBox(width: _itemSpacing),
+        SizedBox(width: itemSpacing),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -103,26 +45,26 @@ class ProjectDetails extends StatelessWidget {
 
   // ==================== Details Section ====================
   Widget _buildDetailsSection() {
-    return _buildCard(
+    return buildCard(
       child: Column(
         children: [
-          _buildInfoRow("Developer", "إمكان"),
-          _buildInfoRow("Project Code", "MARV-0032"),
-          _buildInfoRow("Agent Name", "محمد أحمد"),
-          _buildInfoRow("Agent Phone", "+201234567890"),
-          _buildInfoRow("Country", "مصر"),
-          _buildInfoRow("Governorate", "القاهرة الجديدة"),
-          _buildInfoRow(
+          buildInfoRow("Developer", "إمكان"),
+          buildInfoRow("Project Code", "MARV-0032"),
+          buildInfoRow("Agent Name", "محمد أحمد"),
+          buildInfoRow("Agent Phone", "+201234567890"),
+          buildInfoRow("Country", "مصر"),
+          buildInfoRow("Governorate", "القاهرة الجديدة"),
+          buildInfoRow(
             "Project Link",
             "مارفل بالمز (Marvel Palms)",
             isLink: true,
           ),
-          _buildInfoRow("Map Link", "مارفل بالمز (Marvel Palms)", isLink: true),
-          _buildInfoRow("Min Price", "١٬٢٠٠٬٠٠٠ جنيه"),
-          _buildInfoRow("Max Price", "٦٬٣٠٠٬٠٠٠ جنيه"),
-          _buildInfoRow("Min Area", "٦٠ م²"),
-          _buildInfoRow("Max Area", "١٢٠ م²"),
-          _buildInfoRow(
+          buildInfoRow("Map Link", "مارفل بالمز (Marvel Palms)", isLink: true),
+          buildInfoRow("Min Price", "١٬٢٠٠٬٠٠٠ جنيه"),
+          buildInfoRow("Max Price", "٦٬٣٠٠٬٠٠٠ جنيه"),
+          buildInfoRow("Min Area", "٦٠ م²"),
+          buildInfoRow("Max Area", "١٢٠ م²"),
+          buildInfoRow(
             "Project Description",
             "مشروع تجاري مميز يقع في قلب التجمع الخامس.",
           ),
@@ -133,11 +75,11 @@ class ProjectDetails extends StatelessWidget {
 
   // ==================== Payment Plan Section ====================
   Widget _buildPaymentPlanSection() {
-    return _buildCard(
+    return buildCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle("Payment Plan"),
+          buildSectionTitle("Payment Plan"),
           const SizedBox(height: 8),
           ExpansionTile(
             iconColor: Colors.black,
@@ -145,11 +87,11 @@ class ProjectDetails extends StatelessWidget {
             childrenPadding: EdgeInsets.zero,
             title: const _PaymentPlanHeader(),
             children: [
-              _buildInfoRow("Spaces (from–to)", "٩٠ - ٢٠٠ م²"),
-              _buildInfoRow("Price per meter", "٥٬٠٠٠ - ٨٬٠٠٠ جنيه"),
-              _buildInfoRow("Installment Years", "٥ سنوات"),
-              _buildInfoRow("Down Payment", "٢٥٪"),
-              _buildInfoRow(
+              buildInfoRow("Spaces (from–to)", "٩٠ - ٢٠٠ م²"),
+              buildInfoRow("Price per meter", "٥٬٠٠٠ - ٨٬٠٠٠ جنيه"),
+              buildInfoRow("Installment Years", "٥ سنوات"),
+              buildInfoRow("Down Payment", "٢٥٪"),
+              buildInfoRow(
                 "Plan Description",
                 "خطة الاختيار الذكي تشمل ٢٥٪ مقدم وأقساط ربع سنوية لمدة ٥ سنوات. يوجد خصم ٦٪ للكاش.",
               ),
@@ -161,12 +103,12 @@ class ProjectDetails extends StatelessWidget {
   }
 
   Widget _buildMediaSection(List<String> media) { 
-    return _buildCard(
+    return buildCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle('Images & Videos'),
-          const SizedBox(height: _itemSpacing),
+          buildSectionTitle('Images & Videos'),
+          const SizedBox(height: itemSpacing),
           _MediaGrid(media: media),
         ],
       ),
@@ -175,12 +117,12 @@ class ProjectDetails extends StatelessWidget {
 
   // ==================== Attachments Section ====================
   Widget _buildAttachmentsSection() {
-    return _buildCard(
+    return buildCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle('Files and attachments'),
-          const SizedBox(height: _itemSpacing),
+          buildSectionTitle('Files and attachments'),
+          const SizedBox(height: itemSpacing),
           const _AttachmentItem(
             fileName: "Project_Brochure.pdf",
             fileType: FileType.pdf,
@@ -195,10 +137,10 @@ class ProjectDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(_standardPadding),
+      padding: const EdgeInsets.all(standardPadding),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(_borderRadius),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,9 +148,9 @@ class ProjectDetails extends StatelessWidget {
           _buildHeader(),
           const SizedBox(height: 12),
           _buildDetailsSection(),
-          const SizedBox(height: _itemSpacing),
+          const SizedBox(height: itemSpacing),
           _buildPaymentPlanSection(),
-          const SizedBox(height: _itemSpacing),
+          const SizedBox(height: itemSpacing),
           _buildMediaSection([
             "https://picsum.photos/200/300",
             "https://picsum.photos/200/301",
@@ -220,7 +162,7 @@ class ProjectDetails extends StatelessWidget {
             "https://picsum.photos/200/306",
             "https://picsum.photos/200/307",
           ]),
-          const SizedBox(height: _itemSpacing),
+          const SizedBox(height: itemSpacing),
           _buildAttachmentsSection(),
         ],
       ),

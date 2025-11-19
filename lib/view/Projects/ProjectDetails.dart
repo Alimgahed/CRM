@@ -1,4 +1,4 @@
-import 'package:crm/my_widget/Projects_widget/ProjectDtails.dart';
+import 'package:crm/my_widget/Property_widget/Projects_widget/ProjectDtails.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
