@@ -1,11 +1,10 @@
+import 'package:crm/gloable/Reusable_widget/Charts.dart';
 import 'package:crm/my_widget/home_widget/totals.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Clientreport extends StatelessWidget {
-  Clientreport({super.key});
-
+  const Clientreport({super.key});
   final List<Map<String, dynamic>> stats = const [
     {'number': 673, 'label': 'العملاء الجدد'},
     {'number': 486, 'label': 'تم التواصل'},
@@ -13,13 +12,11 @@ class Clientreport extends StatelessWidget {
     {'number': 72, 'label': 'قيد الاتخاذ'},
     {'number': 72, 'label': 'تم إلغى'},
   ];
-
   final List<Map<String, dynamic>> social = const [
     {'number': 673, 'label': 'Facebook'},
     {'number': 486, 'label': 'WhatsApp'},
     {'number': 183, 'label': 'Instagram'},
   ];
-
   final List<Map<String, dynamic>> monthlyData = const [
     {'month': 'Jan', 'value': 50},
     {'month': 'Feb', 'value': 80},
@@ -28,7 +25,6 @@ class Clientreport extends StatelessWidget {
     {'month': 'May', 'value': 70},
     {'month': 'Jun', 'value': 100},
   ];
-
   List<int> get sortedValues =>
       stats.map((e) => e['number'] as int).toList()..sort();
 
@@ -102,7 +98,7 @@ class Clientreport extends StatelessWidget {
                   const SizedBox(height: 32),
                   SizedBox(
                     height: 200,
-                    child: LineChartSample5(
+                    child: LineChartWidget(
                       values: sortedValues,
                       colors: const [
                         Color(0xFF1E86D6),
@@ -129,24 +125,11 @@ class Clientreport extends StatelessWidget {
                   const SizedBox(height: 16),
                   SizedBox(
                     height: 200,
-                    child: PieChart(
-                      PieChartData(
-                        sectionsSpace: 4,
-                        centerSpaceRadius: 40,
-                        sections: List.generate(social.length, (i) {
-                          return PieChartSectionData(
-                            value: social[i]['number'].toDouble(),
-                            title: social[i]['number'].toString(),
-                            color: socialColors[i],
-                            radius: 50,
-                            titleStyle: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          );
-                        }),
-                      ),
+                    child: PieChartWidget(
+                      ratio: .8,
+                      centerText: 'من الفيسبوك',
+                      data: social,
+                      colors: [...socialColors],
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -158,52 +141,19 @@ class Clientreport extends StatelessWidget {
 
             _buildChartContainer(
               title: 'أداء فريق المبيعات',
-              child: SizedBox(height: 200, child: _buildBarChart()),
+              child: SizedBox(
+                height: 200,
+                child: BarChartWidget(
+                  data: [
+                    {"month": "Jan", "value": 120},
+                    {"month": "Feb", "value": 150},
+                    {"month": "Mar", "value": 90},
+                  ],
+                ),
+              ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildBarChart() {
-    return BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.spaceAround,
-        maxY:
-            monthlyData
-                .map((e) => e['value'] as int)
-                .reduce((a, b) => a > b ? a : b)
-                .toDouble() +
-            20,
-        titlesData: FlTitlesData(
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (double value, TitleMeta meta) {
-                int index = value.toInt();
-                if (index >= 0 && index < monthlyData.length) {
-                  return Text(monthlyData[index]['month']);
-                }
-                return const Text('');
-              },
-            ),
-          ),
-        ),
-        borderData: FlBorderData(show: false),
-        barGroups: List.generate(monthlyData.length, (i) {
-          return BarChartGroupData(
-            x: i,
-            barRods: [
-              BarChartRodData(
-                toY: (monthlyData[i]['value'] as int).toDouble(),
-                color: Colors.blueAccent,
-                width: 20,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ],
-          );
-        }),
       ),
     );
   }
@@ -316,76 +266,3 @@ class Clientreport extends StatelessWidget {
 }
 
 // LINE CHART
-class LineChartSample5 extends StatelessWidget {
-  final List<int> values;
-  final List<Color> colors;
-  final Color indicatorStrokeColor;
-
-  const LineChartSample5({
-    super.key,
-    required this.values,
-    required this.colors,
-    this.indicatorStrokeColor = Colors.white,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final spots = List.generate(
-      values.length,
-      (i) => FlSpot(i.toDouble(), values[i].toDouble()),
-    );
-    final transparentColors = colors.map((c) => c.withOpacity(0.3)).toList();
-    final stops = List.generate(colors.length, (i) => i / (colors.length - 1));
-
-    return LineChart(
-      LineChartData(
-        titlesData: FlTitlesData(show: false),
-        minY: 0,
-        gridData: FlGridData(show: false),
-        borderData: FlBorderData(show: false),
-        lineBarsData: [
-          LineChartBarData(
-            spots: spots,
-            isCurved: true,
-            curveSmoothness: 0.42,
-            barWidth: 4,
-            gradient: LinearGradient(colors: colors, stops: stops),
-            belowBarData: BarAreaData(
-              show: true,
-              gradient: LinearGradient(colors: transparentColors, stops: stops),
-            ),
-            dotData: const FlDotData(show: false),
-          ),
-        ],
-        extraLinesData: ExtraLinesData(
-          extraLinesOnTop: true,
-          verticalLines: List.generate(spots.length, (i) {
-            final t = i / (spots.length - 1);
-            final color = _lerpGradient(colors, t).withOpacity(0.8);
-            return VerticalLine(
-              x: spots[i].x,
-              color: color,
-              strokeWidth: 3,
-              dashArray: [6, 4],
-            );
-          }),
-        ),
-      ),
-    );
-  }
-
-  Color _lerpGradient(List<Color> colors, double t) {
-    for (int i = 0; i < colors.length - 1; i++) {
-      double start = i / (colors.length - 1);
-      double end = (i + 1) / (colors.length - 1);
-      if (t >= start && t <= end) {
-        return Color.lerp(
-          colors[i],
-          colors[i + 1],
-          (t - start) / (end - start),
-        )!;
-      }
-    }
-    return colors.last;
-  }
-}

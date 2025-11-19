@@ -1,4 +1,4 @@
-import 'package:crm/gloable/gloable.dart';
+import 'package:crm/gloable/Reusable_widget/gloable.dart';
 import 'package:crm/my_widget/Property_widget/Unit_Widget/Units.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

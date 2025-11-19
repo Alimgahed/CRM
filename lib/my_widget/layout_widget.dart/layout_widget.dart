@@ -2,7 +2,7 @@
 // Model: Dialog Item
 // =======================
 import 'package:crm/constant/colors.dart';
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/view/actions/add_client.dart';
 import 'package:crm/view/actions/add_project.dart';
 import 'package:crm/view/actions/add_task.dart';

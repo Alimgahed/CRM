@@ -1,6 +1,6 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/Clients/Clients_controller.dart';
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/my_widget/Clients_widget/ClienTtimeLine.dart';
 import 'package:crm/my_widget/Clients_widget/ClientCard.dart';
 import 'package:crm/my_widget/Clients_widget/ClientChance.dart';

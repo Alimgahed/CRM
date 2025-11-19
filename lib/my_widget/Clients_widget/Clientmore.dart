@@ -1,4 +1,4 @@
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/my_widget/Clients_widget/ClientsFiliter.dart';
 import 'package:crm/view/Clients/Clients_add/AddBuyRequest.dart';
 import 'package:crm/view/Clients/Clients_add/AddChance.dart';

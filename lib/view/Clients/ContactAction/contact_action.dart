@@ -1,6 +1,6 @@
 import 'package:crm/controller/Contact_actions/Contact_actions.dart';
 import 'package:crm/gloable/Reusable_widget/fields.dart';
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/my_widget/Contact_actions_view/Call.dart';
 import 'package:crm/my_widget/Contact_actions_view/Cancel.dart';
 import 'package:crm/my_widget/Contact_actions_view/Deal.dart';

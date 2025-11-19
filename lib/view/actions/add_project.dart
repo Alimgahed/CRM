@@ -1,6 +1,6 @@
 // views/file_upload_screen.dart
 import 'package:crm/controller/Features/add_files.dart';
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

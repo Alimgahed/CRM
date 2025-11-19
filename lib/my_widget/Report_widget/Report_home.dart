@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-
 class ReportHome extends StatelessWidget {
   final String title;
   final String subtitle;
   final Color color;
   final VoidCallback? onTap;
-
   const ReportHome({
     super.key,
     this.onTap,

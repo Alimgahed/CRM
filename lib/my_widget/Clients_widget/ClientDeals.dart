@@ -1,6 +1,6 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/Clients/Clients_controller.dart';
-import 'package:crm/gloable/gloable.dart';
+import 'package:crm/gloable/Reusable_widget/gloable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

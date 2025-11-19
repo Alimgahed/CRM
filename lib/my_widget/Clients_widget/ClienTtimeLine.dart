@@ -1,4 +1,4 @@
-import 'package:crm/gloable/gloable.dart';
+import 'package:crm/gloable/Reusable_widget/gloable.dart';
 import 'package:flutter/material.dart';
 
 class ClientAction {

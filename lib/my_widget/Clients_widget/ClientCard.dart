@@ -1,7 +1,7 @@
 import 'package:crm/constant/Icons.dart';
 import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/Features/Communcation.dart';
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/view/Clients/Clients_details.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,5 +1,5 @@
 import 'package:crm/constant/colors.dart';
-import 'package:crm/gloable/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/my_widget/Property_widget/Gloable_widget.dart';
 import 'package:crm/view/Projects/ProjectDetails.dart';
 import 'package:flutter/material.dart';

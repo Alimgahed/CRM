@@ -1,8 +1,8 @@
 import 'package:crm/constant/colors.dart';
 import 'package:crm/controller/Clients/Clients_search.dart';
 import 'package:crm/gloable/Reusable_widget/fields.dart';
-import 'package:crm/gloable/buttons.dart';
-import 'package:crm/gloable/gloable.dart';
+import 'package:crm/gloable/Reusable_widget/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/gloable.dart';
 import 'package:crm/view/actions/add_client.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
