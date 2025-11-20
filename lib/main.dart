@@ -1,7 +1,7 @@
 import 'package:crm/cache/cache.dart';
 import 'package:crm/controller/language/language.dart';
 import 'package:crm/theme/theme.dart';
-import 'package:crm/view/home/layout.dart';
+import 'package:crm/view/Onbordinng/onbording.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
       ],
       fallbackLocale: Locale(Cache.getdata(key: "lang") ?? "ar"),
       theme: AppTheme.lightTheme,
-      home: Layout(),
+      home: OnboardingScreen(),
     );
   }
 }

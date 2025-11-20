@@ -6,6 +6,20 @@ class BarChartWidget extends StatelessWidget {
 
   const BarChartWidget({super.key, required this.data});
 
+  // Define colors for each bar
+  final List<Color> barColors = const [
+    Color(0xFF6366F1), // Indigo
+    Color(0xFF8B5CF6), // Purple
+    Color(0xFFEC4899), // Pink
+    Color(0xFFF59E0B), // Amber
+    Color(0xFF10B981), // Emerald
+    Color(0xFF3B82F6), // Blue
+    Color(0xFFEF4444), // Red
+    Color(0xFF14B8A6), // Teal
+    Color(0xFFF97316), // Orange
+    Color(0xFF06B6D4), // Cyan
+  ];
+
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
@@ -19,65 +33,93 @@ class BarChartWidget extends StatelessWidget {
             .toDouble() +
         20;
 
-    return BarChart(
-      BarChartData(
-        alignment: BarChartAlignment.spaceAround,
-        maxY: maxValue,
-        titlesData: FlTitlesData(
-          leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+    return RotatedBox(
+      quarterTurns: 0, // Change to 1 for 90° rotation, 2 for 180°, 3 for 270°
+      child: SizedBox(
+        width: double.infinity, // Takes full width
+        height: 300, // Set your desired height
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: BarChart(
+            BarChartData(
+              alignment: BarChartAlignment.spaceAround,
+              maxY: maxValue,
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
 
-          // Value labels above bars
-          topTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 32,
-              getTitlesWidget: (double value, TitleMeta meta) {
-                int index = value.toInt();
-                if (index >= 0 && index < data.length) {
-                  return Text(
-                    data[index]['value'].toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                // Value labels above bars
+                topTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 32,
+                    getTitlesWidget: (double value, TitleMeta meta) {
+                      int index = value.toInt();
+                      if (index >= 0 && index < data.length) {
+                        return Text(
+                          data[index]['value'].toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 12,
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ),
+
+                // Month titles under bars
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    getTitlesWidget: (double value, TitleMeta meta) {
+                      int index = value.toInt();
+                      if (index >= 0 && index < data.length) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            data[index]['month'],
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      }
+                      return const Text('');
+                    },
+                  ),
+                ),
+              ),
+
+              gridData: FlGridData(show: false),
+              borderData: FlBorderData(show: false),
+
+              barGroups: List.generate(data.length, (i) {
+                return BarChartGroupData(
+                  x: i,
+                  barRods: [
+                    BarChartRodData(
+                      toY: (data[i]['value'] as int).toDouble(),
+                      color:
+                          barColors[i %
+                              barColors.length], // Cycle through colors
+                      width: 24,
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-
-          // Month titles under bars
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (double value, TitleMeta meta) {
-                int index = value.toInt();
-                if (index >= 0 && index < data.length) {
-                  return Text(data[index]['month']);
-                }
-                return const Text('');
-              },
+                  ],
+                );
+              }),
             ),
           ),
         ),
-
-        borderData: FlBorderData(show: false),
-
-        barGroups: List.generate(data.length, (i) {
-          return BarChartGroupData(
-            x: i,
-            barRods: [
-              BarChartRodData(
-                toY: (data[i]['value'] as int).toDouble(),
-                color: Colors.blueAccent,
-                width: 20,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ],
-          );
-        }),
       ),
     );
   }

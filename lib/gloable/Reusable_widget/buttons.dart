@@ -47,6 +47,8 @@ class CustomButton extends StatelessWidget {
   final double borderRadius;
   final EdgeInsetsGeometry margin;
   final Gradient? gradient;
+    final Padding? padding;
+
   final Color? backgroundColor;
   final Color textColor;
   final Color bordercolor;
@@ -57,6 +59,7 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     this.height = 54,
+    this.padding,
     this.borderRadius = 10,
     this.margin = const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
     this.gradient,
@@ -69,6 +72,7 @@ class CustomButton extends StatelessWidget {
     return Container(
       margin: margin,
       height: height,
+      
       decoration: BoxDecoration(
         color: backgroundColor ?? appColor,
         borderRadius: BorderRadius.circular(borderRadius),
