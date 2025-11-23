@@ -61,55 +61,35 @@ class CustomBottomSheetDialog extends StatelessWidget {
               children: items.asMap().entries.map((entry) {
                 final idx = entry.key;
                 final item = entry.value;
-
-                return Obx(
-                  () => Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: controller.selectedIndex.value == idx
-                            ? Colors.blue
-                            : Colors.grey,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        controller.selectIndex(idx);
-                        Get.back(); // Close this sheet
-                        item.onTap();
-                      },
-                      child: Row(
-                        children: [
-                          Radio<int>(
-                            value: idx,
-                            groupValue: controller.selectedIndex.value,
-                            fillColor: WidgetStateProperty.resolveWith<Color?>(
-                              (states) => controller.selectedIndex.value == idx
-                                  ? appColor
-                                  : Colors.grey,
-                            ),
-                            onChanged: (value) {
-                              controller.selectIndex(value!);
-                              Get.back();
-                              item.onTap();
-                            },
-                          ),
-                          Icon(item.icon, color: appColor),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              item.text,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
+                return Container(
+                  height: 56,
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      controller.selectIndex(idx);
+                      Get.back(); // Close this sheet
+                      item.onTap();
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(width: 20),
+                        Icon(item.icon, color: appColor),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            item.text,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 );

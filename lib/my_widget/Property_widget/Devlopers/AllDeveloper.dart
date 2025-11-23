@@ -3,13 +3,9 @@ import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/my_widget/Property_widget/Gloable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 // ignore: camel_case_types
 class Alldeveloper_widget extends StatelessWidget {
   const Alldeveloper_widget({super.key});
-
-  // Reusable icon + text widget
-
   @override
   Widget build(BuildContext context) {
     final textColor = secondaryTextColor;
@@ -74,12 +70,21 @@ class Alldeveloper_widget extends StatelessWidget {
                 infoChip(Icons.call_outlined, '0123456789', textColor),
               ],
             ),
-            Center(
-              child: CustomButton(
-                height: 40,
-                text: 'Edit'.tr,
-                onPressed: () {},
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    height: 45,
+                    text: 'Edit'.tr,
+                    onPressed: () {},
+                  ),
+                ),
+                ActionButton(
+                  icon: Icons.delete_outline,
+                  color: Colors.red,
+                  onTap: () {},
+                ),
+              ],
             ),
           ],
         ),

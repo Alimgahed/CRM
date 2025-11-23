@@ -86,21 +86,18 @@ class AddTask extends StatelessWidget {
                   const SizedBox(height: 10),
 
                   CustomTextFormField(
-                    text: 'Assigned to'.tr,
                     labelText: 'Assigned to'.tr,
                     controller: controller.assignedToController,
                   ),
                   const SizedBox(height: 10),
 
                   CustomTextFormField(
-                    text: 'Expiration Date'.tr,
                     labelText: 'Write Expiration Date'.tr,
                     controller: controller.expirationDateController,
                   ),
                   const SizedBox(height: 10),
 
                   CustomTextFormField(
-                    text: 'Task Description'.tr,
                     labelText: 'Write Task Description'.tr,
                     controller: controller.taskDescriptionController,
                   ),

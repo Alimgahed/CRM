@@ -1,3 +1,4 @@
+import 'package:crm/cache/cache.dart';
 import 'package:crm/constant/colors.dart';
 import 'package:crm/gloable/Reusable_widget/buttons.dart';
 import 'package:crm/main.dart';
@@ -5,15 +6,30 @@ import 'package:crm/view/home/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// Onboarding Controller
+/// Onboarding Data Model
+class OnboardingData {
+  final String title;
+  final String description;
+  final String image;
+
+  OnboardingData({
+    required this.title,
+    required this.description,
+    required this.image,
+  });
+}
+
+/// Onboarding Controller
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
-  final RxInt currentPage = 0.obs;
 
-  // Check if current language is Arabic
+  /// Start with -1 to force AnimatedContainer animation on first load
+  final RxInt currentPage = (-1).obs;
+
+  /// Check if current language is Arabic
   bool get isArabic => Get.locale?.languageCode == 'ar';
 
-  // Arabic pages
+  /// Arabic pages
   final List<OnboardingData> pagesAr = [
     OnboardingData(
       title: "تتبّع ذكي للعملاء المحتملين",
@@ -35,7 +51,7 @@ class OnboardingController extends GetxController {
     ),
   ];
 
-  // English pages
+  /// English pages
   final List<OnboardingData> pagesEn = [
     OnboardingData(
       title: "Smart Lead Tracking",
@@ -57,9 +73,19 @@ class OnboardingController extends GetxController {
     ),
   ];
 
-  // Get current pages based on language
+  /// Current pages based on language
   List<OnboardingData> get currentPages => isArabic ? pagesAr : pagesEn;
 
+  /// Auto-set first page on first frame to trigger animation
+  @override
+  void onReady() {
+    super.onReady();
+    Future.delayed(const Duration(milliseconds: 50), () {
+      currentPage.value = 0; // trigger initial animation safely
+    });
+  }
+
+  /// Navigate to next page or finish onboarding
   void nextPage() {
     if (currentPage.value < currentPages.length - 1) {
       pageController.nextPage(
@@ -68,13 +94,17 @@ class OnboardingController extends GetxController {
       );
     } else {
       Get.offAll(() => const Layout());
+      Cache.saveData(key: "onboarding", value: true);
     }
   }
 
+  /// Skip onboarding
   void skip() {
+    Cache.saveData(key: "onboarding", value: true);
     Get.offAll(() => const Layout());
   }
 
+  /// PageView onPageChanged callback
   void onPageChanged(int index) {
     currentPage.value = index;
   }
@@ -86,20 +116,7 @@ class OnboardingController extends GetxController {
   }
 }
 
-// Onboarding Data Model
-class OnboardingData {
-  final String title;
-  final String description;
-  final String image;
-
-  OnboardingData({
-    required this.title,
-    required this.description,
-    required this.image,
-  });
-}
-
-// Onboarding Screen
+/// Onboarding Screen
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -108,17 +125,21 @@ class OnboardingScreen extends StatelessWidget {
     final controller = Get.put(OnboardingController());
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: appColor,
       body: SafeArea(
         child: Obx(() {
-          // Set text direction based on language
+          // 💡 Fix: avoid RangeError by skipping build when currentPage = -1
+          if (controller.currentPage.value < 0) {
+            return const SizedBox(); // show nothing on first frame
+          }
+
           return Directionality(
             textDirection: TextDirection.ltr,
             child: Column(
               children: [
                 const SizedBox(height: 40),
 
-                // Page indicators at top
+                // Page indicators
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(
@@ -127,11 +148,12 @@ class OnboardingScreen extends StatelessWidget {
                       duration: const Duration(milliseconds: 300),
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       width: width * .3,
+
                       height: 8,
                       decoration: BoxDecoration(
                         color: controller.currentPage.value == index
-                            ? appColor
-                            : Colors.grey.shade300,
+                            ? Colors.white
+                            : const Color(0xff035b96),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -140,7 +162,7 @@ class OnboardingScreen extends StatelessWidget {
 
                 const SizedBox(height: 40),
 
-                // Main PageView with only images
+                // PageView with images
                 Expanded(
                   child: PageView.builder(
                     controller: controller.pageController,
@@ -154,12 +176,11 @@ class OnboardingScreen extends StatelessWidget {
                             controller.currentPages[index].image,
                             fit: BoxFit.contain,
                             errorBuilder: (context, error, stackTrace) {
-                              // Fallback if image not found
                               return Container(
                                 width: 250,
                                 height: 250,
-                                decoration: BoxDecoration(
-                                  color: appColor.withOpacity(0.1),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
@@ -176,7 +197,7 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
 
-                // Bottom sheet with text and buttons
+                // Bottom sheet
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -204,7 +225,6 @@ class OnboardingScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
                           fontSize: 24,
                           height: 1.6,
                         ),
@@ -220,7 +240,6 @@ class OnboardingScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
                           fontSize: 14,
                           height: 1.6,
                           color: Colors.grey.shade600,
@@ -229,10 +248,8 @@ class OnboardingScreen extends StatelessWidget {
 
                       const SizedBox(height: 30),
 
-                      // Skip and Next buttons
                       Row(
                         children: [
-                          // Skip button
                           if (controller.currentPage.value <
                               controller.currentPages.length - 1)
                             TextButton(
@@ -260,9 +277,7 @@ class OnboardingScreen extends StatelessWidget {
                                         ? "ابدأ الآن"
                                         : "Get Started")
                                   : (controller.isArabic ? "التالي" : "Next"),
-                              onPressed: () {
-                                controller.nextPage();
-                              },
+                              onPressed: controller.nextPage,
                             ),
                           ),
                         ],

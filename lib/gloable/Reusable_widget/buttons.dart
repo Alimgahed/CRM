@@ -47,7 +47,7 @@ class CustomButton extends StatelessWidget {
   final double borderRadius;
   final EdgeInsetsGeometry margin;
   final Gradient? gradient;
-    final Padding? padding;
+  final Padding? padding;
 
   final Color? backgroundColor;
   final Color textColor;
@@ -58,7 +58,7 @@ class CustomButton extends StatelessWidget {
     this.bordercolor = appColor,
     required this.text,
     required this.onPressed,
-    this.height = 54,
+    this.height = 45,
     this.padding,
     this.borderRadius = 10,
     this.margin = const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -72,7 +72,7 @@ class CustomButton extends StatelessWidget {
     return Container(
       margin: margin,
       height: height,
-      
+
       decoration: BoxDecoration(
         color: backgroundColor ?? appColor,
         borderRadius: BorderRadius.circular(borderRadius),
@@ -108,12 +108,18 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
 class ActionButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
   final Color color;
 
-  const ActionButton({super.key, required this.icon, required this.onTap, this.color = appColor});
+  const ActionButton({
+    super.key,
+    required this.icon,
+    required this.onTap,
+    this.color = appColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +136,5 @@ class ActionButton extends StatelessWidget {
     );
   }
 }
-
 
 /// A reusable PopupMenuButton widget that supports any number of items

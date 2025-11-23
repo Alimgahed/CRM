@@ -1,6 +1,7 @@
 import 'package:crm/my_widget/More_widget.dart/more.dart';
 import 'package:crm/view/%20Commisions/allCommisions.dart';
 import 'package:crm/view/%20Users/User_managment.dart';
+import 'package:crm/view/Auth/Login.dart';
 import 'package:crm/view/Developer/AllDeveloper.dart';
 import 'package:crm/view/Owners/allOwner.dart';
 import 'package:crm/view/Projects/Allprojects.dart';
@@ -104,6 +105,7 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.logout_outlined,
               text: 'Logout'.tr,
               onTap: () {
+                Get.to(() =>  Login());
                 // Handle tap
               },
             ),

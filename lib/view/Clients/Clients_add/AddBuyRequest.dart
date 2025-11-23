@@ -101,7 +101,6 @@ class Addbuyrequest extends StatelessWidget {
                   CustomTextFormField(
                     text: 'Number of bathrooms'.tr,
                     labelText: 'Number of bathrooms'.tr,
-                    allowOnlyDigits: true,
                     controller: controller.bathroomsController,
                   ),
 
@@ -111,7 +110,6 @@ class Addbuyrequest extends StatelessWidget {
                   CustomTextFormField(
                     text: 'Number of Rooms'.tr,
                     labelText: 'Number of Rooms'.tr,
-                    allowOnlyDigits: true,
                     controller: controller.roomsController,
                   ),
 
@@ -156,7 +154,6 @@ class Addbuyrequest extends StatelessWidget {
                   CustomTextFormField(
                     text: 'Floor'.tr,
                     labelText: 'Floor'.tr,
-                    allowOnlyDigits: true,
                     controller: controller.floorController,
                   ),
 
@@ -190,7 +187,6 @@ class Addbuyrequest extends StatelessWidget {
                   CustomTextFormField(
                     text: 'Land area'.tr,
                     labelText: 'Land area'.tr,
-                    allowOnlyDigits: true,
                     controller: controller.landAreaController,
                   ),
 
@@ -219,7 +215,6 @@ class Addbuyrequest extends StatelessWidget {
                   CustomTextFormField(
                     text: 'Price'.tr,
                     labelText: 'Price'.tr,
-                    allowOnlyDigits: true,
                     controller: controller.priceController,
                   ),
 

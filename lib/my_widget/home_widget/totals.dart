@@ -7,7 +7,7 @@ class TotalsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top:  8.0, right: 8 ,left:  8.0 ,bottom: 0),
+      padding: const EdgeInsets.only(top: 8.0, right: 8, left: 8.0, bottom: 0),
       child: Column(
         children: [
           Row(
@@ -26,7 +26,7 @@ class TotalsSection extends StatelessWidget {
                   title: "conversion rate".tr,
                   amount: "18",
                   ratio: 0.10,
-                  date:  "منذ الشهر السابق",
+                  date: "منذ الشهر السابق",
                 ),
               ),
             ],
@@ -65,7 +65,8 @@ class TotalCard extends StatelessWidget {
   final double ratio;
   final String date;
 
-  const TotalCard({super.key, 
+  const TotalCard({
+    super.key,
     required this.title,
     required this.amount,
     required this.ratio,
@@ -91,7 +92,7 @@ class TotalCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
@@ -104,71 +105,62 @@ class TotalCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Text(
-                amount,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+          const SizedBox(height: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: percentageColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            // Make the container take only the size of its child
+            constraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+            child: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // <-- Row only takes as much space as its children
+              mainAxisAlignment: MainAxisAlignment
+                  .center, // <-- center the children horizontally
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // <-- center vertically
+              children: [
+                Text(
+                  '${(ratio.abs() * 100).toStringAsFixed(1)}%',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: percentageColor,
+                  ),
                 ),
-              ),
                 const SizedBox(width: 5),
-                    Container(
-                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: percentageColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
+                Icon(
+                  isPositive ? Icons.arrow_upward : Icons.arrow_downward,
+                  size: 12,
+                  color: percentageColor,
                 ),
-                      child: Row(
-                        children: [
-                          Text(
-                            '${(ratio.abs() * 100).toStringAsFixed(1)}%',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: percentageColor,
-                            ),
-                          ),
-                          SizedBox(width: 5,),
-                            Icon(
-                       isPositive ? Icons.arrow_upward : Icons.arrow_downward,
-                       size: 12,
-                       color: percentageColor,
-                     ),
-                        ],
-                      ),
-                      
-                    ),
-                   
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 10),
-Row(
-  children: [
-    Text(
-      date,
-      style: const TextStyle(
-        fontSize: 10,
-        fontWeight: FontWeight.w400,
-        fontFamily: 'Alexandria',
-        height: 1.5,
-        letterSpacing: -0.15,
-        color: Color(0xFF60707D),
-      ),
-    ),
-    Spacer(),
-Container(    padding: EdgeInsets.all(4),
 
-  decoration: BoxDecoration(
-    color: Colors.blue,
-    borderRadius: BorderRadius.circular(10),
-),
-  child: Icon(Icons.arrow_forward,size: 16,color: Colors.white,))
-  ],
-),
+          Text(
+            amount,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            date,
+            style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Alexandria',
+              height: 1.5,
+              letterSpacing: -0.15,
+              color: Color(0xFF60707D),
+            ),
+          ),
         ],
       ),
     );

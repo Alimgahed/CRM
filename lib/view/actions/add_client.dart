@@ -1,6 +1,7 @@
+import 'package:crm/controller/Features/Country_code.dart';
 import 'package:crm/controller/actions/add_client.dart';
-import 'package:crm/gloable/Reusable_widget/fields.dart';
 import 'package:crm/gloable/Reusable_widget/buttons.dart';
+import 'package:crm/gloable/Reusable_widget/fields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +11,7 @@ class AddClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AddClientController(), permanent: false);
+    final countryController = Get.put(CountryController(), permanent: false);
 
     return SingleChildScrollView(
       child: Column(
@@ -69,10 +71,14 @@ class AddClient extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
 
-                CustomTextFormField(
-                  text: 'Phone'.tr,
+                CustomTextFormField.phone(
+                  hintText: 'Phone'.tr,
+                  labelAboveField:'Phone Number'.tr,
                   labelText: 'Enter Phone Number'.tr,
                   controller: controller.assignedToController,
+                  onSelectCountry: () {
+                    showCountrydialog();
+                  },
                 ),
                 const SizedBox(height: 10),
 
