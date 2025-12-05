@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -18,16 +18,28 @@ dependencies:
   intl: ^0.20.2
   dio: ^5.4.3+1
   get: ^4.6.6
+  flutter_svg: ^2.2.3
   file_picker: ^8.1.2
   table_calendar: ^3.1.2
   shared_preferences: ^2.5.3
   url_launcher: ^6.1.11
   fl_chart: ^1.1.1
+  flutter_screenutil: ^5.9.3
+
+  # JSON serialization
+  json_annotation: ^6.5.0
+  # Freezed
+  freezed_annotation: ^2.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+
+  # build_runner for code generation
+  build_runner: ^2.4.0
+  json_serializable: ^6.6.2
+  freezed: ^2.3.6+1
 
 flutter:
   uses-material-design: true
@@ -42,3 +54,12 @@ flutter:
     - family: MyFlutterApp
       fonts:
         - asset: lib/fonts/MyFlutterApp.ttf
+
+# flutter_native_splash configuration
+flutter_native_splash:
+  color: "#ffffff"                  # لون الخلفية
+  image: 'images/splash_screen.png' # مسار صورة السبلاتش
+  android: true
+  ios: true
+  android_gravity: fill
+  ios_content_mode: scale_to_fill

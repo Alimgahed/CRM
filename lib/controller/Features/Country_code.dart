@@ -39,7 +39,7 @@ class CountryController extends GetxController {
     Get.back();
   }
 
-  String get fullNumber => "${selectedCode.value}";
+  String get fullNumber => selectedCode.value;
   Widget prefixWidget(VoidCallback onTap) {
     return Obx(() {
       return GestureDetector(
