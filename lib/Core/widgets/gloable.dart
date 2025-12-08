@@ -1,6 +1,7 @@
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/controller/Features/ImageController.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 /// CustomTable now supports Widgets in cells and fixed styles.
@@ -236,7 +237,7 @@ class MediaGridItem extends StatelessWidget {
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
+                              loadingProgress.expectedTotalBytes!
                           : null,
                       strokeWidth: 2,
                     ),
@@ -365,22 +366,25 @@ class ReusableHeader extends StatelessWidget {
   Widget _buildContent() {
     // CASE 1 → Title mode (title + back arrow)
     if (child == null && title != null) {
-      return Row(
-        children: [
-          IconButton(
-            onPressed: onBack ?? () => Get.back(),
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            title!,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+      return Padding(
+        padding:  EdgeInsets.only(top: 30.0.h),
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: onBack ?? () => Get.back(),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
             ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Text(
+              title!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       );
     }
 

@@ -1,12 +1,13 @@
-import 'package:crm/features/more/ui/widgets/more.dart';
-import 'package:crm/features/commision/ui/screens/allCommisions.dart';
-import 'package:crm/features/users/ui/screens/User_managment.dart';
-import 'package:crm/features/auth/ui/screens/Login.dart';
-import 'package:crm/features/developers/ui/screens/AllDeveloper.dart';
-import 'package:crm/features/owners/ui/screens/allOwner.dart';
-import 'package:crm/features/Projects/ui/screens/Allprojects.dart';
-import 'package:crm/features/reports/ui/screens/ReportsHome.dart';
+import 'package:crm/Core/helpers/extesions.dart';
+import 'package:crm/Core/helpers/spacing.dart';
+import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/features/Units/ui/screens/AllUnit.dart';
+import 'package:crm/features/commision/ui/screens/allCommisions.dart';
+import 'package:crm/features/developers/ui/screens/AllDeveloper.dart';
+import 'package:crm/features/more/ui/widgets/more.dart';
+import 'package:crm/features/owners/ui/screens/allOwner.dart';
+import 'package:crm/features/reports/ui/screens/ReportsHome.dart';
+import 'package:crm/features/users/ui/screens/User_managment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,15 +17,15 @@ class MoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('More'.tr)),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            heightSpace(50),
             MoreWidget(
               icon: Icons.business_sharp,
               text: 'Projects'.tr,
               onTap: () {
-                Get.to(() => const Allprojects());
+                context.pushNamed(Routes.projects);
               },
             ),
             MoreWidget(
@@ -38,9 +39,7 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.engineering_outlined,
               text: 'Developers Companies'.tr,
               onTap: () {
-                Get.to(() => const AllDevelopers());
-
-                // Handle tap
+                context.pushNamed(Routes.allDevelopers);
               },
             ),
             MoreWidget(
@@ -105,11 +104,12 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.logout_outlined,
               text: 'Logout'.tr,
               onTap: () {
-                Get.to(() => Login());
+                // context.pushReplacementNamed(Routes.login);
+
+                // Get.to(() => Login());
                 // Handle tap
               },
             ),
-
             SizedBox(height: 90),
           ],
         ),

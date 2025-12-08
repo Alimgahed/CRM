@@ -76,7 +76,7 @@ class CustomTextFormField extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(8.0.h),
           decoration: BoxDecoration(
-            color: inputFieldColor,
+            color: fieldColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Obx(
@@ -95,6 +95,7 @@ class CustomTextFormField extends StatelessWidget {
               maxLength: maxLength,
               decoration: InputDecoration(
                 labelText: labelText,
+                hintStyle: TextStyles.size12(color: Colors.grey),
                 hintText: hintText,
                 border: InputBorder.none,
                 counterText: maxLength != null ? null : '',

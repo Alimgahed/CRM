@@ -1,60 +1,105 @@
-import 'package:crm/Core/widgets/Gloable_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crm/Core/helpers/spacing.dart';
+import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
-import 'package:crm/features/Projects/ui/screens/ProjectDetails.dart';
+import 'package:crm/features/Projects/data/model/project_response.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 class AllprojectWidget extends StatelessWidget {
-  const AllprojectWidget({super.key});
+  final ProjectResponse project;
 
-
-  // Reusable icon + text widget
- 
+  const AllprojectWidget({
+    super.key,
+    required this.project,
+  });
 
   @override
   Widget build(BuildContext context) {
     final textColor = secondaryTextColor;
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.w),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(8.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ==================== IMAGE ====================
             Container(
-              height: 190,
+              height: 190.h,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
               ),
-              child: const Center(child: Icon(Icons.business_sharp, size: 60)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.r),
+                child: (project.projectImages != null &&
+                        project.projectImages!.isNotEmpty &&
+                        project.projectImages!.first.imageUrl != null)
+                    ? CachedNetworkImage(
+                        imageUrl: project.projectImages!.first.imageUrl!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        placeholder: (context, url) => Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(
+                            width: double.infinity,
+                            height: 190.h,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.grey.shade300,
+                          child: Center(
+                            child: Icon(Icons.broken_image,
+                                size: 60.sp, color: Colors.grey),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        color: Colors.grey.shade300,
+                        child: Center(
+                          child: Icon(Icons.business_sharp, size: 60.sp),
+                        ),
+                      ),
+              ),
             ),
 
-            const SizedBox(height: 10),
+            heightSpace(10),
 
-            // Title
+            // ==================== TITLE ====================
             Text(
-              'مارفل بالمز - Marvel Palms',
-              style: titleStyle.copyWith(color: textColor),
+              '${project.projectName ?? ""} - ${project.projectNameEn ?? ""}',
+              style: titleStyle.copyWith(
+                color: textColor,
+                fontSize: 16.sp,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
 
-            const SizedBox(height: 10),
+            heightSpace(10),
 
-            // Location row
+            // ==================== LOCATION ====================
             Row(
               children: [
-                Icon(Icons.location_on_outlined, size: 15, color: textColor),
-                const SizedBox(width: 4),
+                Icon(Icons.location_on_outlined,
+                    size: 15.sp, color: textColor),
+                widthSpace(4),
                 Expanded(
                   child: Text(
-                    'كمبوند مارفل بالمز – التجمع الخامس، القاهرة الجديدة',
-                    style: smallStyle.copyWith(color: textColor),
+                    project.description ?? 'لا يوجد مكان محدد',
+                    style: smallStyle.copyWith(
+                      color: textColor,
+                      fontSize: 12.sp,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -62,38 +107,58 @@ class AllprojectWidget extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 10),
+            heightSpace(10),
 
-            // Info chips
+            // ==================== PRICE + AREA + COMPANY ====================
             Row(
               children: [
                 infoChip(
                   Icons.monetization_on_outlined,
-                  '1.2 - 6.3 مليون',
+                  _formatPriceRange(project.edaryPriceFrom, project.edaryPriceTo),
                   textColor,
                 ),
-                const SizedBox(width: 10),
+                widthSpace(10),
                 infoChip(
                   Icons.architecture_outlined,
-                  '60م² - 120م²',
+                  _formatAreaRange(project.sakanyPriceFrom, project.sakanyPriceTo),
                   textColor,
                 ),
-                const SizedBox(width: 10),
-                infoChip(Icons.business, 'أمكان', textColor),
+                widthSpace(10),
+                infoChip(Icons.business, 'الشركة', textColor),
               ],
             ),
+
+            heightSpace(10),
+
+            // ==================== BUTTON ====================
             Center(
               child: CustomButton(
-                height: 40,
+                height: 40.h,
                 text: 'عرض التفاصيل',
-                onPressed: () {
-                  Get.to(() => ProjectDetailsScreen());
-                },
+               onPressed: () {
+  Navigator.pushNamed(
+    context,
+    Routes.projectDetails,
+    arguments: project,
+  );
+}
+
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  // ==================== Helpers ====================
+  String _formatPriceRange(dynamic from, dynamic to) {
+    if (from == null || to == null) return 'غير متوفر';
+    return '${from.toString()} - ${to.toString()}';
+  }
+
+  String _formatAreaRange(dynamic from, dynamic to) {
+    if (from == null || to == null) return 'غير متوفر';
+    return '${from.toString()}م² - ${to.toString()}م²';
   }
 }

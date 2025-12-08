@@ -1,5 +1,5 @@
+import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/routing/app_router.dart';
-import 'package:crm/cache/cache.dart';
 import 'package:crm/crm.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +10,8 @@ double width = 0.0;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // must come first
-  await Cache.init();
+  setup();
+
   runApp(Crm(appRouter: AppRouter()));
 }
 

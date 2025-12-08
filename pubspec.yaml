@@ -23,13 +23,22 @@ dependencies:
   table_calendar: ^3.1.2
   shared_preferences: ^2.5.3
   url_launcher: ^6.1.11
+  cached_network_image: ^3.4.1
   fl_chart: ^1.1.1
   flutter_screenutil: ^5.9.3
 
   # JSON serialization
-  json_annotation: ^6.5.0
+  json_annotation: ^4.9.0
   # Freezed
   freezed_annotation: ^2.3.3
+  retrofit: ^4.9.1
+  retrofit_generator: ^9.7.0
+  bloc: ^9.1.0
+  get_it: ^9.2.0
+  flutter_bloc: ^9.1.1
+  flutter_secure_storage: ^9.2.4
+  shimmer: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -37,7 +46,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
   # build_runner for code generation
-  build_runner: ^2.4.0
+  build_runner: ^2.5.4
   json_serializable: ^6.6.2
   freezed: ^2.3.6+1
 

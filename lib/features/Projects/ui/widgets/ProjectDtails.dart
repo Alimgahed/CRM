@@ -1,330 +1,403 @@
-import 'package:crm/Core/widgets/Gloable_widget.dart';
-import 'package:crm/Core/widgets/gloable.dart';
+// =============================================================
+// 📄 project_details_screen.dart
+// =============================================================
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crm/Core/helpers/spacing.dart';
+import 'package:crm/features/Projects/data/model/project_response.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-/// Optimized Project Details Widget
-/// - Reduced widget rebuilds
-/// - Improved memory management
-/// - Better code organization
-class ProjectDetails extends StatelessWidget {
-  const ProjectDetails({super.key});
-
-  // ==================== Constants ====================
-  
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 
-  // ==================== Reusable Components ====================
 
-  /// Builds a key-value information row
-  
 
-  // ==================== Header Section ====================
-  Widget _buildHeader() {
-    return const Row(
-      children: [
-        Icon(Icons.business_outlined, size: 35),
-        SizedBox(width: itemSpacing),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Marvel Palms",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 3),
-            Text(
-              "Commercial Project",
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+// =============================================================
+// 🎯 MAIN SCREEN
+// =============================================================
 
-  // ==================== Details Section ====================
-  Widget _buildDetailsSection() {
-    return buildCard(
-      child: Column(
-        children: [
-          buildInfoRow("Developer", "إمكان"),
-          buildInfoRow("Project Code", "MARV-0032"),
-          buildInfoRow("Agent Name", "محمد أحمد"),
-          buildInfoRow("Agent Phone", "+201234567890"),
-          buildInfoRow("Country", "مصر"),
-          buildInfoRow("Governorate", "القاهرة الجديدة"),
-          buildInfoRow(
-            "Project Link",
-            "مارفل بالمز (Marvel Palms)",
-            isLink: true,
-          ),
-          buildInfoRow("Map Link", "مارفل بالمز (Marvel Palms)", isLink: true),
-          buildInfoRow("Min Price", "١٬٢٠٠٬٠٠٠ جنيه"),
-          buildInfoRow("Max Price", "٦٬٣٠٠٬٠٠٠ جنيه"),
-          buildInfoRow("Min Area", "٦٠ م²"),
-          buildInfoRow("Max Area", "١٢٠ م²"),
-          buildInfoRow(
-            "Project Description",
-            "مشروع تجاري مميز يقع في قلب التجمع الخامس.",
-          ),
-        ],
-      ),
-    );
-  }
 
-  // ==================== Payment Plan Section ====================
-  Widget _buildPaymentPlanSection() {
-    return buildCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildSectionTitle("Payment Plan"),
-          const SizedBox(height: 8),
-          ExpansionTile(
-            iconColor: Colors.black,
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: EdgeInsets.zero,
-            title: const _PaymentPlanHeader(),
-            children: [
-              buildInfoRow("Spaces (from–to)", "٩٠ - ٢٠٠ م²"),
-              buildInfoRow("Price per meter", "٥٬٠٠٠ - ٨٬٠٠٠ جنيه"),
-              buildInfoRow("Installment Years", "٥ سنوات"),
-              buildInfoRow("Down Payment", "٢٥٪"),
-              buildInfoRow(
-                "Plan Description",
-                "خطة الاختيار الذكي تشمل ٢٥٪ مقدم وأقساط ربع سنوية لمدة ٥ سنوات. يوجد خصم ٦٪ للكاش.",
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildMediaSection(List<String> media) { 
-    return buildCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildSectionTitle('Images & Videos'),
-          const SizedBox(height: itemSpacing),
-          _MediaGrid(media: media),
-        ],
-      ),
-    );
-  }
+// =============================================================
+// 🎯 PROJECT HEADER WIDGET
+// =============================================================
+class ProjectHeader extends StatelessWidget {
+  final ProjectResponse project;
 
-  // ==================== Attachments Section ====================
-  Widget _buildAttachmentsSection() {
-    return buildCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildSectionTitle('Files and attachments'),
-          const SizedBox(height: itemSpacing),
-          const _AttachmentItem(
-            fileName: "Project_Brochure.pdf",
-            fileType: FileType.pdf,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ==================== Main Build ====================
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(standardPadding),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          const SizedBox(height: 12),
-          _buildDetailsSection(),
-          const SizedBox(height: itemSpacing),
-          _buildPaymentPlanSection(),
-          const SizedBox(height: itemSpacing),
-          _buildMediaSection([
-            "https://picsum.photos/200/300",
-            "https://picsum.photos/200/301",
-            "video.mp4",
-            "https://picsum.photos/200/302",
-            "https://picsum.photos/200/303",
-            "https://picsum.photos/200/304",
-            "https://picsum.photos/200/305",
-            "https://picsum.photos/200/306",
-            "https://picsum.photos/200/307",
-          ]),
-          const SizedBox(height: itemSpacing),
-          _buildAttachmentsSection(),
-        ],
-      ),
-    );
-  }
-}
-
-// ==================== Extracted Widgets ====================
-
-/// Payment Plan Header - extracted to const for performance
-class _PaymentPlanHeader extends StatelessWidget {
-  const _PaymentPlanHeader();
+  const ProjectHeader({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Icon(Icons.payment_outlined),
-        SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Smart Choice Plan",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 4),
-            Text(
-              "13 December 2025",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-/// Media Grid - optimized with caching and lazy loading
-class _MediaGrid extends StatelessWidget {
-  final List<String> media;
-
-  const _MediaGrid({required this.media});
-
-  bool _isVideo(String url) => url.toLowerCase().endsWith(".mp4");
-
-  void _handleMediaTap(BuildContext context, String url, int index) {
-    if (_isVideo(url)) {
-    } else {
-      Get.to(
-        () => FullscreenImageViewer(
-          images: media.where((m) => !_isVideo(m)).toList(),
-          initialIndex: media.indexOf(url),
-        ),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 6,
-        mainAxisSpacing: 6,
-      ),
-      itemCount: media.length,
-      itemBuilder: (context, index) {
-        return MediaGridItem(
-          url: media[index],
-          isVideo: _isVideo(media[index]),
-          onTap: () => _handleMediaTap(context, media[index], index),
-        );
-      },
-    );
-  }
-}
-
-/// Individual Media Grid Item - optimized with const constructor
-
-/// File type enum for better type safety
-enum FileType {
-  pdf,
-  doc,
-  xls,
-  image,
-  other;
-
-  IconData get icon {
-    switch (this) {
-      case FileType.pdf:
-        return Icons.picture_as_pdf;
-      case FileType.doc:
-        return Icons.description;
-      case FileType.xls:
-        return Icons.table_chart;
-      case FileType.image:
-        return Icons.image;
-      case FileType.other:
-        return Icons.insert_drive_file;
-    }
-  }
-  
-  Color get color {
-    switch (this) {
-      case FileType.pdf:
-        return Colors.red;
-      case FileType.doc:
-        return Colors.blue;
-      case FileType.xls:
-        return Colors.green;
-      case FileType.image:
-        return Colors.purple;
-      case FileType.other:
-        return Colors.grey;
-    }
-  }
-}
-
-class _AttachmentItem extends StatelessWidget {
-  final String fileName;
-  final FileType fileType;
-
-  const _AttachmentItem({required this.fileName, required this.fileType});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Icon(fileType.icon, color: fileType.color, size: 28),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                fileName,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+    return CardContainer(
+      child: Row(
+        children: [
+          Icon(Icons.business_outlined, size: 36.sp, color: Colors.blue),
+          widthSpace(12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  project.projectName ?? "No Name",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                overflow: TextOverflow.ellipsis,
+                if (project.projectNameEn?.isNotEmpty ?? false) ...[
+                  heightSpace(4),
+                  Text(
+                    project.projectNameEn!,
+                    style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 PROJECT DETAILS CARD WIDGET
+// =============================================================
+class ProjectDetailsCard extends StatelessWidget {
+  final ProjectResponse project;
+
+  const ProjectDetailsCard({super.key, required this.project});
+
+  @override
+  Widget build(BuildContext context) {
+    return CardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionTitle(title: "Project Information"),
+          InfoRow(label: "Description", value: project.description),
+          InfoRow(label: "Units", value: project.noUnits?.toString()),
+          InfoRow(label: "Buildings", value: project.noBuildings?.toString()),
+          InfoRow(label: "Total Area", value: project.totalArea?.toString()),
+          InfoRow(label: "License No", value: project.licenseNo?.toString()),
+          InfoRow(
+            label: "License Date",
+            value: project.licenseDate?.toString().split(" ").first,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 PROJECT PRICE SECTION WIDGET
+// =============================================================
+class ProjectPriceSection extends StatelessWidget {
+  final ProjectResponse project;
+
+  const ProjectPriceSection({super.key, required this.project});
+
+  @override
+  Widget build(BuildContext context) {
+    final priceCategories = [
+      PriceCategory("Edary", project.edaryPriceFrom, project.edaryPriceTo),
+      PriceCategory("Sakany", project.sakanyPriceFrom, project.sakanyPriceTo),
+      PriceCategory("Medical", project.medicalPriceFrom, project.medicalPriceTo),
+      PriceCategory("Commercial", project.commercialPriceFrom, project.commercialPriceTo),
+    ];
+
+    final validPrices = priceCategories.where((p) => p.hasValue).toList();
+
+    if (validPrices.isEmpty) return const SizedBox.shrink();
+
+    return CardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionTitle(title: "Price Ranges"),
+          ...validPrices.map((price) => PriceTile(category: price)),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 PRICE CATEGORY MODEL
+// =============================================================
+class PriceCategory {
+  final String title;
+  final dynamic from;
+  final dynamic to;
+
+  PriceCategory(this.title, this.from, this.to);
+
+  bool get hasValue => from != null || to != null;
+
+  String get displayValue => "${from ?? '—'} - ${to ?? '—'}";
+}
+
+// =============================================================
+// 🎯 PRICE TILE WIDGET
+// =============================================================
+class PriceTile extends StatelessWidget {
+  final PriceCategory category;
+
+  const PriceTile({super.key, required this.category});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h),
+      child: InfoRow(label: category.title, value: category.displayValue),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 PROJECT MEDIA SECTION WIDGET
+// =============================================================
+class ProjectMediaSection extends StatelessWidget {
+  final ProjectResponse project;
+
+  const ProjectMediaSection({super.key, required this.project});
+
+  List<String> get _mediaUrls => [
+        ...?project.projectImages?.map((e) => e.imageUrl ?? "").where((url) => url.isNotEmpty),
+        ...?project.youtubeVideos?.map((e) => e.link ?? "").where((url) => url.isNotEmpty),
+      ];
+
+  @override
+  Widget build(BuildContext context) {
+    final media = _mediaUrls;
+    if (media.isEmpty) return const SizedBox.shrink();
+
+    return CardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionTitle(title: "Media"),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: media.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 6.w,
+              mainAxisSpacing: 6.h,
+            ),
+            itemBuilder: (context, index) => MediaTile(url: media[index]),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 MEDIA TILE WIDGET
+// =============================================================
+class MediaTile extends StatelessWidget {
+  final String url;
+
+  const MediaTile({super.key, required this.url});
+
+  bool get _isVideo => url.toLowerCase().contains('youtube') || 
+                       url.toLowerCase().endsWith('.mp4');
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // TODO: Implement media viewer
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.r),
+        child: _isVideo ? _buildVideoThumbnail() : _buildImageThumbnail(),
+      ),
+    );
+  }
+
+  Widget _buildVideoThumbnail() {
+    return Container(
+      color: Colors.black54,
+      child: Icon(
+        Icons.play_circle_fill,
+        color: Colors.white,
+        size: 40.sp,
+      ),
+    );
+  }
+
+  Widget _buildImageThumbnail() {
+    return CachedNetworkImage(
+      imageUrl: url,
+      fit: BoxFit.cover,
+      placeholder: (_, __) => Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        child: Container(color: Colors.grey),
+      ),
+      errorWidget: (_, __, ___) => Container(
+        color: Colors.grey.shade300,
+        child: Icon(Icons.broken_image, color: Colors.grey.shade600),
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 PROJECT ATTACHMENTS SECTION WIDGET
+// =============================================================
+class ProjectAttachmentsSection extends StatelessWidget {
+  final ProjectResponse project;
+
+  const ProjectAttachmentsSection({super.key, required this.project});
+
+  @override
+  Widget build(BuildContext context) {
+    final attachments = project.attachments;
+    if (attachments == null || attachments.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return CardContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SectionTitle(title: "Attachments"),
+          ...attachments.map((attachment) => AttachmentTile(attachment: attachment)),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 ATTACHMENT TILE WIDGET
+// =============================================================
+class AttachmentTile extends StatelessWidget {
+  final dynamic attachment;
+
+  const AttachmentTile({super.key, required this.attachment});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.all(10.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.r),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.insert_drive_file, color: Colors.blue, size: 28.sp),
+          widthSpace(10),
+          Expanded(
+            child: Text(
+              attachment.fileName ?? "Unnamed File",
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 13.sp),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.download, size: 22.sp),
+            onPressed: () {
+              // TODO: Implement download functionality
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// =============================================================
+// 🎯 REUSABLE WIDGETS
+// =============================================================
+
+class CardContainer extends StatelessWidget {
+  final Widget child;
+
+  const CardContainer({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+}
+
+class InfoRow extends StatelessWidget {
+  final String label;
+  final String? value;
+
+  const InfoRow({super.key, required this.label, this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
               ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.download_outlined),
-              tooltip: 'Download',
+          ),
+          widthSpace(8),
+          Expanded(
+            child: Text(
+              value ?? "—",
+              style: TextStyle(
+                fontSize: 13.sp,
+                color: Colors.grey[700],
+              ),
+              textAlign: TextAlign.end,
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.visibility_outlined),
-              tooltip: 'View',
-            ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 15.sp,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
         ),
       ),
     );

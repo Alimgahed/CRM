@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            ReusableHeader(height: 160, child: buildHeader(context)),
+            ReusableHeader(height: 140, child: buildHeader(context)),
             SizedBox(
               height: 300, // Space for the overlapping search bar
               child: TotalsSection(),

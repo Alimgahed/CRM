@@ -1,88 +1,144 @@
-import 'package:crm/Core/widgets/Gloable_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
+import 'package:crm/features/developers/data/models/developers_response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// ignore: camel_case_types
-class Alldeveloper_widget extends StatelessWidget {
-  const Alldeveloper_widget({super.key});
+import 'package:shimmer/shimmer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class AllDeveloperWidget extends StatelessWidget {
+  final DevelopmentCompany developer;
+
+  const AllDeveloperWidget({super.key, required this.developer});
+
   @override
   Widget build(BuildContext context) {
     final textColor = secondaryTextColor;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.w),
       child: Container(
+        width: screenWidth,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              blurRadius: 6.r,
+              offset: Offset(0, 3.h),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(8.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 190,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Center(
-                child: Icon(Icons.engineering_outlined, size: 60),
-              ),
+            // Company logo - full width
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20.r),
+              child: developer.companyLogoUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: developer.companyLogoUrl!,
+                      width: screenWidth - 16.w, // responsive width
+                      height: 190.h, // responsive height
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        child: Container(
+                          width: screenWidth - 16.w,
+                          height: 190.h,
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.engineering_outlined, size: 60.sp),
+                    )
+                  : Container(
+                      width: screenWidth - 16.w,
+                      height: 190.h,
+                      color: Colors.grey.shade300,
+                      child: Center(
+                        child: Icon(Icons.engineering_outlined, size: 60.sp),
+                      ),
+                    ),
             ),
 
-            const SizedBox(height: 10),
+            heightSpace(10.h),
 
-            // Title
+            // Company name
             Text(
-              'طلعت مصطفى - Talaat Moustafa',
-              style: titleStyle.copyWith(color: textColor),
+              '${developer.companyName ?? "N/A"} - ${developer.companyNameEn ?? ""}',
+              style: titleStyle.copyWith(
+                color: textColor,
+                fontSize: 18.sp, // responsive font
+              ),
             ),
 
-            const SizedBox(height: 10),
+            heightSpace(10.h),
 
-            // Location row
+            // Sales info
             Row(
               children: [
-                Icon(Icons.calendar_month_outlined, size: 15, color: textColor),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    '١٢/١٠/٢٠٠٥ تاريخ الانشاء',
-                    style: smallStyle.copyWith(color: textColor),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                if (developer.companySalesName != null)
+                  infoChip(
+                      Icons.person_outline,
+                      developer.companySalesName!,
+                      textColor,
+                     ), // responsive font
+                if (developer.companySalesPhone != null) ...[
+                  widthSpace(10.w),
+                  infoChip(Icons.call_outlined, developer.companySalesPhone!,
+                      textColor,
+                      ),
+                ],
               ],
             ),
 
-            const SizedBox(height: 10),
+            heightSpace(5.h),
 
-            // Info chips
+            // Accountant info
             Row(
               children: [
-                infoChip(Icons.location_city_outlined, '١٢ مشروع', textColor),
-                const SizedBox(width: 10),
-                infoChip(Icons.person_outline, 'محمد عبدالعزيز', textColor),
-                const SizedBox(width: 10),
-                infoChip(Icons.call_outlined, '0123456789', textColor),
+                if (developer.companyAccountantName != null)
+                  infoChip(Icons.person_outline,
+                      developer.companyAccountantName!, textColor,
+                      ),
+                if (developer.companyAccountantPhone != null) ...[
+                  widthSpace(10.w),
+                  infoChip(Icons.call_outlined,
+                      developer.companyAccountantPhone!, textColor,
+                      ),
+                ],
               ],
             ),
+
+            heightSpace(10.h),
+
+            // Buttons
             Row(
               children: [
                 Expanded(
                   child: CustomButton(
-                    height: 45,
+                    height: 45.h, // responsive button height
                     text: 'Edit'.tr,
-                    onPressed: () {},
+                    onPressed: () {
+                      // handle edit
+                    },
                   ),
                 ),
+                widthSpace(10.w),
                 ActionButton(
                   icon: Icons.delete_outline,
                   color: Colors.red,
-                  onTap: () {},
+                  onTap: () {
+                    // handle delete
+                  },
                 ),
               ],
             ),

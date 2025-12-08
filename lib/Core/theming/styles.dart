@@ -24,6 +24,16 @@ class TextStyles {
     );
   }
 
+  static TextStyle size14(
+      {FontWeight fontWeight = FontWeight.normal,
+      Color color = Colors.black87}) {
+    return TextStyle(
+      fontSize: 14.0,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
   static TextStyle size12(
       {FontWeight fontWeight = FontWeight.normal,
       Color color = secondaryTextColor}) {

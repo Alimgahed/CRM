@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const double standardPadding = 12.0;
 const double itemSpacing = 10.0;
 const double borderRadius = 10.0;
 
-const TextStyle titleStyle = TextStyle(
+// Responsive text styles
+TextStyle titleStyle = TextStyle(
   fontWeight: FontWeight.w400,
-  fontSize: 16,
+  fontSize: 16.sp,
   height: 1.5,
   letterSpacing: -1,
 );
 
-const TextStyle smallStyle = TextStyle(
+TextStyle smallStyle = TextStyle(
   fontWeight: FontWeight.w400,
-  fontSize: 10,
+  fontSize: 10.sp,
   height: 1.5,
 );
 
-// Precomputed colors avoid repeated shade computations
 const Color _grey100 = Color(0xFFF5F5F5);
 const Color _grey300 = Color(0xFFE0E0E0);
 
 Widget infoChip(IconData icon, String text, Color color) {
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-    decoration: const BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(10.r)),
       color: _grey100,
     ),
     child: Row(
       children: [
-        Icon(icon, size: 15, color: color),
-        const SizedBox(width: 5),
+        Icon(icon, size: 15.sp, color: color),
+        SizedBox(width: 5.w),
         Text(text, style: smallStyle.copyWith(color: color)),
       ],
     ),
@@ -41,7 +42,7 @@ Widget infoChip(IconData icon, String text, Color color) {
 
 Widget buildInfoRow(String key, String value, {bool isLink = false}) {
   final TextStyle valueStyle = TextStyle(
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: isLink ? Colors.blue : Colors.black,
     decoration: isLink ? TextDecoration.underline : null,
@@ -49,21 +50,21 @@ Widget buildInfoRow(String key, String value, {bool isLink = false}) {
   );
 
   return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 6),
+    padding: EdgeInsets.symmetric(vertical: 6.h),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Text(
             key.tr,
-            style: const TextStyle(
-              fontSize: 12,
+            style: TextStyle(
+              fontSize: 12.sp,
               fontWeight: FontWeight.w500,
               color: Color(0xFF616161),
             ),
           ),
         ),
-        const SizedBox(width: itemSpacing),
+        SizedBox(width: itemSpacing.w),
         Expanded(
           flex: 2,
           child: Text(value, textAlign: TextAlign.end, style: valueStyle),
@@ -76,9 +77,9 @@ Widget buildInfoRow(String key, String value, {bool isLink = false}) {
 /// Builds a styled container wrapper
 Widget buildCard({required Widget child}) {
   return Container(
-    padding: const EdgeInsets.all(standardPadding),
-    decoration: const BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+    padding: EdgeInsets.all(standardPadding.w),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(borderRadius.r)),
       border: Border.fromBorderSide(BorderSide(color: _grey300)),
     ),
     child: child,
@@ -89,7 +90,7 @@ Widget buildCard({required Widget child}) {
 Widget buildSectionTitle(String title) {
   return Text(
     title.tr,
-    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
   );
 }
 
@@ -147,19 +148,19 @@ class AttachmentItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.w),
         child: Row(
           children: [
-            Icon(fileType.icon, color: fileType.color, size: 28),
-            const SizedBox(width: 10),
+            Icon(fileType.icon, color: fileType.color, size: 28.sp),
+            SizedBox(width: 10.w),
             Expanded(
               child: Text(
                 fileName,
-                style: const TextStyle(
-                  fontSize: 13,
+                style: TextStyle(
+                  fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -167,12 +168,12 @@ class AttachmentItem extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.download_outlined),
+              icon: Icon(Icons.download_outlined, size: 20.sp),
               tooltip: 'Download',
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(Icons.visibility_outlined),
+              icon: Icon(Icons.visibility_outlined, size: 20.sp),
               tooltip: 'View',
             ),
           ],
