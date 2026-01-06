@@ -41,19 +41,19 @@ class _ApiService implements ApiService {
     try {
       _value = LoginResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options,_result);
       rethrow;
     }
     return _value;
   }
 
   @override
-  Future<List<ProjectResponse>> getAllProjects() async {
+  Future<List<Project>> getAllProjects() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ProjectResponse>>(
+    final _options = _setStreamType<List<Project>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -64,27 +64,25 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ProjectResponse> _value;
+    late List<Project> _value;
     try {
       _value = _result.data!
-          .map(
-            (dynamic i) => ProjectResponse.fromJson(i as Map<String, dynamic>),
-          )
+          .map((dynamic i) => Project.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options,_result);
       rethrow;
     }
     return _value;
   }
 
   @override
-  Future<List<DevelopmentCompany>> getAllDevelopmentCompanies() async {
+  Future<List<DevCompany>> getAllDevelopmentCompanies() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<DevelopmentCompany>>(
+    final _options = _setStreamType<List<DevCompany>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -95,16 +93,13 @@ class _ApiService implements ApiService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<DevelopmentCompany> _value;
+    late List<DevCompany> _value;
     try {
       _value = _result.data!
-          .map(
-            (dynamic i) =>
-                DevelopmentCompany.fromJson(i as Map<String, dynamic>),
-          )
+          .map((dynamic i) => DevCompany.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options, _result);
+      errorLogger?.logError(e, s, _options,_result);
       rethrow;
     }
     return _value;

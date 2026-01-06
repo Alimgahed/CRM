@@ -9,7 +9,7 @@ class ProjectsRepo {
 
   ProjectsRepo({required this.apiService});
 
-  Future<ApiResult<List<ProjectResponse>>> getAllProjects() async {
+  Future<ApiResult<List<Project>>> getAllProjects() async {
     try {
       final response = await apiService.getAllProjects();
       return ApiResult.success(response);

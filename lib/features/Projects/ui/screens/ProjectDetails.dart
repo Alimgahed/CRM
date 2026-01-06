@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProjectDetailsScreen extends StatelessWidget {
-  final ProjectResponse project;
+  final Project project;
 
   const ProjectDetailsScreen({super.key, required this.project});
 
@@ -13,7 +13,7 @@ class ProjectDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(project.projectName ?? "Project Details"),
+        title: Text(project.projectName),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(12.w),

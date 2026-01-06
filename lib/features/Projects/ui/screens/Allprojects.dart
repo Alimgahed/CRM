@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:crm/Core/widgets/gloable.dart';
 import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/Projects/logic/cubit/project_states.dart';
 import 'package:crm/features/Projects/ui/widgets/allProject.dart';
 import 'package:crm/features/Projects/ui/widgets/all_project_loadding.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class Allprojects extends StatelessWidget {
   const Allprojects({super.key});
@@ -30,9 +30,8 @@ class Allprojects extends StatelessWidget {
               builder: (context, state) {
                 return state.when(
                   initial: () => const Center(child: Text("No Data")),
-                  // <-- بدل CircularProgressIndicator نستخدم Shimmer
                   loading: () => ListView.builder(
-                    itemCount: 5, // عدد العناصر التي يظهر فيها Shimmer
+                    itemCount: 5,
                     itemBuilder: (_, __) => const AllProjectShimmer(),
                   ),
                   loaded: (projects) => ListView.builder(

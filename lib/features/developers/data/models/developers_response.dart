@@ -1,57 +1,38 @@
+import 'package:crm/features/Projects/data/model/project_response.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'developers_response.g.dart';
-@JsonSerializable(explicitToJson: true)
-class DevelopmentCompany {
-  @JsonKey(name: "ID")
-  int? id;
+@JsonSerializable()
+class DevCompany {
+  final String devCompanyId;
+  final String companyNameAr;
+  final String companyNameEn;
+  final String contactPerson;
+  final String contactNumber;
+  final String? logoUrl;
+  final bool isActive;
+  final bool isDeleted;
+  final String createdAt;
+  final String? updatedAt;
+  final String companyId;
 
-  @JsonKey(name: "COMPANY_NAME")
-  String? companyName;
+  final List<Project>? projects;
 
-  @JsonKey(name: "COMPANY_NAME_EN")
-  String? companyNameEn;
-
-  @JsonKey(name: "COMPANY_SALES_NAME")
-  String? companySalesName;
-
-  @JsonKey(name: "COMPANY_SALES_PHONE")
-  String? companySalesPhone;
-
-  @JsonKey(name: "COMPANY_ACCOUNTANT_NAME")
-  String? companyAccountantName;
-
-  @JsonKey(name: "COMPANY_ACCOUNTANT_PHONE")
-  String? companyAccountantPhone;
-
-  @JsonKey(name: "COMPANY_COMMISSION")
-  dynamic companyCommission;
-
-  @JsonKey(name: "COMPANY_INCENTIVE")
-  dynamic companyIncentive;
-
-  @JsonKey(name: "COMPANY_LOGO_URL")
-  String? companyLogoUrl;
-
-  @JsonKey(name: "COMPANY_LOGO_BASE")
-  String? companyLogoBase;
-
-  DevelopmentCompany({
-    this.id,
-    this.companyName,
-    this.companyNameEn,
-    this.companySalesName,
-    this.companySalesPhone,
-    this.companyAccountantName,
-    this.companyAccountantPhone,
-    this.companyCommission,
-    this.companyIncentive,
-    this.companyLogoUrl,
-    this.companyLogoBase,
+  DevCompany({
+    required this.devCompanyId,
+    required this.companyNameAr,
+    required this.companyNameEn,
+    required this.contactPerson,
+    required this.contactNumber,
+    this.logoUrl,
+    required this.isActive,
+    required this.isDeleted,
+    required this.createdAt,
+    this.updatedAt,
+    required this.companyId,
+    this.projects,
   });
 
-  factory DevelopmentCompany.fromJson(Map<String, dynamic> json) =>
-      _$DevelopmentCompanyFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DevelopmentCompanyToJson(this);
+  factory DevCompany.fromJson(Map<String, dynamic> json) =>
+      _$DevCompanyFromJson(json);
+  Map<String, dynamic> toJson() => _$DevCompanyToJson(this);
 }

@@ -1,7 +1,13 @@
-import 'package:crm/features/home/logic/layout.dart';
+import 'package:crm/features/calender/screens/ui/Calender.dart';
+import 'package:crm/features/clients/ui/screens/ClientsScreen.dart';
+import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
+import 'package:crm/features/home/logic/cubit/layout_states.dart';
+import 'package:crm/features/home/ui/screens/home.dart';
 import 'package:crm/features/home/ui/widgets/layout_widget.dart';
+import 'package:crm/features/more/ui/screens/More.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Layout extends StatelessWidget {
   const Layout({super.key});
@@ -9,35 +15,42 @@ class Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
+    final cubit = context.read<LayoutCubit>();
 
-    return GetBuilder<LayoutController>(
-      init: LayoutController(),
-      builder: (controller) {
+    // Provide screens here (works only once)
+    cubit.setScreens([
+      Home(),
+      ClientsScreen(),
+      Calendar(),
+      MoreScreen(),
+    ]);
+
+    return BlocBuilder<LayoutCubit, LayoutState>(
+      builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.transparent,
           extendBody: true,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
           bottomNavigationBar: SizedBox(
             width: width,
             height: 80,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // Background custom painter
-                CustomPaint(size: Size(width, 80), painter: BNBCustomPainter()),
+                CustomPaint(
+                  size: Size(width, 80),
+                  painter: BNBCustomPainter(),
+                ),
 
-                // Center FAB
                 Center(heightFactor: 0.6, child: CenterFAB()),
 
-                // Bottom Nav Items
                 SizedBox(
                   width: width,
                   height: 80,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Left side icons
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -45,21 +58,21 @@ class Layout extends StatelessWidget {
                             BottomNavBarItem(
                               icon: Icons.home_outlined,
                               label: 'Home'.tr,
-                              isSelected: controller.currentIndex == 0,
-                              onTap: () => controller.change(0),
+                              isSelected: cubit.currentIndex == 0,
+                              onTap: () => cubit.change(0),
                             ),
                             BottomNavBarItem(
                               icon: Icons.people_outline,
                               label: 'Clients'.tr,
-                              isSelected: controller.currentIndex == 1,
-                              onTap: () => controller.change(1),
+                              isSelected: cubit.currentIndex == 1,
+                              onTap: () => cubit.change(1),
                             ),
                           ],
                         ),
                       ),
 
-                      const SizedBox(width: 80), // Space for center FAB
-                      // Right side icons
+                      const SizedBox(width: 80),
+
                       Expanded(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -67,14 +80,14 @@ class Layout extends StatelessWidget {
                             BottomNavBarItem(
                               icon: Icons.calendar_month_outlined,
                               label: 'Calendar'.tr,
-                              isSelected: controller.currentIndex == 2,
-                              onTap: () => controller.change(2),
+                              isSelected: cubit.currentIndex == 2,
+                              onTap: () => cubit.change(2),
                             ),
                             BottomNavBarItem(
                               icon: Icons.more_horiz_outlined,
                               label: 'More'.tr,
-                              isSelected: controller.currentIndex == 3,
-                              onTap: () => controller.change(3),
+                              isSelected: cubit.currentIndex == 3,
+                              onTap: () => cubit.change(3),
                             ),
                           ],
                         ),
@@ -85,7 +98,8 @@ class Layout extends StatelessWidget {
               ],
             ),
           ),
-          body: controller.screens[controller.currentIndex],
+
+          body: cubit.screens[cubit.currentIndex],
         );
       },
     );

@@ -18,9 +18,9 @@ abstract class ApiService {
   );
 
   @GET(ApiConstants.allprojects)
-  Future<List<ProjectResponse>> getAllProjects();
+  Future<List<Project>> getAllProjects();
 
   @GET(ApiConstants.getAllDevelopmentCompanies)
-  Future<List<DevelopmentCompany>> getAllDevelopmentCompanies();
+  Future<List<DevCompany>> getAllDevelopmentCompanies();
 }
 

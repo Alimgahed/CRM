@@ -10,139 +10,115 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AllDeveloperWidget extends StatelessWidget {
-  final DevelopmentCompany developer;
+  final DevCompany developer;
 
   const AllDeveloperWidget({super.key, required this.developer});
 
   @override
   Widget build(BuildContext context) {
-    final textColor = secondaryTextColor;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Padding(
       padding: EdgeInsets.all(8.w),
       child: Container(
-        width: screenWidth,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade200,
-              blurRadius: 6.r,
-              offset: Offset(0, 3.h),
+              color: Colors.grey.shade300.withOpacity(0.4),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
           ],
         ),
-        padding: EdgeInsets.all(8.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Company logo - full width
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.r),
-              child: developer.companyLogoUrl != null
-                  ? CachedNetworkImage(
-                      imageUrl: developer.companyLogoUrl!,
-                      width: screenWidth - 16.w, // responsive width
-                      height: 190.h, // responsive height
-                      fit: BoxFit.contain,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          width: screenWidth - 16.w,
-                          height: 190.h,
-                          color: Colors.grey.shade300,
+        child: Padding(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /* --------------------------- Company Logo --------------------------- */
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12.r),
+                child: developer.logoUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: developer.logoUrl!,
+                        width: screenWidth,
+                        height: 180.h,
+                        fit: BoxFit.contain,
+                        placeholder: (_, __) => Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(
+                            height: 180.h,
+                            color: Colors.grey.shade300,
+                          ),
                         ),
+                        errorWidget: (_, __, ___) =>
+                            Icon(Icons.business, size: 60.sp),
+                      )
+                    : Container(
+                        height: 180.h,
+                        width: screenWidth,
+                        color: Colors.grey.shade300,
+                        child: Icon(Icons.business, size: 60.sp),
                       ),
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.engineering_outlined, size: 60.sp),
-                    )
-                  : Container(
-                      width: screenWidth - 16.w,
-                      height: 190.h,
-                      color: Colors.grey.shade300,
-                      child: Center(
-                        child: Icon(Icons.engineering_outlined, size: 60.sp),
-                      ),
-                    ),
-            ),
-
-            heightSpace(10.h),
-
-            // Company name
-            Text(
-              '${developer.companyName ?? "N/A"} - ${developer.companyNameEn ?? ""}',
-              style: titleStyle.copyWith(
-                color: textColor,
-                fontSize: 18.sp, // responsive font
               ),
-            ),
 
-            heightSpace(10.h),
+              heightSpace(12),
 
-            // Sales info
-            Row(
-              children: [
-                if (developer.companySalesName != null)
-                  infoChip(
-                      Icons.person_outline,
-                      developer.companySalesName!,
-                      textColor,
-                     ), // responsive font
-                if (developer.companySalesPhone != null) ...[
-                  widthSpace(10.w),
-                  infoChip(Icons.call_outlined, developer.companySalesPhone!,
-                      textColor,
-                      ),
-                ],
-              ],
-            ),
+              /* ---------------------------- Company Name --------------------------- */
+              Text(
+                "${developer.companyNameAr} - ${developer.companyNameEn}",
+                style: titleStyle.copyWith(
+                  color: secondaryTextColor,
+                  fontSize: 18.sp,
+                ),
+              ),
 
-            heightSpace(5.h),
+              heightSpace(10),
 
-            // Accountant info
-            Row(
-              children: [
-                if (developer.companyAccountantName != null)
-                  infoChip(Icons.person_outline,
-                      developer.companyAccountantName!, textColor,
-                      ),
-                if (developer.companyAccountantPhone != null) ...[
-                  widthSpace(10.w),
-                  infoChip(Icons.call_outlined,
-                      developer.companyAccountantPhone!, textColor,
-                      ),
-                ],
-              ],
-            ),
+              /* ----------------------------- Contact Info --------------------------- */
+              infoChip(
+                Icons.person_outline,
+                developer.contactPerson,
+                secondaryTextColor,
+              ),
 
-            heightSpace(10.h),
+              heightSpace(6),
 
-            // Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: CustomButton(
-                    height: 45.h, // responsive button height
-                    text: 'Edit'.tr,
-                    onPressed: () {
-                      // handle edit
-                    },
+              infoChip(
+                Icons.call_outlined,
+                developer.contactNumber,
+                secondaryTextColor,
+              ),
+
+              heightSpace(15),
+
+              /* -------------------------------- Buttons ----------------------------- */
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      text: "Edit".tr,
+                      height: 45.h,
+                      onPressed: () {
+                        // TODO edit action
+                      },
+                    ),
                   ),
-                ),
-                widthSpace(10.w),
-                ActionButton(
-                  icon: Icons.delete_outline,
-                  color: Colors.red,
-                  onTap: () {
-                    // handle delete
-                  },
-                ),
-              ],
-            ),
-          ],
+                  widthSpace(10),
+                  ActionButton(
+                    icon: Icons.delete_outline,
+                    color: Colors.red,
+                    onTap: () {
+                      // TODO delete action
+                    },
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

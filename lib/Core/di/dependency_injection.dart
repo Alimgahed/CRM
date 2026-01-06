@@ -6,11 +6,10 @@ import 'package:crm/features/auth/login/data/repos/login_repo.dart';
 import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/developers/data/repo/developers_repo.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
+import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-
 final getIt = GetIt.instance;
-
 Future<void> setup() async {
   Dio dio = DioFactory.getDioInstance();
   getIt.registerLazySingleton(() => ApiService(dio));
@@ -22,4 +21,5 @@ Future<void> setup() async {
   getIt.registerFactory(() => ProjectCubit(projectsRepo: getIt()));
   getIt.registerLazySingleton(() => DevelopersRepo(apiService: getIt()));
   getIt.registerFactory(() => DeveloperCubit(developersRepo: getIt()));
+  getIt.registerLazySingleton(() => LayoutCubit());
 }

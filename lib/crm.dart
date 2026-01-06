@@ -14,7 +14,7 @@ class Crm extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      child: GetMaterialApp(
+      child: MaterialApp(
         title: 'CRM',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,

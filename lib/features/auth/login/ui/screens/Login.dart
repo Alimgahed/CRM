@@ -18,105 +18,109 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
-        state.whenOrNull(
-          error: (msg) {
-            showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                title: const Text("Login Failed"),
-                content: Text(msg),
-              ),
-            );
-          },
-          loaded: (_) {
-            context.pushReplacementNamed(Routes.layout);
-          },
-        );
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.w),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        heightSpace(40),
-                        SvgPicture.asset(
-                          'images/Group.svg',
-                          width: 100.w,
-                          height: 100.h,
-                        ),
-                        heightSpace(10),
-                        Text(
-                          "AQARIA",
-                          style: TextStyles.size20(),
-                        ),
-                        heightSpace(5),
-                        Text(
-                          'Real Estate CRM System',
-                          style: TextStyles.size16(color: appColor),
-                        ),
-                        heightSpace(20),
-                        const Emailandpassword(),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: () {
-                              context.pushNamed(Routes.forgotPassword);
-                            },
-                            child: Text(
-                              "Forgot Password?",
-                              style: TextStyles.size14(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) {
+        // Handle Side Effects INSIDE builder
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          state.whenOrNull(
+            error: (msg) {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text("Login Failed"),
+                  content: Text(msg),
+                ),
+              );
+            },
+            loaded: (_) {
+              context.pushReplacementNamed(Routes.layout);
+            },
+          );
+        });
+
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          heightSpace(40),
+                          SvgPicture.asset(
+                            'images/Group.svg',
+                            width: 100.w,
+                            height: 100.h,
+                          ),
+                          heightSpace(10),
+                          Text("AQARIA", style: TextStyles.size20()),
+                          heightSpace(5),
+                          Text(
+                            'Real Estate CRM System',
+                            style: TextStyles.size16(color: appColor),
+                          ),
+                          heightSpace(20),
+
+                          const Emailandpassword(),
+
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: () =>
+                                  context.pushNamed(Routes.forgotPassword),
+                              child: Text(
+                                "Forgot Password?",
+                                style: TextStyles.size14(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        heightSpace(10),
-                        BlocBuilder<LoginCubit, LoginState>(
-                          builder: (context, state) {
-                            if (state is LoginStateLoading) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            }
-                            return CustomButton(
+                          heightSpace(10),
+
+                          /// ------------------------
+                          /// LOGIN BUTTON
+                          /// ------------------------
+                          if (state is LoginStateLoading)
+                            const CircularProgressIndicator()
+                          else
+                            CustomButton(
                               text: "Login",
-                              onPressed: () => vaildateLogin(context),
+                              onPressed: () => validateLogin(context),
                               height: 45.h,
-                            );
-                          },
-                        ),
-                        const Spacer(),
-                      ],
+                            ),
+
+                          const Spacer(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  void vaildateLogin(BuildContext context) {
+  void validateLogin(BuildContext context) {
     final cubit = context.read<LoginCubit>();
 
     if (cubit.formKey.currentState!.validate()) {
-      cubit.login(LoginRequestBody(
-        email: cubit.emailController.text,
-        password: cubit.passwordController.text,
-      ));
+      cubit.login(
+        LoginRequestBody(
+          email: cubit.emailController.text,
+          password: cubit.passwordController.text,
+        ),
+      );
     }
   }
 }

@@ -6,32 +6,35 @@ part of 'developers_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DevelopmentCompany _$DevelopmentCompanyFromJson(Map<String, dynamic> json) =>
-    DevelopmentCompany(
-      id: (json['ID'] as num?)?.toInt(),
-      companyName: json['COMPANY_NAME'] as String?,
-      companyNameEn: json['COMPANY_NAME_EN'] as String?,
-      companySalesName: json['COMPANY_SALES_NAME'] as String?,
-      companySalesPhone: json['COMPANY_SALES_PHONE'] as String?,
-      companyAccountantName: json['COMPANY_ACCOUNTANT_NAME'] as String?,
-      companyAccountantPhone: json['COMPANY_ACCOUNTANT_PHONE'] as String?,
-      companyCommission: json['COMPANY_COMMISSION'],
-      companyIncentive: json['COMPANY_INCENTIVE'],
-      companyLogoUrl: json['COMPANY_LOGO_URL'] as String?,
-      companyLogoBase: json['COMPANY_LOGO_BASE'] as String?,
+DevCompany _$DevCompanyFromJson(Map<String, dynamic> json) => DevCompany(
+      devCompanyId: json['devCompanyId'] as String,
+      companyNameAr: json['companyNameAr'] as String,
+      companyNameEn: json['companyNameEn'] as String,
+      contactPerson: json['contactPerson'] as String,
+      contactNumber: json['contactNumber'] as String,
+      logoUrl: json['logoUrl'] as String?,
+      isActive: json['isActive'] as bool,
+      isDeleted: json['isDeleted'] as bool,
+      createdAt: json['createdAt'] as String,
+      updatedAt: json['updatedAt'] as String?,
+      companyId: json['companyId'] as String,
+      projects: (json['projects'] as List<dynamic>?)
+          ?.map((e) => Project.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$DevelopmentCompanyToJson(DevelopmentCompany instance) =>
+Map<String, dynamic> _$DevCompanyToJson(DevCompany instance) =>
     <String, dynamic>{
-      'ID': instance.id,
-      'COMPANY_NAME': instance.companyName,
-      'COMPANY_NAME_EN': instance.companyNameEn,
-      'COMPANY_SALES_NAME': instance.companySalesName,
-      'COMPANY_SALES_PHONE': instance.companySalesPhone,
-      'COMPANY_ACCOUNTANT_NAME': instance.companyAccountantName,
-      'COMPANY_ACCOUNTANT_PHONE': instance.companyAccountantPhone,
-      'COMPANY_COMMISSION': instance.companyCommission,
-      'COMPANY_INCENTIVE': instance.companyIncentive,
-      'COMPANY_LOGO_URL': instance.companyLogoUrl,
-      'COMPANY_LOGO_BASE': instance.companyLogoBase,
+      'devCompanyId': instance.devCompanyId,
+      'companyNameAr': instance.companyNameAr,
+      'companyNameEn': instance.companyNameEn,
+      'contactPerson': instance.contactPerson,
+      'contactNumber': instance.contactNumber,
+      'logoUrl': instance.logoUrl,
+      'isActive': instance.isActive,
+      'isDeleted': instance.isDeleted,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
+      'companyId': instance.companyId,
+      'projects': instance.projects,
     };

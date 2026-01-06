@@ -20,7 +20,7 @@ mixin _$DeveloperStates<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(T data) loaded,
+    required TResult Function(List<DevCompany> companies) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$DeveloperStates<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(T data)? loaded,
+    TResult? Function(List<DevCompany> companies)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$DeveloperStates<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(T data)? loaded,
+    TResult Function(List<DevCompany> companies)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -136,7 +136,7 @@ class _$DeveloperStatesInitialImpl<T> implements DeveloperStatesInitial<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(T data) loaded,
+    required TResult Function(List<DevCompany> companies) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -147,7 +147,7 @@ class _$DeveloperStatesInitialImpl<T> implements DeveloperStatesInitial<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(T data)? loaded,
+    TResult? Function(List<DevCompany> companies)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -158,7 +158,7 @@ class _$DeveloperStatesInitialImpl<T> implements DeveloperStatesInitial<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(T data)? loaded,
+    TResult Function(List<DevCompany> companies)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -257,7 +257,7 @@ class _$DeveloperStatesLoadingImpl<T> implements DeveloperStatesLoading<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(T data) loaded,
+    required TResult Function(List<DevCompany> companies) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -268,7 +268,7 @@ class _$DeveloperStatesLoadingImpl<T> implements DeveloperStatesLoading<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(T data)? loaded,
+    TResult? Function(List<DevCompany> companies)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -279,7 +279,7 @@ class _$DeveloperStatesLoadingImpl<T> implements DeveloperStatesLoading<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(T data)? loaded,
+    TResult Function(List<DevCompany> companies)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -338,7 +338,7 @@ abstract class _$$DeveloperStatesLoadedImplCopyWith<T, $Res> {
           $Res Function(_$DeveloperStatesLoadedImpl<T>) then) =
       __$$DeveloperStatesLoadedImplCopyWithImpl<T, $Res>;
   @useResult
-  $Res call({T data});
+  $Res call({List<DevCompany> companies});
 }
 
 /// @nodoc
@@ -356,13 +356,13 @@ class __$$DeveloperStatesLoadedImplCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = freezed,
+    Object? companies = null,
   }) {
     return _then(_$DeveloperStatesLoadedImpl<T>(
-      freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as T,
+      null == companies
+          ? _value._companies
+          : companies // ignore: cast_nullable_to_non_nullable
+              as List<DevCompany>,
     ));
   }
 }
@@ -370,14 +370,20 @@ class __$$DeveloperStatesLoadedImplCopyWithImpl<T, $Res>
 /// @nodoc
 
 class _$DeveloperStatesLoadedImpl<T> implements DeveloperStatesLoaded<T> {
-  const _$DeveloperStatesLoadedImpl(this.data);
+  const _$DeveloperStatesLoadedImpl(final List<DevCompany> companies)
+      : _companies = companies;
 
+  final List<DevCompany> _companies;
   @override
-  final T data;
+  List<DevCompany> get companies {
+    if (_companies is EqualUnmodifiableListView) return _companies;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_companies);
+  }
 
   @override
   String toString() {
-    return 'DeveloperStates<$T>.loaded(data: $data)';
+    return 'DeveloperStates<$T>.loaded(companies: $companies)';
   }
 
   @override
@@ -385,12 +391,13 @@ class _$DeveloperStatesLoadedImpl<T> implements DeveloperStatesLoaded<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DeveloperStatesLoadedImpl<T> &&
-            const DeepCollectionEquality().equals(other.data, data));
+            const DeepCollectionEquality()
+                .equals(other._companies, _companies));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_companies));
 
   /// Create a copy of DeveloperStates
   /// with the given fields replaced by the non-null parameter values.
@@ -406,10 +413,10 @@ class _$DeveloperStatesLoadedImpl<T> implements DeveloperStatesLoaded<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(T data) loaded,
+    required TResult Function(List<DevCompany> companies) loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(data);
+    return loaded(companies);
   }
 
   @override
@@ -417,10 +424,10 @@ class _$DeveloperStatesLoadedImpl<T> implements DeveloperStatesLoaded<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(T data)? loaded,
+    TResult? Function(List<DevCompany> companies)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(data);
+    return loaded?.call(companies);
   }
 
   @override
@@ -428,12 +435,12 @@ class _$DeveloperStatesLoadedImpl<T> implements DeveloperStatesLoaded<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(T data)? loaded,
+    TResult Function(List<DevCompany> companies)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(data);
+      return loaded(companies);
     }
     return orElse();
   }
@@ -477,10 +484,10 @@ class _$DeveloperStatesLoadedImpl<T> implements DeveloperStatesLoaded<T> {
 }
 
 abstract class DeveloperStatesLoaded<T> implements DeveloperStates<T> {
-  const factory DeveloperStatesLoaded(final T data) =
+  const factory DeveloperStatesLoaded(final List<DevCompany> companies) =
       _$DeveloperStatesLoadedImpl<T>;
 
-  T get data;
+  List<DevCompany> get companies;
 
   /// Create a copy of DeveloperStates
   /// with the given fields replaced by the non-null parameter values.
@@ -562,7 +569,7 @@ class _$DeveloperStatesErrorImpl<T> implements DeveloperStatesError<T> {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(T data) loaded,
+    required TResult Function(List<DevCompany> companies) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -573,7 +580,7 @@ class _$DeveloperStatesErrorImpl<T> implements DeveloperStatesError<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(T data)? loaded,
+    TResult? Function(List<DevCompany> companies)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -584,7 +591,7 @@ class _$DeveloperStatesErrorImpl<T> implements DeveloperStatesError<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(T data)? loaded,
+    TResult Function(List<DevCompany> companies)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

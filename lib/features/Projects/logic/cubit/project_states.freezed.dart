@@ -20,7 +20,7 @@ mixin _$ProjectsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ProjectResponse> data) loaded,
+    required TResult Function(List<Project> data) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$ProjectsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ProjectResponse> data)? loaded,
+    TResult? Function(List<Project> data)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$ProjectsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ProjectResponse> data)? loaded,
+    TResult Function(List<Project> data)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -133,7 +133,7 @@ class _$ProjectsStateInitialImpl implements ProjectsStateInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ProjectResponse> data) loaded,
+    required TResult Function(List<Project> data) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -144,7 +144,7 @@ class _$ProjectsStateInitialImpl implements ProjectsStateInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ProjectResponse> data)? loaded,
+    TResult? Function(List<Project> data)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -155,7 +155,7 @@ class _$ProjectsStateInitialImpl implements ProjectsStateInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ProjectResponse> data)? loaded,
+    TResult Function(List<Project> data)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -251,7 +251,7 @@ class _$ProjectsStateLoadingImpl implements ProjectsStateLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ProjectResponse> data) loaded,
+    required TResult Function(List<Project> data) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -262,7 +262,7 @@ class _$ProjectsStateLoadingImpl implements ProjectsStateLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ProjectResponse> data)? loaded,
+    TResult? Function(List<Project> data)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -273,7 +273,7 @@ class _$ProjectsStateLoadingImpl implements ProjectsStateLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ProjectResponse> data)? loaded,
+    TResult Function(List<Project> data)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -331,7 +331,7 @@ abstract class _$$ProjectsStateLoadedImplCopyWith<$Res> {
           $Res Function(_$ProjectsStateLoadedImpl) then) =
       __$$ProjectsStateLoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<ProjectResponse> data});
+  $Res call({List<Project> data});
 }
 
 /// @nodoc
@@ -353,7 +353,7 @@ class __$$ProjectsStateLoadedImplCopyWithImpl<$Res>
       null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<ProjectResponse>,
+              as List<Project>,
     ));
   }
 }
@@ -361,12 +361,11 @@ class __$$ProjectsStateLoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProjectsStateLoadedImpl implements ProjectsStateLoaded {
-  const _$ProjectsStateLoadedImpl(final List<ProjectResponse> data)
-      : _data = data;
+  const _$ProjectsStateLoadedImpl(final List<Project> data) : _data = data;
 
-  final List<ProjectResponse> _data;
+  final List<Project> _data;
   @override
-  List<ProjectResponse> get data {
+  List<Project> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -403,7 +402,7 @@ class _$ProjectsStateLoadedImpl implements ProjectsStateLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ProjectResponse> data) loaded,
+    required TResult Function(List<Project> data) loaded,
     required TResult Function(String message) error,
   }) {
     return loaded(data);
@@ -414,7 +413,7 @@ class _$ProjectsStateLoadedImpl implements ProjectsStateLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ProjectResponse> data)? loaded,
+    TResult? Function(List<Project> data)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loaded?.call(data);
@@ -425,7 +424,7 @@ class _$ProjectsStateLoadedImpl implements ProjectsStateLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ProjectResponse> data)? loaded,
+    TResult Function(List<Project> data)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -474,10 +473,10 @@ class _$ProjectsStateLoadedImpl implements ProjectsStateLoaded {
 }
 
 abstract class ProjectsStateLoaded implements ProjectsState {
-  const factory ProjectsStateLoaded(final List<ProjectResponse> data) =
+  const factory ProjectsStateLoaded(final List<Project> data) =
       _$ProjectsStateLoadedImpl;
 
-  List<ProjectResponse> get data;
+  List<Project> get data;
 
   /// Create a copy of ProjectsState
   /// with the given fields replaced by the non-null parameter values.
@@ -557,7 +556,7 @@ class _$ProjectsStateErrorImpl implements ProjectsStateError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<ProjectResponse> data) loaded,
+    required TResult Function(List<Project> data) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -568,7 +567,7 @@ class _$ProjectsStateErrorImpl implements ProjectsStateError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<ProjectResponse> data)? loaded,
+    TResult? Function(List<Project> data)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -579,7 +578,7 @@ class _$ProjectsStateErrorImpl implements ProjectsStateError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<ProjectResponse> data)? loaded,
+    TResult Function(List<Project> data)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
