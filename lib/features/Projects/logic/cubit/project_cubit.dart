@@ -15,7 +15,7 @@ class ProjectCubit extends Cubit<ProjectsState> {
     final result = await projectsRepo.getAllProjects();
 
     result.when(
-      success: (data) => emit(ProjectsState.loaded(data)),
+      success: (data) => emit(ProjectsState.loaded(data.data)),
       error: (error) =>
           emit(ProjectsState.error(error.error ?? "Unknown Error")),
     );

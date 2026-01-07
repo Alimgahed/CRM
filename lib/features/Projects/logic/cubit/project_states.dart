@@ -1,4 +1,4 @@
-import 'package:crm/features/Projects/data/model/project_response.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'project_states.freezed.dart';

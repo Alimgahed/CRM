@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm/Core/helpers/spacing.dart';
+import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
-import 'package:crm/features/Projects/data/model/project_response.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,16 +13,11 @@ import 'package:shimmer/shimmer.dart';
 class AllprojectWidget extends StatelessWidget {
   final Project project;
 
-  const AllprojectWidget({
-    super.key,
-    required this.project,
-  });
+  const AllprojectWidget({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
     final textColor = secondaryTextColor;
-
-    final devCompany = project.devCompany;
 
     return Padding(
       padding: EdgeInsets.all(8.w),
@@ -45,7 +41,8 @@ class AllprojectWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.r),
               child: CachedNetworkImage(
-                imageUrl: project.logoUrl ?? "",
+                imageUrl:
+                    ApiConstants.baseUrl + (project.attachments![0].filePath),
                 width: double.infinity,
                 height: 190.h,
                 fit: BoxFit.cover,
@@ -62,8 +59,11 @@ class AllprojectWidget extends StatelessWidget {
                   width: double.infinity,
                   height: 190.h,
                   color: Colors.grey.shade300,
-                  child: Icon(Icons.broken_image,
-                      size: 60.sp, color: Colors.grey),
+                  child: Icon(
+                    Icons.broken_image,
+                    size: 60.sp,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ),
@@ -72,11 +72,8 @@ class AllprojectWidget extends StatelessWidget {
 
             /* ----------------------------- PROJECT NAME ----------------------------- */
             Text(
-              '${project.projectName ?? ""} - ${project.projectNameEn ?? ""}',
-              style: titleStyle.copyWith(
-                color: textColor,
-                fontSize: 16.sp,
-              ),
+              '${project.projectName} - ${project.projectNameEn}',
+              style: titleStyle.copyWith(color: textColor, fontSize: 16.sp),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -86,8 +83,7 @@ class AllprojectWidget extends StatelessWidget {
             /* ----------------------------- DESCRIPTION ----------------------------- */
             Row(
               children: [
-                Icon(Icons.location_on_outlined,
-                    size: 15.sp, color: textColor),
+                Icon(Icons.location_on_outlined, size: 15.sp, color: textColor),
                 widthSpace(4),
                 Expanded(
                   child: Text(
@@ -109,24 +105,19 @@ class AllprojectWidget extends StatelessWidget {
             Row(
               children: [
                 infoChip(
-                  Icons.monetization_on_outlined,
-                  _formatPriceRange(project.priceMmeterFrom, project.priceMmeterTo),
-                  textColor,
-                ),
-                widthSpace(10),
-                infoChip(
                   Icons.architecture_outlined,
                   _formatAreaRange(project.areaFrom, project.areaTo),
                   textColor,
                 ),
-                widthSpace(10),
+                widthSpace(8),
                 infoChip(
                   Icons.business,
-                  devCompany?.companyNameAr ?? 'غير محدد',
+                  project.devCompany?.companyNameAr ?? 'غير متوفر',
                   textColor,
                 ),
               ],
             ),
+            heightSpace(10),
 
             heightSpace(10),
 
@@ -151,11 +142,6 @@ class AllprojectWidget extends StatelessWidget {
   }
 
   /* ----------------------------- HELPERS ----------------------------- */
-
-  String _formatPriceRange(dynamic from, dynamic to) {
-    if (from == null || to == null) return 'غير متوفر';
-    return '$from - $to';
-  }
 
   String _formatAreaRange(dynamic from, dynamic to) {
     if (from == null || to == null) return 'غير متوفر';

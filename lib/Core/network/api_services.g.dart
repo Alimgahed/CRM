@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_service.dart';
+part of 'api_services.dart';
 
 // dart format off
 
@@ -50,27 +50,29 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<Project>> getAllProjects() async {
+  Future<ProjectsResponse> getAllProjects(int? page, int? pageSize) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'page_size': pageSize,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Project>>(
+    final _options = _setStreamType<ProjectsResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'projects/getAllProjects',
+            '/api/v1/projects',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Project> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ProjectsResponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Project.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = ProjectsResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

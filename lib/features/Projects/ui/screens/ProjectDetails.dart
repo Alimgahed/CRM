@@ -1,5 +1,5 @@
 import 'package:crm/Core/helpers/spacing.dart';
-import 'package:crm/features/Projects/data/model/project_response.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/Projects/ui/widgets/ProjectDtails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,9 +12,7 @@ class ProjectDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(project.projectName),
-      ),
+      appBar: AppBar(title: Text(project.projectName)),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(12.w),
         child: Column(
@@ -26,7 +24,11 @@ class ProjectDetailsScreen extends StatelessWidget {
             heightSpace(16),
             ProjectPriceSection(project: project),
             heightSpace(16),
-            ProjectMediaSection(project: project),
+            ProjectDeveloperSection(project: project),
+            heightSpace(16),
+            ProjectPlansSection(project: project),
+            heightSpace(16),
+            ProjectStagesSection(project: project),
             heightSpace(16),
             ProjectAttachmentsSection(project: project),
             heightSpace(16),
@@ -34,4 +36,5 @@ class ProjectDetailsScreen extends StatelessWidget {
         ),
       ),
     );
-  }}
+  }
+}

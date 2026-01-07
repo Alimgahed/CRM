@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/routing/routes.dart';
-import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
 import 'package:crm/features/more/ui/widgets/more.dart';
 import 'package:crm/features/Units/ui/screens/AllUnit.dart';
@@ -31,15 +30,7 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.business_sharp,
               text: 'Projects'.tr,
               onTap: () {
-                final projectCubit = context.read<ProjectCubit>();
-                final developerCubit = context.read<DeveloperCubit>();
-                context.pushNamed(
-                  Routes.projects,
-                  arguments: {
-                    'projectCubit': projectCubit,
-                    'developerCubit': developerCubit,
-                  },
-                );
+                context.pushNamed(Routes.projects);
               },
             ),
 

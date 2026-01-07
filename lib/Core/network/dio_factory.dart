@@ -19,6 +19,9 @@ class DioFactory {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          "Authorization": SharedPreferencesHelper.getSecureString(
+            SharedPreferenceKeys.userToken,
+          ),
         },
       ),
     );
@@ -30,9 +33,8 @@ class DioFactory {
           options.headers.addAll({
             "Env": "production",
             "Authorization": await SharedPreferencesHelper.getSecureString(
-                SharedPreferenceKeys.userToken),
-            "secret-key":
-                "4YEpX/WfI85odrI7hVAZGllq+0sM+c/NeVAVUTM4wIKjh+I8iU+U",
+              SharedPreferenceKeys.userToken,
+            ),
           });
 
           return handler.next(options);

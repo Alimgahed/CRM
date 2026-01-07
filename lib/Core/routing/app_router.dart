@@ -1,14 +1,14 @@
+import 'package:crm/Core/di/dependency_injection.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
+import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/routing/routes.dart';
-import 'package:crm/features/Projects/data/model/project_response.dart';
 import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/Projects/ui/screens/Allprojects.dart';
 import 'package:crm/features/Projects/ui/screens/ProjectDetails.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
 import 'package:crm/features/developers/ui/screens/AllDeveloper.dart';
-import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/home/ui/screens/home.dart';
 import 'package:crm/features/home/ui/screens/layout.dart';
 import 'package:crm/features/auth/login/ui/screens/Login.dart';
@@ -35,17 +35,8 @@ class AppRouter {
 
       case Routes.layout:
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (_) => getIt<LayoutCubit>()),
-              BlocProvider(
-                create: (_) => getIt<ProjectCubit>()..fetchAllProjects(),
-              ),
-              BlocProvider(
-                create: (_) =>
-                    getIt<DeveloperCubit>()..fetchAllDevelopmentCompanies(),
-              ),
-            ],
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<LayoutCubit>(),
             child: const Layout(),
           ),
         );
@@ -54,32 +45,18 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const ForgetPassword());
 
       case Routes.projects:
-        if (args is Map<String, dynamic>) {
-          return MaterialPageRoute(
-            builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: args['projectCubit'] as ProjectCubit),
-                BlocProvider.value(
-                  value: args['developerCubit'] as DeveloperCubit,
-                ),
-              ],
-              child: const Allprojects(),
-            ),
-          );
-        }
-        throw Exception(
-          'Projects route requires arguments: projectCubit and developerCubit',
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<ProjectCubit>()..fetchAllProjects(),
+            child: const Allprojects(),
+          ),
         );
 
+      // In your routes file
       case Routes.projectDetails:
-        if (args is Map<String, dynamic> && args['project'] != null) {
-          return MaterialPageRoute(
-            builder: (_) =>
-                ProjectDetailsScreen(project: args['project'] as Project),
-          );
-        }
-        throw Exception(
-          'ProjectDetails route requires a ProjectResponse as argument',
+        final project = settings!.arguments as Project;
+        return MaterialPageRoute(
+          builder: (_) => ProjectDetailsScreen(project: project),
         );
 
       case Routes.allDevelopers:

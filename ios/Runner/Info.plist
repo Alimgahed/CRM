@@ -11,6 +11,8 @@
 		<key>CFBundleIdentifier</key>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+<string>We need access to save downloaded files</string>
 		<string>6.0</string>
 		<key>CFBundleName</key>
 		<string>crm</string>

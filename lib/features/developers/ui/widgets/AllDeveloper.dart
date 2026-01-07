@@ -3,7 +3,7 @@ import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
-import 'package:crm/features/developers/data/models/developers_response.dart';
+import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
@@ -81,7 +81,7 @@ class AllDeveloperWidget extends StatelessWidget {
               /* ----------------------------- Contact Info --------------------------- */
               infoChip(
                 Icons.person_outline,
-                developer.contactPerson,
+                developer.contactPerson ?? '',
                 secondaryTextColor,
               ),
 
@@ -89,7 +89,7 @@ class AllDeveloperWidget extends StatelessWidget {
 
               infoChip(
                 Icons.call_outlined,
-                developer.contactNumber,
+                developer.contactNumber ?? '',
                 secondaryTextColor,
               ),
 
@@ -114,7 +114,7 @@ class AllDeveloperWidget extends StatelessWidget {
                     onTap: () {
                       // TODO delete action
                     },
-                  )
+                  ),
                 ],
               ),
             ],

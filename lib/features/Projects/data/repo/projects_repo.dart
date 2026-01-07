@@ -1,7 +1,7 @@
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_result.dart';
-import 'package:crm/Core/network/api_service.dart';
-import 'package:crm/features/Projects/data/model/project_response.dart';
+import 'package:crm/Core/network/api_services.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:dio/dio.dart';
 
 class ProjectsRepo {
@@ -9,9 +9,9 @@ class ProjectsRepo {
 
   ProjectsRepo({required this.apiService});
 
-  Future<ApiResult<List<Project>>> getAllProjects() async {
+  Future<ApiResult<ProjectsResponse>> getAllProjects() async {
     try {
-      final response = await apiService.getAllProjects();
+      final response = await apiService.getAllProjects(1, 10);
       return ApiResult.success(response);
     } on DioException catch (e) {
       final errorMsg = e.response?.data?['Error'] ?? e.message;
