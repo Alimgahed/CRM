@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ class SharedPreferencesHelper {
   static Future<SharedPreferences> get _prefs async =>
       await SharedPreferences.getInstance();
 
+  /// Save data
   static Future<bool> saveData<T>(String key, T value) async {
     debugPrint('Saving data: $key = $value');
 
@@ -23,11 +25,32 @@ class SharedPreferencesHelper {
     return false;
   }
 
+  /// Save JSON object as string
+  static Future<bool> saveJson(String key, Map<String, dynamic> json) async {
+    debugPrint('Saving JSON: $key');
+    final prefs = await _prefs;
+    final jsonString = jsonEncode(json);
+    return prefs.setString(key, jsonString);
+  }
+
   /// Read data
   static Future<T?> getData<T>(String key) async {
     final prefs = await _prefs;
-
     return prefs.get(key) as T?;
+  }
+
+  /// Read JSON object
+  static Future<Map<String, dynamic>?> getJson(String key) async {
+    final prefs = await _prefs;
+    final jsonString = prefs.getString(key);
+    if (jsonString == null) return null;
+
+    try {
+      return jsonDecode(jsonString) as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('❌ Error decoding JSON for key: $key');
+      return null;
+    }
   }
 
   /// Remove specific key
@@ -43,16 +66,20 @@ class SharedPreferencesHelper {
     final prefs = await _prefs;
     return prefs.clear();
   }
-  static setSecureString(String key, String value) async {
-    final flutterSecureStorage = FlutterSecureStorage();
+
+  /// Secure storage methods
+  static Future<void> setSecureString(String key, String value) async {
+    const flutterSecureStorage = FlutterSecureStorage();
     await flutterSecureStorage.write(key: key, value: value);
   }
-  static  getSecureString(String key) async {
-    final flutterSecureStorage = FlutterSecureStorage();
-    return await flutterSecureStorage.read(key: key)??'';
+
+  static Future<String> getSecureString(String key) async {
+    const flutterSecureStorage = FlutterSecureStorage();
+    return await flutterSecureStorage.read(key: key) ?? '';
   }
-  static deleteSecureString(String key) async {
-    final flutterSecureStorage = FlutterSecureStorage();
+
+  static Future<void> deleteSecureString(String key) async {
+    const flutterSecureStorage = FlutterSecureStorage();
     await flutterSecureStorage.delete(key: key);
   }
 }

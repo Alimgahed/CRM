@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Widget buildHeader(BuildContext context) {
+Widget buildHeader(BuildContext context, String userName) {
   return Column(
-    children: [_buildUserInfo(), const SizedBox(height: 16), _buildSearchBar()],
+    children: [
+      _buildUserInfo(userName),
+      const SizedBox(height: 16),
+      _buildSearchBar(),
+    ],
   );
 }
 
-Widget _buildUserInfo() {
+Widget _buildUserInfo(String userName) {
   return Row(
     children: [
       const CircleAvatar(backgroundColor: Colors.white, radius: 28),
@@ -26,9 +30,9 @@ Widget _buildUserInfo() {
             ),
           ),
           const SizedBox(height: 4),
-          const Text(
-            "عبد الرحمن ذكي",
-            style: TextStyle(
+          Text(
+            userName,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,

@@ -7,21 +7,21 @@ part of 'developers_response.dart';
 // **************************************************************************
 
 DevCompany _$DevCompanyFromJson(Map<String, dynamic> json) => DevCompany(
-      devCompanyId: json['devCompanyId'] as String,
-      companyNameAr: json['companyNameAr'] as String,
-      companyNameEn: json['companyNameEn'] as String,
-      contactPerson: json['contactPerson'] as String,
-      contactNumber: json['contactNumber'] as String,
-      logoUrl: json['logoUrl'] as String?,
-      isActive: json['isActive'] as bool,
-      isDeleted: json['isDeleted'] as bool,
-      createdAt: json['createdAt'] as String,
-      updatedAt: json['updatedAt'] as String?,
-      companyId: json['companyId'] as String,
-      projects: (json['projects'] as List<dynamic>?)
-          ?.map((e) => Project.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  devCompanyId: json['devCompanyId'] as String,
+  companyNameAr: json['companyNameAr'] as String,
+  companyNameEn: json['companyNameEn'] as String,
+  contactPerson: json['contactPerson'] as String,
+  contactNumber: json['contactNumber'] as String,
+  logoUrl: json['logoUrl'] as String?,
+  isActive: json['isActive'] as bool,
+  isDeleted: json['isDeleted'] as bool,
+  createdAt: json['createdAt'] as String,
+  updatedAt: json['updatedAt'] as String?,
+  companyId: json['companyId'] as String,
+  projects: (json['projects'] as List<dynamic>?)
+      ?.map((e) => Project.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
 Map<String, dynamic> _$DevCompanyToJson(DevCompany instance) =>
     <String, dynamic>{

@@ -26,6 +26,8 @@ class _EmailandpasswordState extends State<Emailandpassword> {
             iconData: Icons.email,
             hintText: 'Enter E-mail',
             validator: (value) {
+              return null;
+
               // if (value == null || value.isEmpty) {
               //   return 'Please enter email';
               // }

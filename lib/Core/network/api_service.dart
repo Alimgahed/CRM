@@ -12,10 +12,8 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
-  @POST(ApiConstants.loginnow)
-  Future<LoginResponse> login(
-    @Body() LoginRequestBody body,
-  );
+  @POST(ApiConstants.login)
+  Future<LoginResponse> login(@Body() LoginRequestBody body);
 
   @GET(ApiConstants.allprojects)
   Future<List<Project>> getAllProjects();
@@ -23,4 +21,3 @@ abstract class ApiService {
   @GET(ApiConstants.getAllDevelopmentCompanies)
   Future<List<DevCompany>> getAllDevelopmentCompanies();
 }
-

@@ -11,7 +11,6 @@ import 'package:crm/features/developers/ui/screens/AllDeveloper.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/home/ui/screens/home.dart';
 import 'package:crm/features/home/ui/screens/layout.dart';
-import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/auth/login/ui/screens/Login.dart';
 import 'package:crm/features/auth/forget_password/ui/forget_password.dart';
 import 'package:crm/features/Onbordinng/onbording.dart';
@@ -29,15 +28,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const SplashScreen());
 
       case Routes.login:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => getIt<LoginCubit>(),
-            child: const Login(),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => const Login());
 
       case Routes.home:
-        return MaterialPageRoute(builder: (_) => const Home());
+        return MaterialPageRoute(builder: (_) => Home());
 
       case Routes.layout:
         return MaterialPageRoute(
@@ -45,10 +39,12 @@ class AppRouter {
             providers: [
               BlocProvider(create: (_) => getIt<LayoutCubit>()),
               BlocProvider(
-                  create: (_) => getIt<ProjectCubit>()..fetchAllProjects()),
+                create: (_) => getIt<ProjectCubit>()..fetchAllProjects(),
+              ),
               BlocProvider(
-                  create: (_) =>
-                      getIt<DeveloperCubit>()..fetchAllDevelopmentCompanies()),
+                create: (_) =>
+                    getIt<DeveloperCubit>()..fetchAllDevelopmentCompanies(),
+              ),
             ],
             child: const Layout(),
           ),
@@ -63,23 +59,28 @@ class AppRouter {
             builder: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: args['projectCubit'] as ProjectCubit),
-                BlocProvider.value(value: args['developerCubit'] as DeveloperCubit),
+                BlocProvider.value(
+                  value: args['developerCubit'] as DeveloperCubit,
+                ),
               ],
               child: const Allprojects(),
             ),
           );
         }
-        throw Exception('Projects route requires arguments: projectCubit and developerCubit');
+        throw Exception(
+          'Projects route requires arguments: projectCubit and developerCubit',
+        );
 
       case Routes.projectDetails:
         if (args is Map<String, dynamic> && args['project'] != null) {
           return MaterialPageRoute(
-            builder: (_) => ProjectDetailsScreen(
-              project: args['project'] as Project,
-            ),
+            builder: (_) =>
+                ProjectDetailsScreen(project: args['project'] as Project),
           );
         }
-        throw Exception('ProjectDetails route requires a ProjectResponse as argument');
+        throw Exception(
+          'ProjectDetails route requires a ProjectResponse as argument',
+        );
 
       case Routes.allDevelopers:
         if (args is Map<String, dynamic>) {
@@ -95,9 +96,7 @@ class AppRouter {
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings?.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings?.name}')),
           ),
         );
     }

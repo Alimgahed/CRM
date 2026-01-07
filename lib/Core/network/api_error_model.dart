@@ -4,7 +4,6 @@ part 'api_error_model.g.dart';
 
 @JsonSerializable()
 class ApiErrorModel {
-  @JsonKey(name: 'Error')
   final String? error;
 
   ApiErrorModel({this.error});

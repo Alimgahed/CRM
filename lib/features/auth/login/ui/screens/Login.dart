@@ -1,3 +1,4 @@
+import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/routing/routes.dart';
@@ -18,96 +19,91 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        // Handle Side Effects INSIDE builder
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+    return BlocProvider(
+      create: (context) => getIt<LoginCubit>(),
+      child: BlocConsumer<LoginCubit, LoginState>(
+        listener: (context, state) {
           state.whenOrNull(
             error: (msg) {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: const Text("Login Failed"),
-                  content: Text(msg),
-                ),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(msg), backgroundColor: Colors.red),
               );
             },
             loaded: (_) {
               context.pushReplacementNamed(Routes.layout);
             },
           );
-        });
+        },
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            heightSpace(40),
+                            SvgPicture.asset(
+                              'images/Group.svg',
+                              width: 100.w,
+                              height: 100.h,
+                            ),
+                            heightSpace(10),
+                            Text("AQARIA", style: TextStyles.size20()),
+                            heightSpace(5),
+                            Text(
+                              'Real Estate CRM System',
+                              style: TextStyles.size16(color: appColor),
+                            ),
+                            heightSpace(20),
 
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: IntrinsicHeight(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          heightSpace(40),
-                          SvgPicture.asset(
-                            'images/Group.svg',
-                            width: 100.w,
-                            height: 100.h,
-                          ),
-                          heightSpace(10),
-                          Text("AQARIA", style: TextStyles.size20()),
-                          heightSpace(5),
-                          Text(
-                            'Real Estate CRM System',
-                            style: TextStyles.size16(color: appColor),
-                          ),
-                          heightSpace(20),
+                            const Emailandpassword(),
 
-                          const Emailandpassword(),
-
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () =>
-                                  context.pushNamed(Routes.forgotPassword),
-                              child: Text(
-                                "Forgot Password?",
-                                style: TextStyles.size14(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black,
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                onPressed: () =>
+                                    context.pushNamed(Routes.forgotPassword),
+                                child: Text(
+                                  "Forgot Password?",
+                                  style: TextStyles.size14(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          heightSpace(10),
-
-                          /// ------------------------
-                          /// LOGIN BUTTON
-                          /// ------------------------
-                          if (state is LoginStateLoading)
-                            const CircularProgressIndicator()
-                          else
-                            CustomButton(
-                              text: "Login",
-                              onPressed: () => validateLogin(context),
-                              height: 45.h,
+                            heightSpace(10),
+                            state.maybeWhen(
+                              loading: () => const CircularProgressIndicator(),
+                              orElse: () => CustomButton(
+                                text: "Login",
+                                onPressed: () => validateLogin(context),
+                                height: 45.h,
+                              ),
                             ),
 
-                          const Spacer(),
-                        ],
+                            const Spacer(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
-      },
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -115,12 +111,7 @@ class Login extends StatelessWidget {
     final cubit = context.read<LoginCubit>();
 
     if (cubit.formKey.currentState!.validate()) {
-      cubit.login(
-        LoginRequestBody(
-          email: cubit.emailController.text,
-          password: cubit.passwordController.text,
-        ),
-      );
+      cubit.login();
     }
   }
 }

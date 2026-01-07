@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,632 +9,386 @@ part of 'project_states.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$ProjectsState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<Project> data) loaded,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<Project> data)? loaded,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<Project> data)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProjectsStateInitial value) initial,
-    required TResult Function(ProjectsStateLoading value) loading,
-    required TResult Function(ProjectsStateLoaded value) loaded,
-    required TResult Function(ProjectsStateError value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProjectsStateInitial value)? initial,
-    TResult? Function(ProjectsStateLoading value)? loading,
-    TResult? Function(ProjectsStateLoaded value)? loaded,
-    TResult? Function(ProjectsStateError value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProjectsStateInitial value)? initial,
-    TResult Function(ProjectsStateLoading value)? loading,
-    TResult Function(ProjectsStateLoaded value)? loaded,
-    TResult Function(ProjectsStateError value)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectsState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProjectsState()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ProjectsStateCopyWith<$Res> {
-  factory $ProjectsStateCopyWith(
-          ProjectsState value, $Res Function(ProjectsState) then) =
-      _$ProjectsStateCopyWithImpl<$Res, ProjectsState>;
+class $ProjectsStateCopyWith<$Res>  {
+$ProjectsStateCopyWith(ProjectsState _, $Res Function(ProjectsState) __);
 }
 
-/// @nodoc
-class _$ProjectsStateCopyWithImpl<$Res, $Val extends ProjectsState>
-    implements $ProjectsStateCopyWith<$Res> {
-  _$ProjectsStateCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [ProjectsState].
+extension ProjectsStatePatterns on ProjectsState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ProjectsStateInitial value)?  initial,TResult Function( ProjectsStateLoading value)?  loading,TResult Function( ProjectsStateLoaded value)?  loaded,TResult Function( ProjectsStateError value)?  error,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case ProjectsStateInitial() when initial != null:
+return initial(_that);case ProjectsStateLoading() when loading != null:
+return loading(_that);case ProjectsStateLoaded() when loaded != null:
+return loaded(_that);case ProjectsStateError() when error != null:
+return error(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ProjectsStateInitial value)  initial,required TResult Function( ProjectsStateLoading value)  loading,required TResult Function( ProjectsStateLoaded value)  loaded,required TResult Function( ProjectsStateError value)  error,}){
+final _that = this;
+switch (_that) {
+case ProjectsStateInitial():
+return initial(_that);case ProjectsStateLoading():
+return loading(_that);case ProjectsStateLoaded():
+return loaded(_that);case ProjectsStateError():
+return error(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ProjectsStateInitial value)?  initial,TResult? Function( ProjectsStateLoading value)?  loading,TResult? Function( ProjectsStateLoaded value)?  loaded,TResult? Function( ProjectsStateError value)?  error,}){
+final _that = this;
+switch (_that) {
+case ProjectsStateInitial() when initial != null:
+return initial(_that);case ProjectsStateLoading() when loading != null:
+return loading(_that);case ProjectsStateLoaded() when loaded != null:
+return loaded(_that);case ProjectsStateError() when error != null:
+return error(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<Project> data)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case ProjectsStateInitial() when initial != null:
+return initial();case ProjectsStateLoading() when loading != null:
+return loading();case ProjectsStateLoaded() when loaded != null:
+return loaded(_that.data);case ProjectsStateError() when error != null:
+return error(_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<Project> data)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+switch (_that) {
+case ProjectsStateInitial():
+return initial();case ProjectsStateLoading():
+return loading();case ProjectsStateLoaded():
+return loaded(_that.data);case ProjectsStateError():
+return error(_that.message);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<Project> data)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+switch (_that) {
+case ProjectsStateInitial() when initial != null:
+return initial();case ProjectsStateLoading() when loading != null:
+return loading();case ProjectsStateLoaded() when loaded != null:
+return loaded(_that.data);case ProjectsStateError() when error != null:
+return error(_that.message);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$ProjectsStateInitialImplCopyWith<$Res> {
-  factory _$$ProjectsStateInitialImplCopyWith(_$ProjectsStateInitialImpl value,
-          $Res Function(_$ProjectsStateInitialImpl) then) =
-      __$$ProjectsStateInitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ProjectsStateInitialImplCopyWithImpl<$Res>
-    extends _$ProjectsStateCopyWithImpl<$Res, _$ProjectsStateInitialImpl>
-    implements _$$ProjectsStateInitialImplCopyWith<$Res> {
-  __$$ProjectsStateInitialImplCopyWithImpl(_$ProjectsStateInitialImpl _value,
-      $Res Function(_$ProjectsStateInitialImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$ProjectsStateInitialImpl implements ProjectsStateInitial {
-  const _$ProjectsStateInitialImpl();
-
-  @override
-  String toString() {
-    return 'ProjectsState.initial()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProjectsStateInitialImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<Project> data) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<Project> data)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<Project> data)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProjectsStateInitial value) initial,
-    required TResult Function(ProjectsStateLoading value) loading,
-    required TResult Function(ProjectsStateLoaded value) loaded,
-    required TResult Function(ProjectsStateError value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProjectsStateInitial value)? initial,
-    TResult? Function(ProjectsStateLoading value)? loading,
-    TResult? Function(ProjectsStateLoaded value)? loaded,
-    TResult? Function(ProjectsStateError value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProjectsStateInitial value)? initial,
-    TResult Function(ProjectsStateLoading value)? loading,
-    TResult Function(ProjectsStateLoaded value)? loaded,
-    TResult Function(ProjectsStateError value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ProjectsStateInitial implements ProjectsState {
-  const factory ProjectsStateInitial() = _$ProjectsStateInitialImpl;
-}
-
-/// @nodoc
-abstract class _$$ProjectsStateLoadingImplCopyWith<$Res> {
-  factory _$$ProjectsStateLoadingImplCopyWith(_$ProjectsStateLoadingImpl value,
-          $Res Function(_$ProjectsStateLoadingImpl) then) =
-      __$$ProjectsStateLoadingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$ProjectsStateLoadingImplCopyWithImpl<$Res>
-    extends _$ProjectsStateCopyWithImpl<$Res, _$ProjectsStateLoadingImpl>
-    implements _$$ProjectsStateLoadingImplCopyWith<$Res> {
-  __$$ProjectsStateLoadingImplCopyWithImpl(_$ProjectsStateLoadingImpl _value,
-      $Res Function(_$ProjectsStateLoadingImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$ProjectsStateLoadingImpl implements ProjectsStateLoading {
-  const _$ProjectsStateLoadingImpl();
 
-  @override
-  String toString() {
-    return 'ProjectsState.loading()';
-  }
+class ProjectsStateInitial implements ProjectsState {
+  const ProjectsStateInitial();
+  
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProjectsStateLoadingImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<Project> data) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<Project> data)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<Project> data)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProjectsStateInitial value) initial,
-    required TResult Function(ProjectsStateLoading value) loading,
-    required TResult Function(ProjectsStateLoaded value) loaded,
-    required TResult Function(ProjectsStateError value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProjectsStateInitial value)? initial,
-    TResult? Function(ProjectsStateLoading value)? loading,
-    TResult? Function(ProjectsStateLoaded value)? loaded,
-    TResult? Function(ProjectsStateError value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProjectsStateInitial value)? initial,
-    TResult Function(ProjectsStateLoading value)? loading,
-    TResult Function(ProjectsStateLoaded value)? loaded,
-    TResult Function(ProjectsStateError value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectsStateInitial);
 }
 
-abstract class ProjectsStateLoading implements ProjectsState {
-  const factory ProjectsStateLoading() = _$ProjectsStateLoadingImpl;
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ProjectsState.initial()';
 }
 
-/// @nodoc
-abstract class _$$ProjectsStateLoadedImplCopyWith<$Res> {
-  factory _$$ProjectsStateLoadedImplCopyWith(_$ProjectsStateLoadedImpl value,
-          $Res Function(_$ProjectsStateLoadedImpl) then) =
-      __$$ProjectsStateLoadedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<Project> data});
+
 }
 
-/// @nodoc
-class __$$ProjectsStateLoadedImplCopyWithImpl<$Res>
-    extends _$ProjectsStateCopyWithImpl<$Res, _$ProjectsStateLoadedImpl>
-    implements _$$ProjectsStateLoadedImplCopyWith<$Res> {
-  __$$ProjectsStateLoadedImplCopyWithImpl(_$ProjectsStateLoadedImpl _value,
-      $Res Function(_$ProjectsStateLoadedImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-  }) {
-    return _then(_$ProjectsStateLoadedImpl(
-      null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<Project>,
-    ));
-  }
-}
+
 
 /// @nodoc
 
-class _$ProjectsStateLoadedImpl implements ProjectsStateLoaded {
-  const _$ProjectsStateLoadedImpl(final List<Project> data) : _data = data;
 
-  final List<Project> _data;
-  @override
-  List<Project> get data {
-    if (_data is EqualUnmodifiableListView) return _data;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_data);
-  }
+class ProjectsStateLoading implements ProjectsState {
+  const ProjectsStateLoading();
+  
 
-  @override
-  String toString() {
-    return 'ProjectsState.loaded(data: $data)';
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProjectsStateLoadedImpl &&
-            const DeepCollectionEquality().equals(other._data, _data));
-  }
 
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProjectsStateLoadedImplCopyWith<_$ProjectsStateLoadedImpl> get copyWith =>
-      __$$ProjectsStateLoadedImplCopyWithImpl<_$ProjectsStateLoadedImpl>(
-          this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<Project> data) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return loaded(data);
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<Project> data)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return loaded?.call(data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<Project> data)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loaded != null) {
-      return loaded(data);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProjectsStateInitial value) initial,
-    required TResult Function(ProjectsStateLoading value) loading,
-    required TResult Function(ProjectsStateLoaded value) loaded,
-    required TResult Function(ProjectsStateError value) error,
-  }) {
-    return loaded(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProjectsStateInitial value)? initial,
-    TResult? Function(ProjectsStateLoading value)? loading,
-    TResult? Function(ProjectsStateLoaded value)? loaded,
-    TResult? Function(ProjectsStateError value)? error,
-  }) {
-    return loaded?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProjectsStateInitial value)? initial,
-    TResult Function(ProjectsStateLoading value)? loading,
-    TResult Function(ProjectsStateLoaded value)? loaded,
-    TResult Function(ProjectsStateError value)? error,
-    required TResult orElse(),
-  }) {
-    if (loaded != null) {
-      return loaded(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectsStateLoading);
 }
 
-abstract class ProjectsStateLoaded implements ProjectsState {
-  const factory ProjectsStateLoaded(final List<Project> data) =
-      _$ProjectsStateLoadedImpl;
 
-  List<Project> get data;
+@override
+int get hashCode => runtimeType.hashCode;
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProjectsStateLoadedImplCopyWith<_$ProjectsStateLoadedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'ProjectsState.loading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ProjectsStateLoaded implements ProjectsState {
+  const ProjectsStateLoaded(final  List<Project> data): _data = data;
+  
+
+ final  List<Project> _data;
+ List<Project> get data {
+  if (_data is EqualUnmodifiableListView) return _data;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_data);
+}
+
+
+/// Create a copy of ProjectsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProjectsStateLoadedCopyWith<ProjectsStateLoaded> get copyWith => _$ProjectsStateLoadedCopyWithImpl<ProjectsStateLoaded>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectsStateLoaded&&const DeepCollectionEquality().equals(other._data, _data));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_data));
+
+@override
+String toString() {
+  return 'ProjectsState.loaded(data: $data)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$ProjectsStateErrorImplCopyWith<$Res> {
-  factory _$$ProjectsStateErrorImplCopyWith(_$ProjectsStateErrorImpl value,
-          $Res Function(_$ProjectsStateErrorImpl) then) =
-      __$$ProjectsStateErrorImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
+abstract mixin class $ProjectsStateLoadedCopyWith<$Res> implements $ProjectsStateCopyWith<$Res> {
+  factory $ProjectsStateLoadedCopyWith(ProjectsStateLoaded value, $Res Function(ProjectsStateLoaded) _then) = _$ProjectsStateLoadedCopyWithImpl;
+@useResult
+$Res call({
+ List<Project> data
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProjectsStateLoadedCopyWithImpl<$Res>
+    implements $ProjectsStateLoadedCopyWith<$Res> {
+  _$ProjectsStateLoadedCopyWithImpl(this._self, this._then);
+
+  final ProjectsStateLoaded _self;
+  final $Res Function(ProjectsStateLoaded) _then;
+
+/// Create a copy of ProjectsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
+  return _then(ProjectsStateLoaded(
+null == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
+as List<Project>,
+  ));
 }
 
-/// @nodoc
-class __$$ProjectsStateErrorImplCopyWithImpl<$Res>
-    extends _$ProjectsStateCopyWithImpl<$Res, _$ProjectsStateErrorImpl>
-    implements _$$ProjectsStateErrorImplCopyWith<$Res> {
-  __$$ProjectsStateErrorImplCopyWithImpl(_$ProjectsStateErrorImpl _value,
-      $Res Function(_$ProjectsStateErrorImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$ProjectsStateErrorImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$ProjectsStateErrorImpl implements ProjectsStateError {
-  const _$ProjectsStateErrorImpl(this.message);
 
-  @override
-  final String message;
+class ProjectsStateError implements ProjectsState {
+  const ProjectsStateError(this.message);
+  
 
-  @override
-  String toString() {
-    return 'ProjectsState.error(message: $message)';
-  }
+ final  String message;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ProjectsStateErrorImpl &&
-            (identical(other.message, message) || other.message == message));
-  }
+/// Create a copy of ProjectsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProjectsStateErrorCopyWith<ProjectsStateError> get copyWith => _$ProjectsStateErrorCopyWithImpl<ProjectsStateError>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ProjectsStateErrorImplCopyWith<_$ProjectsStateErrorImpl> get copyWith =>
-      __$$ProjectsStateErrorImplCopyWithImpl<_$ProjectsStateErrorImpl>(
-          this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(List<Project> data) loaded,
-    required TResult Function(String message) error,
-  }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(List<Project> data)? loaded,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(List<Project> data)? loaded,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ProjectsStateInitial value) initial,
-    required TResult Function(ProjectsStateLoading value) loading,
-    required TResult Function(ProjectsStateLoaded value) loaded,
-    required TResult Function(ProjectsStateError value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProjectsStateInitial value)? initial,
-    TResult? Function(ProjectsStateLoading value)? loading,
-    TResult? Function(ProjectsStateLoaded value)? loaded,
-    TResult? Function(ProjectsStateError value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProjectsStateInitial value)? initial,
-    TResult Function(ProjectsStateLoading value)? loading,
-    TResult Function(ProjectsStateLoaded value)? loaded,
-    TResult Function(ProjectsStateError value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProjectsStateError&&(identical(other.message, message) || other.message == message));
 }
 
-abstract class ProjectsStateError implements ProjectsState {
-  const factory ProjectsStateError(final String message) =
-      _$ProjectsStateErrorImpl;
 
-  String get message;
+@override
+int get hashCode => Object.hash(runtimeType,message);
 
-  /// Create a copy of ProjectsState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ProjectsStateErrorImplCopyWith<_$ProjectsStateErrorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'ProjectsState.error(message: $message)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class $ProjectsStateErrorCopyWith<$Res> implements $ProjectsStateCopyWith<$Res> {
+  factory $ProjectsStateErrorCopyWith(ProjectsStateError value, $Res Function(ProjectsStateError) _then) = _$ProjectsStateErrorCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProjectsStateErrorCopyWithImpl<$Res>
+    implements $ProjectsStateErrorCopyWith<$Res> {
+  _$ProjectsStateErrorCopyWithImpl(this._self, this._then);
+
+  final ProjectsStateError _self;
+  final $Res Function(ProjectsStateError) _then;
+
+/// Create a copy of ProjectsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(ProjectsStateError(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on
