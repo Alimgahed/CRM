@@ -1,6 +1,10 @@
+import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/controller/Features/ImageController.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -237,7 +241,7 @@ class MediaGridItem extends StatelessWidget {
                     child: CircularProgressIndicator(
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
+                                loadingProgress.expectedTotalBytes!
                           : null,
                       strokeWidth: 2,
                     ),
@@ -323,10 +327,12 @@ class FullscreenImageViewer extends StatelessWidget {
   }
 }
 
+// Assuming AppLocalizations is already defined for your app
+
 class ReusableHeader extends StatelessWidget {
   final String? title; // If provided → show title + back arrow
   final Widget? child; // If provided → show custom widget
-  final VoidCallback? onBack;
+  final VoidCallback? onBack; // Callback for custom back navigation
   final double height;
 
   const ReusableHeader({
@@ -339,6 +345,11 @@ class ReusableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get the localization instance dynamically from the current locale
+    final appLocalizations = AppLocalizations(
+      context.watch<LocaleCubit>().currentLocale,
+    );
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -357,21 +368,26 @@ class ReusableHeader extends StatelessWidget {
         // Foreground content
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: _buildContent(),
+          child: _buildContent(context, appLocalizations),
         ),
       ],
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(
+    BuildContext context,
+    AppLocalizations appLocalizations,
+  ) {
     // CASE 1 → Title mode (title + back arrow)
     if (child == null && title != null) {
       return Padding(
-        padding:  EdgeInsets.only(top: 30.0.h),
+        padding: EdgeInsets.only(top: 30.0.h),
         child: Row(
           children: [
             IconButton(
-              onPressed: onBack ?? () => Get.back(),
+              onPressed: () {
+                context.pop();
+              },
               icon: const Icon(Icons.arrow_back, color: Colors.white),
             ),
             const SizedBox(width: 8),

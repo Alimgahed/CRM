@@ -1,17 +1,23 @@
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 Widget buildHeader(BuildContext context, String userName) {
   return Column(
     children: [
-      _buildUserInfo(userName),
+      _buildUserInfo(context, userName),
       const SizedBox(height: 16),
       _buildSearchBar(),
     ],
   );
 }
 
-Widget _buildUserInfo(String userName) {
+Widget _buildUserInfo(BuildContext context, String userName) {
+  final appLocalizations = AppLocalizations(
+    context.watch<LocaleCubit>().currentLocale,
+  );
   return Row(
     children: [
       const CircleAvatar(backgroundColor: Colors.white, radius: 28),
@@ -22,7 +28,7 @@ Widget _buildUserInfo(String userName) {
         children: [
           SizedBox(height: 30),
           Text(
-            "Welcome".tr,
+            appLocalizations.welcome,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 14,

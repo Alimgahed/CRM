@@ -4,9 +4,10 @@ import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/home/logic/cubit/layout_states.dart';
 import 'package:crm/features/home/ui/screens/home.dart';
 import 'package:crm/features/home/ui/widgets/layout_widget.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/more/ui/screens/More.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Layout extends StatelessWidget {
@@ -14,23 +15,22 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations(
+      context.watch<LocaleCubit>().currentLocale,
+    );
     final double width = MediaQuery.of(context).size.width;
     final cubit = context.read<LayoutCubit>();
 
     // Provide screens here (works only once)
-    cubit.setScreens([
-      Home(),
-      ClientsScreen(),
-      Calendar(),
-      MoreScreen(),
-    ]);
+    cubit.setScreens([Home(), ClientsScreen(), Calendar(), MoreScreen()]);
 
     return BlocBuilder<LayoutCubit, LayoutState>(
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.transparent,
           extendBody: true,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
 
           bottomNavigationBar: SizedBox(
             width: width,
@@ -38,10 +38,7 @@ class Layout extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                CustomPaint(
-                  size: Size(width, 80),
-                  painter: BNBCustomPainter(),
-                ),
+                CustomPaint(size: Size(width, 80), painter: BNBCustomPainter()),
 
                 Center(heightFactor: 0.6, child: CenterFAB()),
 
@@ -57,13 +54,13 @@ class Layout extends StatelessWidget {
                           children: [
                             BottomNavBarItem(
                               icon: Icons.home_outlined,
-                              label: 'Home'.tr,
+                              label: appLocalizations.home,
                               isSelected: cubit.currentIndex == 0,
                               onTap: () => cubit.change(0),
                             ),
                             BottomNavBarItem(
                               icon: Icons.people_outline,
-                              label: 'Clients'.tr,
+                              label: appLocalizations.clients,
                               isSelected: cubit.currentIndex == 1,
                               onTap: () => cubit.change(1),
                             ),
@@ -79,13 +76,13 @@ class Layout extends StatelessWidget {
                           children: [
                             BottomNavBarItem(
                               icon: Icons.calendar_month_outlined,
-                              label: 'Calendar'.tr,
+                              label: appLocalizations.calendar,
                               isSelected: cubit.currentIndex == 2,
                               onTap: () => cubit.change(2),
                             ),
                             BottomNavBarItem(
                               icon: Icons.more_horiz_outlined,
-                              label: 'More'.tr,
+                              label: appLocalizations.more,
                               isSelected: cubit.currentIndex == 3,
                               onTap: () => cubit.change(3),
                             ),

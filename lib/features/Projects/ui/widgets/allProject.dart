@@ -6,7 +6,10 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -18,6 +21,9 @@ class AllprojectWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor = secondaryTextColor;
+    final appLocalizations = AppLocalizations(
+      context.watch<LocaleCubit>().currentLocale,
+    );
 
     return Padding(
       padding: EdgeInsets.all(8.w),
@@ -41,6 +47,8 @@ class AllprojectWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.r),
               child: CachedNetworkImage(
+                memCacheHeight: 600,
+                memCacheWidth: 600,
                 imageUrl:
                     ApiConstants.baseUrl + (project.attachments![0].filePath),
                 width: double.infinity,
@@ -87,7 +95,7 @@ class AllprojectWidget extends StatelessWidget {
                 widthSpace(4),
                 Expanded(
                   child: Text(
-                    project.description ?? 'لا يوجد وصف متاح',
+                    project.description ?? appLocalizations.noData,
                     style: smallStyle.copyWith(
                       color: textColor,
                       fontSize: 12.sp,
@@ -112,20 +120,21 @@ class AllprojectWidget extends StatelessWidget {
                 widthSpace(8),
                 infoChip(
                   Icons.business,
-                  project.devCompany?.companyNameAr ?? 'غير متوفر',
+                  project.devCompany?.companyNameAr ??
+                      appLocalizations
+                          .noData, // Localized fallback for dev company name
                   textColor,
                 ),
               ],
             ),
             heightSpace(10),
 
-            heightSpace(10),
-
             /* ----------------------------- DETAILS BUTTON ----------------------------- */
             Center(
               child: CustomButton(
                 height: 40.h,
-                text: 'عرض التفاصيل',
+                text:
+                    appLocalizations.view, // Localized text for "View Details"
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
@@ -144,7 +153,9 @@ class AllprojectWidget extends StatelessWidget {
   /* ----------------------------- HELPERS ----------------------------- */
 
   String _formatAreaRange(dynamic from, dynamic to) {
-    if (from == null || to == null) return 'غير متوفر';
+    if (from == null || to == null) {
+      return 'غير متوفر'; // Fallback text in Arabic for area if null
+    }
     return '$from م² - $to م²';
   }
 }

@@ -22,5 +22,19 @@ extension Navigation on BuildContext {
     arguments: arguments,
   );
 
-  void pop<T extends Object?>([T? result]) => Navigator.of(this).pop<T>(result);
+  void pop<T extends Object?>([T? result]) {
+    Navigator.of(this).pop<T>(result); // Handles back navigation
+  }
+
+  void popAndRemoveUntil<T>(
+    String routeName, {
+    Object? arguments,
+    bool Function(Route<dynamic>)? predicate,
+  }) {
+    Navigator.of(this).pushNamedAndRemoveUntil(
+      routeName,
+      predicate ?? (route) => false,
+      arguments: arguments,
+    );
+  }
 }
