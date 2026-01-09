@@ -2,6 +2,7 @@ import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/routing/app_router.dart';
 import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/services/user_service.dart';
+import 'package:crm/Core/theming/dark_cubit.dart';
 import 'package:crm/Core/theming/theme.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:flutter/material.dart';
@@ -22,30 +23,41 @@ class Crm extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       builder: (_, __) {
-        return BlocProvider(
-          create: (_) => LocaleCubit(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => LocaleCubit()),
+            BlocProvider(create: (_) => ThemeCubit()),
+          ],
           child: BlocBuilder<LocaleCubit, LocaleState>(
-            builder: (context, state) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'CRM',
+            builder: (context, localeState) {
+              return BlocBuilder<ThemeCubit, ThemeMode>(
+                builder: (context, themeMode) {
+                  return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    title: 'CRM',
 
-                // ✅ Locale
-                locale: Locale(state.locale),
+                    // ✅ Locale
+                    locale: Locale(localeState.locale),
 
-                // ✅ Supported locales
-                supportedLocales: const [Locale('en'), Locale('ar')],
+                    // ✅ Supported locales
+                    supportedLocales: const [Locale('en'), Locale('ar')],
 
-                // ✅ REQUIRED localization delegates
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
+                    // ✅ Localization delegates
+                    localizationsDelegates: const [
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
 
-                theme: AppTheme.lightTheme,
-                onGenerateRoute: appRouter.generateRoute,
-                initialRoute: initialRoute,
+                    // ✅ Theme configuration
+                    theme: AppTheme.lightTheme,
+                    darkTheme: AppTheme.darkTheme,
+                    themeMode: themeMode,
+
+                    onGenerateRoute: appRouter.generateRoute,
+                    initialRoute: initialRoute,
+                  );
+                },
               );
             },
           ),

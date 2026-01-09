@@ -10,6 +10,7 @@ class AddClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final controller = Get.put(AddClientController(), permanent: false);
     final countryController = Get.put(CountryController(), permanent: false);
 
@@ -21,9 +22,11 @@ class AddClient extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             margin: const EdgeInsets.only(top: 8),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,13 +34,17 @@ class AddClient extends StatelessWidget {
                 // Header
                 Row(
                   children: [
-                    const Icon(Icons.person_add),
+                    Icon(
+                      Icons.person_add,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       'Create New Client'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
                       ),
                     ),
                   ],
@@ -73,7 +80,7 @@ class AddClient extends StatelessWidget {
 
                 CustomTextFormField.phone(
                   hintText: 'Phone'.tr,
-                  labelAboveField:'Phone Number'.tr,
+                  labelAboveField: 'Phone Number'.tr,
                   labelText: 'Enter Phone Number'.tr,
                   controller: controller.assignedToController,
                   onSelectCountry: () {
@@ -170,8 +177,6 @@ class AddClient extends StatelessWidget {
               ],
             ),
           ),
-
-          // Floating Close Button (reusable)
         ],
       ),
     );

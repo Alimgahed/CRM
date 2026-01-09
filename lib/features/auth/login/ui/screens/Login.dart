@@ -7,7 +7,6 @@ import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/auth/login/cubit/login_state.dart';
-import 'package:crm/features/auth/login/data/model/login_request_body.dart';
 import 'package:crm/features/auth/login/ui/widgets/emailandpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +18,8 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocProvider(
       create: (context) => getIt<LoginCubit>(),
       child: BlocConsumer<LoginCubit, LoginState>(
@@ -36,7 +37,7 @@ class Login extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
             body: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
@@ -56,9 +57,20 @@ class Login extends StatelessWidget {
                               'images/Group.svg',
                               width: 100.w,
                               height: 100.h,
+                              colorFilter: isDark
+                                  ? ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    )
+                                  : null,
                             ),
                             heightSpace(10),
-                            Text("AQARIA", style: TextStyles.size20()),
+                            Text(
+                              "AQARIA",
+                              style: TextStyles.size20(
+                                color: isDark ? Colors.white : Colors.black,
+                              ),
+                            ),
                             heightSpace(5),
                             Text(
                               'Real Estate CRM System',
@@ -77,14 +89,17 @@ class Login extends StatelessWidget {
                                   "Forgot Password?",
                                   style: TextStyles.size14(
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.black,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.black,
                                   ),
                                 ),
                               ),
                             ),
                             heightSpace(10),
                             state.maybeWhen(
-                              loading: () => const CircularProgressIndicator(),
+                              loading: () =>
+                                  CircularProgressIndicator(color: appColor),
                               orElse: () => CustomButton(
                                 text: "Login",
                                 onPressed: () => validateLogin(context),

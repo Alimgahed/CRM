@@ -18,6 +18,7 @@ class Layout extends StatelessWidget {
     final appLocalizations = AppLocalizations(
       context.watch<LocaleCubit>().currentLocale,
     );
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final double width = MediaQuery.of(context).size.width;
     final cubit = context.read<LayoutCubit>();
 
@@ -38,7 +39,10 @@ class Layout extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                CustomPaint(size: Size(width, 80), painter: BNBCustomPainter()),
+                CustomPaint(
+                  size: Size(width, 80),
+                  painter: BNBCustomPainter(isDark: isDark),
+                ),
 
                 Center(heightFactor: 0.6, child: CenterFAB()),
 
@@ -107,10 +111,14 @@ class Layout extends StatelessWidget {
 // Custom Painter for Bottom Navigation Bar
 // =======================
 class BNBCustomPainter extends CustomPainter {
+  final bool isDark;
+
+  BNBCustomPainter({this.isDark = false});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white
+      ..color = isDark ? const Color(0xFF1E1E1E) : Colors.white
       ..style = PaintingStyle.fill;
 
     final path = Path()
@@ -128,10 +136,12 @@ class BNBCustomPainter extends CustomPainter {
       ..lineTo(0, size.height)
       ..close();
 
-    canvas.drawShadow(path, Colors.black, 5, true);
+    canvas.drawShadow(path, Colors.black, isDark ? 8 : 5, true);
     canvas.drawPath(path, paint);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return oldDelegate is BNBCustomPainter && oldDelegate.isDark != isDark;
+  }
 }

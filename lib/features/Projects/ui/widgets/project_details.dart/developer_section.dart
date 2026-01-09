@@ -18,6 +18,7 @@ class ProjectDeveloperSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
     final dev = project.devCompany;
     if (dev == null) return const SizedBox.shrink();
@@ -32,7 +33,7 @@ class ProjectDeveloperSection extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
               child: Container(
-                color: fieldColor,
+                color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
                 padding: EdgeInsets.all(16.w),
                 child: CachedNetworkImage(
                   memCacheHeight: 800,
@@ -42,12 +43,22 @@ class ProjectDeveloperSection extends StatelessWidget {
                   width: double.infinity,
                   fit: BoxFit.contain,
                   placeholder: (_, __) => Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(height: 80.h, color: Colors.grey),
+                    baseColor: isDark
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300,
+                    highlightColor: isDark
+                        ? Colors.grey.shade700
+                        : Colors.grey.shade100,
+                    child: Container(
+                      height: 80.h,
+                      color: isDark ? Colors.grey.shade800 : Colors.grey,
+                    ),
                   ),
-                  errorWidget: (_, __, ___) =>
-                      Icon(Icons.business, size: 40.sp, color: Colors.grey),
+                  errorWidget: (_, __, ___) => Icon(
+                    Icons.business,
+                    size: 40.sp,
+                    color: isDark ? Colors.grey[600] : Colors.grey,
+                  ),
                 ),
               ),
             ),

@@ -6,12 +6,21 @@ class AllProjectShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
           borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -19,42 +28,54 @@ class AllProjectShimmer extends StatelessWidget {
           children: [
             // IMAGE
             Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
+              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+              highlightColor: isDark
+                  ? Colors.grey.shade700
+                  : Colors.grey.shade100,
               child: Container(
                 height: 190,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
             const SizedBox(height: 10),
-      
+
             // TITLE
             Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
+              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+              highlightColor: isDark
+                  ? Colors.grey.shade700
+                  : Colors.grey.shade100,
               child: Container(
                 height: 20,
                 width: double.infinity,
-                color: Colors.grey.shade300,
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ),
             ),
             const SizedBox(height: 10),
-      
+
             // DESCRIPTION/LOCATION
             Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
+              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+              highlightColor: isDark
+                  ? Colors.grey.shade700
+                  : Colors.grey.shade100,
               child: Container(
                 height: 15,
                 width: 150,
-                color: Colors.grey.shade300,
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ),
             ),
             const SizedBox(height: 10),
-      
+
             // PRICE + AREA + COMPANY CHIPS
             Row(
               children: List.generate(
@@ -62,13 +83,19 @@ class AllProjectShimmer extends StatelessWidget {
                 (_) => Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
+                    baseColor: isDark
+                        ? Colors.grey.shade800
+                        : Colors.grey.shade300,
+                    highlightColor: isDark
+                        ? Colors.grey.shade700
+                        : Colors.grey.shade100,
                     child: Container(
                       height: 25,
                       width: 80,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
+                        color: isDark
+                            ? Colors.grey.shade800
+                            : Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
@@ -77,8 +104,6 @@ class AllProjectShimmer extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-      
-           
           ],
         ),
       ),

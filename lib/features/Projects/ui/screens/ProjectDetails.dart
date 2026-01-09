@@ -27,6 +27,8 @@ class ProjectDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     // Get localization from LocaleCubit
     final locale = context.watch<LocaleCubit>().currentLocale;
     final l10n = AppLocalizations(locale);
@@ -36,9 +38,9 @@ class ProjectDetailsScreen extends StatelessWidget {
           ProjectDetailsCubit(baseUrl: ApiConstants.baseUrl)
             ..loadProject(project),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
           elevation: 0,
           leading: BackButton(color: appColor, onPressed: () => context.pop()),
           title: Text(
@@ -117,21 +119,3 @@ class ProjectDetailsScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-// =============================================================
-// PROJECT STAGES
-// =============================================================
-
-
-// =============================================================
-// ATTACHMENTS SECTION
-// =============================================================
-
-// =============================================================
-// REUSABLE UI COMPONENTS
-//

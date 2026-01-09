@@ -8,6 +8,19 @@ import 'package:crm/features/actions/ui/screens/add_project.dart';
 import 'package:crm/features/actions/ui/screens/add_task.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// lib/features/home/logic/cubit/dialog_cubit.dart
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class DialogCubit extends Cubit<int> {
+  DialogCubit() : super(-1);
+
+  void selectIndex(int index) => emit(index);
+
+  void reset() => emit(-1);
+}
+// =======================
+// Model: Dialog Item
+// =======================
 
 class DialogItem {
   final IconData icon;
@@ -22,15 +35,6 @@ class DialogItem {
 }
 
 // =======================
-// Controller: Dialog Selection
-// =======================
-class DialogController extends GetxController {
-  var selectedIndex = (-1).obs;
-
-  void selectIndex(int index) => selectedIndex.value = index;
-}
-
-// =======================
 // Widget: Custom Bottom Sheet Dialog
 // =======================
 
@@ -41,64 +45,77 @@ class CustomBottomSheetDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(DialogController(), permanent: false);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const FloatingCloseButton(),
+    return BlocProvider(
+      create: (_) => DialogCubit(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const FloatingCloseButton(),
 
-          // Bottom Sheet Container
-          Container(
-            margin: const EdgeInsets.only(top: 10), // space for FAB
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: items.asMap().entries.map((entry) {
-                final idx = entry.key;
-                final item = entry.value;
-                return Container(
-                  height: 56,
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      controller.selectIndex(idx);
-                      Get.back(); // Close this sheet
-                      item.onTap();
-                    },
-                    child: Row(
-                      children: [
-                        SizedBox(width: 20),
-                        Icon(item.icon, color: appColor),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            item.text,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10), // space for FAB
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: items.asMap().entries.map((entry) {
+                  final idx = entry.key;
+                  final item = entry.value;
+                  return BlocBuilder<DialogCubit, int>(
+                    builder: (context, selectedIndex) {
+                      return Container(
+                        height: 56,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: isDark ? Colors.grey.shade700 : Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                          // Highlight selected item
+                          color: selectedIndex == idx
+                              ? appColor.withOpacity(0.05)
+                              : null,
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            context.read<DialogCubit>().selectIndex(idx);
+                            Navigator.pop(context); // Close this sheet
+                            item.onTap();
+                          },
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 20),
+                              Icon(item.icon, color: appColor),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  item.text,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: isDark ? Colors.white : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
             ),
-          ),
-
-          // Floating Close Button
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -109,86 +126,99 @@ class CenterFAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () {
-        Get.bottomSheet(
-          CustomBottomSheetDialog(
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: Colors.transparent,
+          isScrollControlled: true,
+          builder: (context) => CustomBottomSheetDialog(
             items: [
               DialogItem(
                 icon: Icons.task_alt,
                 text: 'Create New Task'.tr,
                 onTap: () {
                   // Open AddTask as bottom sheet
-                  Get.bottomSheet(
-                    const AddTask(),
-                    isScrollControlled: true, // Makes it full height if needed
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
                     backgroundColor: Colors.transparent,
+                    builder: (context) => const AddTask(),
                   );
                 },
               ),
 
               DialogItem(
-                icon: Icons.person_add, // New client
+                icon: Icons.person_add,
                 text: 'Create New Client'.tr,
                 onTap: () {
                   // Open AddClient as bottom sheet
-                  Get.bottomSheet(
-                    FractionallySizedBox(
-                      heightFactor: 0.8, // 👈 controls height (80% of screen)
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => FractionallySizedBox(
+                      heightFactor: 0.8,
                       child: const AddClient(),
                     ),
-
-                    isScrollControlled: true, // Makes it full height if needed
-                    backgroundColor: Colors.transparent,
                   );
                 },
               ),
               DialogItem(
-                icon: Icons.business_sharp, // Project
+                icon: Icons.business_sharp,
                 text: 'Add New Project'.tr,
                 onTap: () {
-                  Get.bottomSheet(
-                    FileUploadScreen(text: "Upload Project Details".tr),
-                    isScrollControlled: true, // Makes it full height if needed
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
                     backgroundColor: Colors.transparent,
+                    builder: (context) =>
+                        FileUploadScreen(text: "Upload Project Details".tr),
                   );
                 },
               ),
               DialogItem(
-                icon: Icons.apartment, // Property
+                icon: Icons.apartment,
                 text: 'Add New Property'.tr,
                 onTap: () {
-                  Get.bottomSheet(
-                    FileUploadScreen(text: "Upload Property Details".tr),
-                    isScrollControlled: true, // Makes it full height if needed
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
                     backgroundColor: Colors.transparent,
+                    builder: (context) =>
+                        FileUploadScreen(text: "Upload Property Details".tr),
                   );
                 },
               ),
               DialogItem(
-                icon: Icons.engineering, // Developer
+                icon: Icons.engineering,
                 text: 'Add New Developer'.tr,
                 onTap: () {
-                  Get.bottomSheet(
-                    FileUploadScreen(text: "Upload Developer Details".tr),
-                    isScrollControlled: true, // Makes it full height if needed
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
                     backgroundColor: Colors.transparent,
+                    builder: (context) =>
+                        FileUploadScreen(text: "Upload Developer Details".tr),
                   );
                 },
               ),
             ],
           ),
-          backgroundColor: Colors.transparent,
-          isScrollControlled: true,
         );
       },
       child: Container(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 6),
+          border: Border.all(
+            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+            width: 6,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withOpacity(isDark ? 0.4 : 0.1),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -203,8 +233,6 @@ class CenterFAB extends StatelessWidget {
     );
   }
 }
-
-// Example print callbacks
 
 // =======================
 // Bottom Navigation Item
@@ -225,7 +253,10 @@ class BottomNavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? appColor : Colors.grey;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isSelected
+        ? appColor
+        : (isDark ? Colors.grey.shade400 : Colors.grey);
 
     return Expanded(
       child: InkWell(

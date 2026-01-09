@@ -39,13 +39,18 @@ class StageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(14.w),
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
-        color: containerColor,
+        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: divColor, width: 1),
+        border: Border.all(
+          color: isDark ? Colors.grey.shade700 : divColor,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,7 +64,7 @@ class StageCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
               ),
             ],
@@ -85,17 +90,22 @@ class GroupChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: fieldColor,
+        color: isDark ? const Color(0xFF1E1E1E) : fieldColor,
         borderRadius: BorderRadius.circular(8.r),
+        border: isDark
+            ? Border.all(color: Colors.grey.shade700, width: 1)
+            : null,
       ),
       child: Text(
         group.stageCode,
         style: TextStyle(
           fontSize: 12.sp,
-          color: secondaryTextColor,
+          color: isDark ? Colors.white70 : secondaryTextColor,
           fontWeight: FontWeight.w500,
         ),
       ),

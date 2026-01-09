@@ -31,7 +31,3 @@ class ProjectAttachmentsSection extends StatelessWidget {
     );
   }
 }
-
-// =============================================================
-// ATTACHMENT TILE WITH CUBIT
-// =============================================================

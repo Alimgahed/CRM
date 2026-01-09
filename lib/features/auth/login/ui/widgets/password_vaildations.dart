@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class PasswordValidation extends StatelessWidget {
-  const PasswordValidation({super.key, required this.haslowercase, required this.hasuppercase, required this.hasnumber, required this.hasspecialchar, required this.hasminlength});
+  const PasswordValidation({
+    super.key,
+    required this.haslowercase,
+    required this.hasuppercase,
+    required this.hasnumber,
+    required this.hasspecialchar,
+    required this.hasminlength,
+  });
+
   final bool haslowercase;
   final bool hasuppercase;
   final bool hasnumber;
@@ -10,42 +18,46 @@ class PasswordValidation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       children: [
-        Row(
-          children: [
-            Icon(haslowercase ? Icons.check : Icons.close, color: haslowercase ? Colors.green : Colors.red),
-            const SizedBox(width: 8),
-            const Text('At least one lowercase letter'),
-          ],
+        _buildValidationRow(
+          haslowercase,
+          'At least one lowercase letter',
+          isDark,
         ),
-        Row(
-          children: [
-            Icon(hasuppercase ? Icons.check : Icons.close, color: hasuppercase ? Colors.green : Colors.red),
-            const SizedBox(width: 8),
-            const Text('At least one uppercase letter'),
-          ],
+        _buildValidationRow(
+          hasuppercase,
+          'At least one uppercase letter',
+          isDark,
         ),
-        Row(
-          children: [
-            Icon(hasnumber ? Icons.check : Icons.close, color: hasnumber ? Colors.green : Colors.red),
-            const SizedBox(width: 8),
-            const Text('At least one number'),
-          ],
+        _buildValidationRow(hasnumber, 'At least one number', isDark),
+        _buildValidationRow(
+          hasspecialchar,
+          'At least one special character',
+          isDark,
         ),
-        Row(
-          children: [
-            Icon(hasspecialchar ? Icons.check : Icons.close, color: hasspecialchar ? Colors.green : Colors.red),
-            const SizedBox(width: 8),
-            const Text('At least one special character'),
-          ],
+        _buildValidationRow(hasminlength, 'At least 8 characters', isDark),
+      ],
+    );
+  }
+
+  Widget _buildValidationRow(bool isValid, String text, bool isDark) {
+    return Row(
+      children: [
+        Icon(
+          isValid ? Icons.check : Icons.close,
+          color: isValid ? Colors.green : Colors.red,
+          size: 20,
         ),
-        Row(
-          children: [
-            Icon(hasminlength ? Icons.check : Icons.close, color: hasminlength ? Colors.green : Colors.red),
-            const SizedBox(width: 8),
-            const Text('At least 8 characters'),
-          ],
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 14,
+            color: isDark ? Colors.white70 : Colors.black87,
+          ),
         ),
       ],
     );

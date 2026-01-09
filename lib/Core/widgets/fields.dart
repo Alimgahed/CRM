@@ -58,6 +58,7 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     // Reactive password toggle
     final isObscured = obscureText.obs;
 
@@ -68,16 +69,24 @@ class CustomTextFormField extends StatelessWidget {
         if (text != null && text!.isNotEmpty)
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
-            child: Text(text!,
-                style: TextStyles.size16(fontWeight: FontWeight.w400)),
+            child: Text(
+              text!,
+              style: TextStyles.size16(
+                fontWeight: FontWeight.w400,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
           ),
         if (text != null && text!.isNotEmpty) SizedBox(height: 10.h),
 
         Container(
           padding: EdgeInsets.all(8.0.h),
           decoration: BoxDecoration(
-            color: fieldColor,
+            color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
             borderRadius: BorderRadius.circular(12),
+            border: isDark
+                ? Border.all(color: Colors.grey.shade700, width: 1)
+                : null,
           ),
           child: Obx(
             () => TextFormField(
@@ -85,26 +94,37 @@ class CustomTextFormField extends StatelessWidget {
               onTap: onTap,
               readOnly: readOnly,
               obscureText: isObscured.value,
-              keyboardType: keyboardType ??
+              keyboardType:
+                  keyboardType ??
                   (isPhoneField ? TextInputType.phone : TextInputType.text),
-              inputFormatters: inputFormatters ??
+              inputFormatters:
+                  inputFormatters ??
                   (isPhoneField
                       ? [FilteringTextInputFormatter.digitsOnly]
                       : null),
               maxLines: obscureText ? 1 : maxLines,
               maxLength: maxLength,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black),
               decoration: InputDecoration(
                 labelText: labelText,
-                hintStyle: TextStyles.size12(color: Colors.grey),
+                labelStyle: TextStyles.size12(
+                  color: isDark ? (Colors.grey[400] ?? Colors.grey) : Colors.grey,
+                ),
+                hintStyle: TextStyles.size12(
+                  color: isDark ? (Colors.grey[500] ?? Colors.grey) : Colors.grey,
+                ),
                 hintText: hintText,
                 border: InputBorder.none,
                 counterText: maxLength != null ? null : '',
+                counterStyle: TextStyle(
+                  color: isDark ? Colors.grey[400] : Colors.grey,
+                ),
 
                 // Prefix
-                prefixIcon: _buildPrefixWidget(),
+                prefixIcon: _buildPrefixWidget(isDark),
 
                 // Suffix
-                suffixIcon: _buildSuffixWidget(isObscured),
+                suffixIcon: _buildSuffixWidget(isObscured, isDark),
               ),
               validator: useValidator ? _getValidator() : null,
               onChanged: onChanged,
@@ -117,7 +137,7 @@ class CustomTextFormField extends StatelessWidget {
   }
 
   /// Prefix widget
-  Widget? _buildPrefixWidget() {
+  Widget? _buildPrefixWidget(bool isDark) {
     if (prefixWidget != null) return prefixWidget;
 
     if (isPhoneField && onSelectCountry != null) {
@@ -131,7 +151,11 @@ class CustomTextFormField extends StatelessWidget {
         children: [
           Icon(iconData, color: appColor),
           const SizedBox(width: 8),
-          Container(height: 24, width: 1, color: Colors.grey.shade300),
+          Container(
+            height: 24,
+            width: 1,
+            color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+          ),
         ],
       );
     }
@@ -140,14 +164,14 @@ class CustomTextFormField extends StatelessWidget {
   }
 
   /// Suffix widget (password toggle)
-  Widget? _buildSuffixWidget(RxBool isObscured) {
+  Widget? _buildSuffixWidget(RxBool isObscured, bool isDark) {
     if (suffixWidget != null) return suffixWidget;
 
     if (enableTogglePassword && obscureText) {
       return IconButton(
         icon: Icon(
           isObscured.value ? Icons.visibility_off : Icons.visibility,
-          color: Colors.grey,
+          color: isDark ? Colors.grey[400] : Colors.grey,
         ),
         onPressed: () => isObscured.toggle(),
       );
@@ -269,6 +293,8 @@ class CustomDropdownFormField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -277,10 +303,11 @@ class CustomDropdownFormField<T> extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Text(
               text!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 14,
                 height: 1.5,
+                color: isDark ? Colors.white : Colors.black87,
               ),
             ),
           ),
@@ -288,8 +315,11 @@ class CustomDropdownFormField<T> extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: inputFieldColor,
+            color: isDark ? const Color(0xFF2C2C2C) : inputFieldColor,
             borderRadius: BorderRadius.circular(12),
+            border: isDark
+                ? Border.all(color: Colors.grey.shade700, width: 1)
+                : null,
           ),
           child: DropdownButtonFormField<T>(
             initialValue: value,
@@ -297,21 +327,35 @@ class CustomDropdownFormField<T> extends StatelessWidget {
             onChanged: readOnly ? null : onChanged,
             validator: useValidator
                 ? validator ??
-                    (val) {
-                      if (val == null) return "This field cannot be empty".tr;
-                      return null;
-                    }
+                      (val) {
+                        if (val == null) return "This field cannot be empty".tr;
+                        return null;
+                      }
                 : null,
             decoration: InputDecoration(
               labelText: labelText,
-              labelStyle: const TextStyle(color: Colors.grey, fontSize: 12),
+              labelStyle: TextStyle(
+                color: isDark ? Colors.grey[400] : Colors.grey,
+                fontSize: 12,
+              ),
               hintText: hintText,
-              prefixIcon:
-                  iconData != null ? Icon(iconData, color: appColor) : null,
+              hintStyle: TextStyle(
+                color: isDark ? Colors.grey[500] : Colors.grey,
+              ),
+              prefixIcon: iconData != null
+                  ? Icon(iconData, color: appColor)
+                  : null,
               border: InputBorder.none,
             ),
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-            dropdownColor: Colors.white,
+            style: TextStyle(
+              fontSize: 16,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+            dropdownColor: isDark ? const Color(0xFF2C2C2C) : Colors.white,
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: isDark ? Colors.grey[400] : Colors.grey,
+            ),
           ),
         ),
       ],
@@ -330,8 +374,16 @@ class GlobalPopupMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return PopupMenuButton<int>(
-      icon: icon ?? const Icon(Icons.more_vert_rounded),
+      icon:
+          icon ??
+          Icon(
+            Icons.more_vert_rounded,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+      color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
       onSelected: (index) {
         if (index >= 0 && index < items.length) {
           items[index].onTap?.call();
@@ -344,10 +396,18 @@ class GlobalPopupMenu extends StatelessWidget {
           child: Row(
             children: [
               if (items[index].icon != null) ...[
-                Icon(items[index].icon, color: items[index].iconColor),
+                Icon(
+                  items[index].icon,
+                  color:
+                      items[index].iconColor ??
+                      (isDark ? Colors.white70 : Colors.black87),
+                ),
                 const SizedBox(width: 8),
               ],
-              Text(items[index].title),
+              Text(
+                items[index].title,
+                style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+              ),
             ],
           ),
         ),

@@ -7,16 +7,18 @@ class SalesPerformanceStages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.only(top: 0.0, right: 8, left: 8.0, bottom: 16),
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -29,18 +31,18 @@ class SalesPerformanceStages extends StatelessWidget {
             children: [
               Text(
                 "Sales Performance Stages".tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Salesperformance(
                 title: "عملاء تم التواصل معهم".tr,
                 amount: "40",
                 ratio: 0.15,
-                color: Color(0xFFDB5837),
+                color: const Color(0xFFDB5837),
               ),
               const SizedBox(height: 12),
               Salesperformance(
@@ -54,7 +56,7 @@ class SalesPerformanceStages extends StatelessWidget {
                 title: "عملاء ارسل اليهم عروض".tr,
                 amount: "40",
                 ratio: 0.15,
-                color: Color(0xFFF5B040),
+                color: const Color(0xFFF5B040),
               ),
               const SizedBox(height: 12),
               Expanded(
@@ -62,7 +64,7 @@ class SalesPerformanceStages extends StatelessWidget {
                   title: "Pending Deals".tr,
                   amount: "40",
                   ratio: 0.15,
-                  color: Color(0xFF2D384C),
+                  color: const Color(0xFF2D384C),
                 ),
               ),
               Center(
@@ -101,6 +103,7 @@ class Salesperformance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final progressValue = ratio.abs().clamp(0.0, 1.0);
 
     return Column(
@@ -111,29 +114,30 @@ class Salesperformance extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: isDark ? Colors.white : Colors.black,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-
-            Spacer(),
+            const Spacer(),
             Text(
               amount,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Colors.black87,
+                color: isDark ? Colors.white70 : Colors.black87,
               ),
             ),
             const SizedBox(width: 5),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.1),
+                color: isDark
+                    ? Colors.grey.withOpacity(0.2)
+                    : Colors.grey.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(
@@ -143,7 +147,7 @@ class Salesperformance extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
-                      color: Colors.grey,
+                      color: isDark ? Colors.grey[400] : Colors.grey,
                     ),
                   ),
                 ],
@@ -160,12 +164,12 @@ class Salesperformance extends StatelessWidget {
           child: LinearProgressIndicator(
             value: progressValue,
             minHeight: 20,
-            backgroundColor: Colors.grey.shade200,
+            backgroundColor: isDark
+                ? Colors.grey.shade800
+                : Colors.grey.shade200,
             valueColor: AlwaysStoppedAnimation<Color>(color),
           ),
         ),
-
-        // --- Date and Forward Icon ---
       ],
     );
   }

@@ -57,19 +57,24 @@ class PriceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: containerColor,
+        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: divColor, width: 1),
+        border: Border.all(
+          color: isDark ? Colors.grey.shade700 : divColor,
+          width: 1,
+        ),
       ),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.all(10.w),
             decoration: BoxDecoration(
-              color: appColor.withOpacity(0.1),
+              color: appColor.withOpacity(isDark ? 0.2 : 0.1),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Icon(icon, color: appColor, size: 22.sp),
@@ -83,7 +88,7 @@ class PriceCard extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: secondaryTextColor,
+                    color: isDark ? Colors.white60 : secondaryTextColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

@@ -7,7 +7,6 @@ class Emailandpassword extends StatefulWidget {
   const Emailandpassword({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _EmailandpasswordState createState() => _EmailandpasswordState();
 }
 
@@ -37,7 +36,7 @@ class _EmailandpasswordState extends State<Emailandpassword> {
               // return null;
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           CustomTextFormField.password(
             controller: cubit.passwordController,
             labelAboveField: 'Password',

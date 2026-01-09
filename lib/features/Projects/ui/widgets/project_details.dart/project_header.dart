@@ -15,6 +15,7 @@ class ProjectHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
 
     return ModernCard(
@@ -23,7 +24,7 @@ class ProjectHeader extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: appColor.withOpacity(0.1),
+              color: appColor.withOpacity(isDark ? 0.2 : 0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(Icons.apartment_rounded, size: 32.sp, color: appColor),
@@ -38,7 +39,7 @@ class ProjectHeader extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: isDark ? Colors.white : Colors.black87,
                   ),
                 ),
                 if (project.projectNameEn.isNotEmpty) ...[
@@ -47,7 +48,7 @@ class ProjectHeader extends StatelessWidget {
                     project.projectNameEn,
                     style: TextStyle(
                       fontSize: 13.sp,
-                      color: secondaryTextColor,
+                      color: isDark ? Colors.white60 : secondaryTextColor,
                     ),
                   ),
                 ],
@@ -59,14 +60,14 @@ class ProjectHeader extends StatelessWidget {
                       vertical: 4.h,
                     ),
                     decoration: BoxDecoration(
-                      color: fieldColor,
+                      color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: Text(
                       '${l10n.prefix}: ${project.projectPrefix}',
                       style: TextStyle(
                         fontSize: 11.sp,
-                        color: secondaryTextColor,
+                        color: isDark ? Colors.white70 : secondaryTextColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

@@ -8,16 +8,18 @@ class Clients extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.only(top: 0.0, right: 8, left: 8.0, bottom: 16),
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -30,13 +32,13 @@ class Clients extends StatelessWidget {
             children: [
               Text(
                 "Clients".tr,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black87,
+                  color: isDark ? Colors.white : Colors.black87,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ClientsWidget(
                 name: "شركة النور للتجارة".tr,
                 location: "الرياض".tr,
@@ -48,7 +50,7 @@ class Clients extends StatelessWidget {
                 name: "أحمد علي".tr,
                 location: "جدة".tr,
                 statues: "مفلق".tr,
-                color: Color(0xFF4CAF50),
+                color: const Color(0xFF4CAF50),
               ),
               const SizedBox(height: 8),
               ClientsWidget(
@@ -65,7 +67,6 @@ class Clients extends StatelessWidget {
                 color: const Color.fromARGB(255, 232, 210, 10),
               ),
               const SizedBox(height: 12),
-
               const Center(
                 child: Text(
                   "عرض الجميع ",
@@ -102,11 +103,13 @@ class ClientsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: containerColor,
+        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -126,10 +129,10 @@ class ClientsWidget extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -137,10 +140,10 @@ class ClientsWidget extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   location,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: secondaryTextColor,
+                    color: isDark ? Colors.white60 : secondaryTextColor,
                   ),
                 ),
               ],
@@ -171,7 +174,7 @@ class ClientsWidget extends StatelessWidget {
               PopupMenuItemModel(
                 title: 'تعديل'.tr,
                 icon: Icons.edit,
-                iconColor: Colors.black54,
+                iconColor: isDark ? Colors.white70 : Colors.black54,
                 onTap: () {
                   Get.snackbar('Edit', 'Editing client...');
                 },
@@ -187,6 +190,15 @@ class ClientsWidget extends StatelessWidget {
                     textConfirm: 'حذف'.tr,
                     textCancel: 'إلغاء'.tr,
                     confirmTextColor: Colors.white,
+                    backgroundColor: isDark
+                        ? const Color(0xFF1E1E1E)
+                        : Colors.white,
+                    titleStyle: TextStyle(
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
+                    middleTextStyle: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black87,
+                    ),
                     onConfirm: () {
                       Get.back();
                       Get.snackbar('تم'.tr, 'تم حذف العميل'.tr);

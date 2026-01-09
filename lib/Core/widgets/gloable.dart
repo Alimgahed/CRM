@@ -154,14 +154,22 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bg = backgroundColor ?? Colors.white;
-    final icColor = iconColor ?? Colors.grey;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // Use provided colors or default based on theme
+    final bg =
+        backgroundColor ?? (isDark ? const Color(0xFF2C2C2C) : Colors.white);
+    final icColor = iconColor ?? (isDark ? Colors.grey[400] : Colors.grey);
 
     return Container(
       height: height,
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(borderRadius),
+        // Optional: Add border for better definition in dark mode
+        border: isDark
+            ? Border.all(color: Colors.grey.shade700, width: 1)
+            : null,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
@@ -174,13 +182,16 @@ class SearchBarWidget extends StatelessWidget {
             child: TextFormField(
               controller: controller,
               onChanged: onChanged,
+              style: TextStyle(
+                fontSize: 13,
+                color: isDark ? Colors.white : Colors.black,
+              ),
               decoration: InputDecoration(
                 hintText: hintText.tr,
                 hintStyle: TextStyle(color: icColor, fontSize: 12),
                 isDense: true,
                 border: InputBorder.none,
               ),
-              style: const TextStyle(fontSize: 13),
             ),
           ),
 

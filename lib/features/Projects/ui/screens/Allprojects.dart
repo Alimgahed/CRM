@@ -16,20 +16,20 @@ class Allprojects extends StatelessWidget {
     final appLocalizations = AppLocalizations(
       context.watch<LocaleCubit>().currentLocale,
     );
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey[50],
       body: Column(
         children: [
-          ReusableHeader(
-            title: appLocalizations.projects,
-          ), // Using localized text
+          ReusableHeader(title: appLocalizations.projects),
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SearchBarWidget(
               prefixIcon: Icons.search,
               suffixIcon: Icons.filter_list,
-              hintText: appLocalizations.search, // Localized hint text
+              hintText: appLocalizations.search,
             ),
           ),
           const SizedBox(height: 10),
@@ -38,19 +38,40 @@ class Allprojects extends StatelessWidget {
               builder: (context, state) {
                 return state.when(
                   initial: () => Center(
-                    child: Text(appLocalizations.noData),
-                  ), // Localized "No Data"
+                    child: Text(
+                      appLocalizations.noData,
+                      style: TextStyle(
+                        color: isDark ? Colors.white70 : Colors.black87,
+                      ),
+                    ),
+                  ),
                   loading: () => ListView.builder(
                     itemCount: 5,
                     itemBuilder: (_, __) => const AllProjectShimmer(),
                   ),
-                  loaded: (projects) => ListView.builder(
-                    itemCount: projects.length,
-                    itemBuilder: (_, index) {
-                      return AllprojectWidget(project: projects[index]);
-                    },
+                  loaded: (projects) => projects.isEmpty
+                      ? Center(
+                          child: Text(
+                            appLocalizations.noData,
+                            style: TextStyle(
+                              color: isDark ? Colors.white70 : Colors.black87,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: projects.length,
+                          itemBuilder: (_, index) {
+                            return AllprojectWidget(project: projects[index]);
+                          },
+                        ),
+                  error: (message) => Center(
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        color: isDark ? Colors.red[300] : Colors.red,
+                      ),
+                    ),
                   ),
-                  error: (message) => Center(child: Text(message)),
                 );
               },
             ),

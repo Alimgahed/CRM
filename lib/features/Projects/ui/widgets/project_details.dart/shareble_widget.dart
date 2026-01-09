@@ -19,18 +19,23 @@ class ModernCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: divColor, width: 1),
+        border: Border.all(
+          color: isDark ? Colors.grey.shade700 : divColor,
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withOpacity(isDark ? 0.3 : 0.03),
             blurRadius: 10,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -46,12 +51,14 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Text(
       title,
       style: TextStyle(
         fontSize: 16.sp,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: isDark ? Colors.white : Colors.black87,
       ),
     );
   }
@@ -71,6 +78,8 @@ class ModernInfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (value == null || value!.isEmpty) return const SizedBox.shrink();
 
     return Padding(
@@ -85,7 +94,7 @@ class ModernInfoRow extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 13.sp,
-                color: secondaryTextColor,
+                color: isDark ? Colors.white70 : secondaryTextColor,
               ),
             ),
           ),
@@ -97,7 +106,7 @@ class ModernInfoRow extends StatelessWidget {
               textAlign: TextAlign.end,
               style: TextStyle(
                 fontSize: 13.sp,
-                color: valueColor ?? Colors.black87,
+                color: valueColor ?? (isDark ? Colors.white : Colors.black87),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -115,15 +124,19 @@ class PaymentPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
 
     return Container(
       padding: EdgeInsets.all(14.w),
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
-        color: containerColor,
+        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: divColor, width: 1),
+        border: Border.all(
+          color: isDark ? Colors.grey.shade700 : divColor,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,6 +177,7 @@ class AttachmentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
     final isImage = attachment.fileType?.startsWith('image/') ?? false;
     final isPdf = attachment.fileType == 'application/pdf';
@@ -178,9 +192,12 @@ class AttachmentTile extends StatelessWidget {
         return Container(
           margin: EdgeInsets.only(bottom: 12.h),
           decoration: BoxDecoration(
-            color: containerColor,
+            color: isDark ? const Color(0xFF2C2C2C) : containerColor,
             borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: divColor, width: 1),
+            border: Border.all(
+              color: isDark ? Colors.grey.shade700 : divColor,
+              width: 1,
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +209,7 @@ class AttachmentTile extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(10.w),
                       decoration: BoxDecoration(
-                        color: appColor.withOpacity(0.1),
+                        color: appColor.withOpacity(isDark ? 0.2 : 0.1),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: Icon(
@@ -217,7 +234,7 @@ class AttachmentTile extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13.sp,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black87,
+                              color: isDark ? Colors.white : Colors.black87,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -228,7 +245,9 @@ class AttachmentTile extends StatelessWidget {
                               _formatFileSize(attachment.fileSize!),
                               style: TextStyle(
                                 fontSize: 11.sp,
-                                color: secondaryTextColor,
+                                color: isDark
+                                    ? Colors.white60
+                                    : secondaryTextColor,
                               ),
                             ),
                           ],
@@ -238,8 +257,10 @@ class AttachmentTile extends StatelessWidget {
                               borderRadius: BorderRadius.circular(4.r),
                               child: LinearProgressIndicator(
                                 value: progress,
-                                backgroundColor: fieldColor,
-                                valueColor: AlwaysStoppedAnimation<Color>(
+                                backgroundColor: isDark
+                                    ? Colors.grey.shade800
+                                    : fieldColor,
+                                valueColor: const AlwaysStoppedAnimation<Color>(
                                   appColor,
                                 ),
                                 minHeight: 4.h,
@@ -257,7 +278,9 @@ class AttachmentTile extends StatelessWidget {
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
                           value: progress,
-                          valueColor: AlwaysStoppedAnimation<Color>(appColor),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                            appColor,
+                          ),
                         ),
                       )
                     else
@@ -273,7 +296,7 @@ class AttachmentTile extends StatelessWidget {
                               .downloadAttachment(attachment);
                         },
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
+                        constraints: const BoxConstraints(),
                       ),
                   ],
                 ),
@@ -292,17 +315,24 @@ class AttachmentTile extends StatelessWidget {
                     height: 180.h,
                     fit: BoxFit.cover,
                     placeholder: (_, __) => Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade100,
-                      child: Container(height: 180.h, color: Colors.grey),
+                      baseColor: isDark
+                          ? Colors.grey.shade800
+                          : Colors.grey.shade300,
+                      highlightColor: isDark
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade100,
+                      child: Container(
+                        height: 180.h,
+                        color: isDark ? Colors.grey.shade800 : Colors.grey,
+                      ),
                     ),
                     errorWidget: (_, __, ___) => Container(
                       height: 180.h,
-                      color: fieldColor,
+                      color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
                       child: Icon(
                         Icons.error_outline,
                         size: 40.sp,
-                        color: Colors.grey,
+                        color: isDark ? Colors.grey[600] : Colors.grey,
                       ),
                     ),
                   ),

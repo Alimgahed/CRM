@@ -17,8 +17,10 @@ class MoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = context.watch<LocaleCubit>().currentLocale;
     final l10n = AppLocalizations(locale);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -102,6 +104,7 @@ class MoreScreen extends StatelessWidget {
               onTap: () async {
                 final userService = getIt<UserService>();
                 await userService.clearUser();
+                // ignore: use_build_context_synchronously
                 context.pushNamedAndRemoveUntil(Routes.login);
               },
             ),

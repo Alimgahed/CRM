@@ -20,7 +20,8 @@ class AllprojectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = secondaryTextColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white70 : secondaryTextColor;
     final appLocalizations = AppLocalizations(
       context.watch<LocaleCubit>().currentLocale,
     );
@@ -29,11 +30,13 @@ class AllprojectWidget extends StatelessWidget {
       padding: EdgeInsets.all(8.w),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
           borderRadius: BorderRadius.circular(8.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade200,
+              color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.grey.shade200,
               blurRadius: 6.r,
               offset: Offset(0, 3.h),
             ),
@@ -55,22 +58,26 @@ class AllprojectWidget extends StatelessWidget {
                 height: 190.h,
                 fit: BoxFit.cover,
                 placeholder: (_, __) => Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
+                  baseColor: isDark
+                      ? Colors.grey.shade800
+                      : Colors.grey.shade300,
+                  highlightColor: isDark
+                      ? Colors.grey.shade700
+                      : Colors.grey.shade100,
                   child: Container(
                     width: double.infinity,
                     height: 190.h,
-                    color: Colors.grey.shade300,
+                    color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
                   ),
                 ),
                 errorWidget: (_, __, ___) => Container(
                   width: double.infinity,
                   height: 190.h,
-                  color: Colors.grey.shade300,
+                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
                   child: Icon(
                     Icons.broken_image,
                     size: 60.sp,
-                    color: Colors.grey,
+                    color: isDark ? Colors.grey[600] : Colors.grey,
                   ),
                 ),
               ),
@@ -81,7 +88,10 @@ class AllprojectWidget extends StatelessWidget {
             /* ----------------------------- PROJECT NAME ----------------------------- */
             Text(
               '${project.projectName} - ${project.projectNameEn}',
-              style: titleStyle.copyWith(color: textColor, fontSize: 16.sp),
+              style: titleStyle.copyWith(
+                color: isDark ? Colors.white : textColor,
+                fontSize: 16.sp,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -116,14 +126,14 @@ class AllprojectWidget extends StatelessWidget {
                   Icons.architecture_outlined,
                   _formatAreaRange(project.areaFrom, project.areaTo),
                   textColor,
+                  isDark,
                 ),
                 widthSpace(8),
                 infoChip(
                   Icons.business,
-                  project.devCompany?.companyNameAr ??
-                      appLocalizations
-                          .noData, // Localized fallback for dev company name
+                  project.devCompany?.companyNameAr ?? appLocalizations.noData,
                   textColor,
+                  isDark,
                 ),
               ],
             ),
@@ -133,8 +143,7 @@ class AllprojectWidget extends StatelessWidget {
             Center(
               child: CustomButton(
                 height: 40.h,
-                text:
-                    appLocalizations.view, // Localized text for "View Details"
+                text: appLocalizations.view,
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
@@ -154,8 +163,37 @@ class AllprojectWidget extends StatelessWidget {
 
   String _formatAreaRange(dynamic from, dynamic to) {
     if (from == null || to == null) {
-      return 'غير متوفر'; // Fallback text in Arabic for area if null
+      return 'غير متوفر';
     }
     return '$from م² - $to م²';
   }
+}
+
+// Update the infoChip helper function if it exists in Gloable_widget.dart
+// or create it here with dark mode support:
+Widget infoChip(IconData icon, String text, Color textColor, bool isDark) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+    decoration: BoxDecoration(
+      color: isDark ? const Color(0xFF2C2C2C) : Colors.grey.shade100,
+      borderRadius: BorderRadius.circular(8.r),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 14.sp, color: textColor),
+        SizedBox(width: 4.w),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 11.sp,
+            color: textColor,
+            fontWeight: FontWeight.w500,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    ),
+  );
 }

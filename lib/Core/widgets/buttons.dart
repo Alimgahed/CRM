@@ -1,6 +1,6 @@
+import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 // Example color
 
@@ -23,7 +23,7 @@ class FloatingCloseButton extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () {
-          Get.back();
+          context.pop();
         },
         child: Container(
           padding: const EdgeInsets.all(8),

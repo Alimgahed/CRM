@@ -10,40 +10,55 @@ class MyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) =>
-            current is LoginStateLoading ||
-            current is LoginStateError ||
-            current is LoginStateLoaded,
-        listener: (context, state) {
-          state.whenOrNull(
-            loading: () => showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) =>
-                  const Center(child: CircularProgressIndicator()),
-            ),
-            error: (message) => showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Login Failed'),
-                content: Text(message),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
+      listenWhen: (previous, current) =>
+          current is LoginStateLoading ||
+          current is LoginStateError ||
+          current is LoginStateLoaded,
+      listener: (context, state) {
+        state.whenOrNull(
+          loading: () => showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => Center(
+              child: CircularProgressIndicator(
+                color: isDark ? Colors.white : Colors.blue,
               ),
             ),
-            loaded: (loginresponse) {
-              context.pop();
-              context.pushReplacementNamed(Routes.home);
-            },
-          );
-        },
-        child: const SizedBox.shrink());
+          ),
+          error: (message) => showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+              title: Text(
+                'Login Failed',
+                style: TextStyle(color: isDark ? Colors.white : Colors.black),
+              ),
+              content: Text(
+                message,
+                style: TextStyle(
+                  color: isDark ? Colors.white70 : Colors.black87,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          ),
+          loaded: (loginresponse) {
+            context.pop();
+            context.pushReplacementNamed(Routes.home);
+          },
+        );
+      },
+      child: const SizedBox.shrink(),
+    );
   }
 }

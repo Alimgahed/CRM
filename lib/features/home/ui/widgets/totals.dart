@@ -75,17 +75,18 @@ class TotalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final isPositive = ratio >= 0;
     final percentageColor = isPositive ? Colors.green : Colors.red;
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -97,10 +98,10 @@ class TotalCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: isDark ? Colors.white : Colors.black,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -109,18 +110,14 @@ class TotalCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: percentageColor.withOpacity(0.1),
+              color: percentageColor.withOpacity(isDark ? 0.2 : 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            // Make the container take only the size of its child
             constraints: const BoxConstraints(minWidth: 0, minHeight: 0),
             child: Row(
-              mainAxisSize: MainAxisSize
-                  .min, // <-- Row only takes as much space as its children
-              mainAxisAlignment: MainAxisAlignment
-                  .center, // <-- center the children horizontally
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // <-- center vertically
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   '${(ratio.abs() * 100).toStringAsFixed(1)}%',
@@ -140,25 +137,24 @@ class TotalCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-
           Text(
             amount,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Colors.black87,
+              color: isDark ? Colors.white70 : Colors.black87,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             date,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w400,
               fontFamily: 'Alexandria',
               height: 1.5,
               letterSpacing: -0.15,
-              color: Color(0xFF60707D),
+              color: isDark ? Colors.grey[400] : const Color(0xFF60707D),
             ),
           ),
         ],
