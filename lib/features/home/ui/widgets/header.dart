@@ -55,6 +55,7 @@ Widget _buildUserInfo(BuildContext context, String userName) {
           final isDark = themeMode == ThemeMode.dark;
           return IconButton(
             onPressed: () {
+              print("press");
               context.read<ThemeCubit>().toggleTheme();
             },
             icon: AnimatedSwitcher(
