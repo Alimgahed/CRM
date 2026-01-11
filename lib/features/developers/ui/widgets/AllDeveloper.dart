@@ -4,8 +4,10 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,16 +19,22 @@ class AllDeveloperWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final lang = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: EdgeInsets.all(8.w),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDarkMode ? Colors.grey.shade900 : Colors.white,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade300.withOpacity(0.4),
+              color: isDarkMode
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.grey.shade300.withOpacity(0.4),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -47,21 +55,47 @@ class AllDeveloperWidget extends StatelessWidget {
                         height: 180.h,
                         fit: BoxFit.contain,
                         placeholder: (_, __) => Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
+                          baseColor: isDarkMode
+                              ? Colors.grey.shade800
+                              : Colors.grey.shade300,
+                          highlightColor: isDarkMode
+                              ? Colors.grey.shade700
+                              : Colors.grey.shade100,
                           child: Container(
                             height: 180.h,
-                            color: Colors.grey.shade300,
+                            color: isDarkMode
+                                ? Colors.grey.shade800
+                                : Colors.grey.shade300,
                           ),
                         ),
-                        errorWidget: (_, __, ___) =>
-                            Icon(Icons.business, size: 60.sp),
+                        errorWidget: (_, __, ___) => Container(
+                          height: 180.h,
+                          width: screenWidth,
+                          color: isDarkMode
+                              ? Colors.grey.shade800
+                              : Colors.grey.shade300,
+                          child: Icon(
+                            Icons.business,
+                            size: 60.sp,
+                            color: isDarkMode
+                                ? Colors.grey.shade600
+                                : Colors.grey.shade500,
+                          ),
+                        ),
                       )
                     : Container(
                         height: 180.h,
                         width: screenWidth,
-                        color: Colors.grey.shade300,
-                        child: Icon(Icons.business, size: 60.sp),
+                        color: isDarkMode
+                            ? Colors.grey.shade800
+                            : Colors.grey.shade300,
+                        child: Icon(
+                          Icons.business,
+                          size: 60.sp,
+                          color: isDarkMode
+                              ? Colors.grey.shade600
+                              : Colors.grey.shade500,
+                        ),
                       ),
               ),
 
@@ -70,8 +104,8 @@ class AllDeveloperWidget extends StatelessWidget {
               /* ---------------------------- Company Name --------------------------- */
               Text(
                 "${developer.companyNameAr} - ${developer.companyNameEn}",
-                style: titleStyle.copyWith(
-                  color: secondaryTextColor,
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : secondaryTextColor,
                   fontSize: 18.sp,
                 ),
               ),
@@ -82,7 +116,7 @@ class AllDeveloperWidget extends StatelessWidget {
               infoChip(
                 Icons.person_outline,
                 developer.contactPerson ?? '',
-                secondaryTextColor,
+                isDarkMode ? Colors.grey.shade300 : secondaryTextColor,
               ),
 
               heightSpace(6),
@@ -90,8 +124,18 @@ class AllDeveloperWidget extends StatelessWidget {
               infoChip(
                 Icons.call_outlined,
                 developer.contactNumber ?? '',
-                secondaryTextColor,
+                isDarkMode ? Colors.grey.shade300 : secondaryTextColor,
               ),
+
+              heightSpace(6),
+
+              /* ---------------------------- Project Count --------------------------- */
+              if (developer.projectCount != null)
+                infoChip(
+                  Icons.apartment_outlined,
+                  "${developer.projectCount} ${lang.projects}",
+                  isDarkMode ? Colors.grey.shade300 : appColor,
+                ),
 
               heightSpace(15),
 
@@ -100,20 +144,16 @@ class AllDeveloperWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      text: "Edit".tr,
+                      text: lang.edit,
                       height: 45.h,
-                      onPressed: () {
-                        // TODO edit action
-                      },
+                      onPressed: () {},
                     ),
                   ),
                   widthSpace(10),
                   ActionButton(
                     icon: Icons.delete_outline,
                     color: Colors.red,
-                    onTap: () {
-                      // TODO delete action
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),

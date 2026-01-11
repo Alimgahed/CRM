@@ -10,10 +10,36 @@ class AppLocalizations {
 
   bool get isArabic => locale == 'ar';
 
+  String get loginFailed => isArabic ? 'فشل التسجيل' : 'Login Failed';
+  String get enterEmail => isArabic ? '  ادخل البريد الالكتروني' : 'Enter Email';
+  String get enterPassword => isArabic ? '  ادخل كلمة المرور' : 'Enter Password';
+  String get passwordMustBeAtLeast8CharactersLong =>
+      isArabic ? 'يجب أن تكون كلمة المرور على الأقل 8 أحرف' : 'Password must be at least 8 characters long';
+
+  String get atLeastOneLowercaseLetter =>
+      isArabic ? 'يجب أن تحتوي على حرف صغير' : 'At least one lowercase letter';
+
+  String get atLeastOneUppercaseLetter =>
+      isArabic ? 'يجب أن تحتوي على حرف كبير' : 'At least one uppercase letter';
+
+  String get atLeastOneNumber =>
+      isArabic ? 'يجب أن تحتوي على رقم' : 'At least one number';
+
+  String get atLeastOneSpecialCharacter =>
+      isArabic ? 'يجب أن تحتوي على حرف خاصة' : 'At least one special character';
+
+  String get atLeast8Characters =>
+      isArabic ? 'يجب أن تحتوي على 8 أحرف' : 'At least 8 characters';
+
+
+  String get realEstateCrmSystem =>
+      isArabic ? 'نظام إدارة علاقات العملاء' : 'Real Estate CRM System';
+
   // =============================================================
   // GENERAL / COMMON
   // =============================================================
   String get more => isArabic ? 'المزيد' : 'More';
+  String get aqaria => isArabic ? 'عقاري' : 'AQARIA';
 
   String get home => isArabic ? 'الرئيسية' : 'Home';
   String get clients => isArabic ? 'العملاء' : 'Clients';

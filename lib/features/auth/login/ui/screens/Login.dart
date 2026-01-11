@@ -3,11 +3,14 @@ import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/theming/dark_cubit.dart';
 import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/auth/login/cubit/login_state.dart';
 import 'package:crm/features/auth/login/ui/widgets/emailandpassword.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,114 +21,190 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return BlocProvider(
       create: (context) => getIt<LoginCubit>(),
-      child: BlocConsumer<LoginCubit, LoginState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            error: (msg) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(msg), backgroundColor: Colors.red),
-              );
-            },
-            loaded: (_) {
-              context.pushReplacementNamed(Routes.layout);
-            },
-          );
-        },
-        builder: (context, state) {
-          return Scaffold(
-            backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
-            body: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Padding(
-                        padding: EdgeInsets.all(16.w),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            heightSpace(40),
-                            SvgPicture.asset(
-                              'images/Group.svg',
-                              width: 100.w,
-                              height: 100.h,
-                              colorFilter: isDark
-                                  ? ColorFilter.mode(
-                                      Colors.white,
-                                      BlendMode.srcIn,
-                                    )
-                                  : null,
-                            ),
-                            heightSpace(10),
-                            Text(
-                              "AQARIA",
-                              style: TextStyles.size20(
-                                color: isDark ? Colors.white : Colors.black,
-                              ),
-                            ),
-                            heightSpace(5),
-                            Text(
-                              'Real Estate CRM System',
-                              style: TextStyles.size16(color: appColor),
-                            ),
-                            heightSpace(20),
+      child: const _LoginContent(),
+    );
+  }
+}
 
-                            const Emailandpassword(),
+class _LoginContent extends StatelessWidget {
+  const _LoginContent();
 
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () =>
-                                    context.pushNamed(Routes.forgotPassword),
-                                child: Text(
-                                  "Forgot Password?",
-                                  style: TextStyles.size14(
-                                    fontWeight: FontWeight.w400,
-                                    color: isDark
-                                        ? Colors.white70
-                                        : Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            heightSpace(10),
-                            state.maybeWhen(
-                              loading: () =>
-                                  CircularProgressIndicator(color: appColor),
-                              orElse: () => CustomButton(
-                                text: "Login",
-                                onPressed: () => validateLogin(context),
-                                height: 45.h,
-                              ),
-                            ),
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<LoginCubit, LoginState>(
+      listenWhen: (previous, current) =>
+          current is LoginStateError || current is LoginStateLoaded,
+      listener: (context, state) {
+        state.whenOrNull(
+          error: (msg) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(msg),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          },
+          loaded: (_) {
+            context.pushReplacementNamed(Routes.layout);
+          },
+        );
+      },
+      child: const _LoginScaffold(),
+    );
+  }
+}
 
-                            const Spacer(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
+class _LoginScaffold extends StatelessWidget {
+  const _LoginScaffold();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
+
+    return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
+      body: const SafeArea(child: _LoginBody()),
+    );
+  }
+}
+
+class _LoginBody extends StatelessWidget {
+  const _LoginBody();
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                const _LoginHeader(),
+                heightSpace(30),
+                const Emailandpassword(),
+                const _ForgotPasswordButton(),
+                heightSpace(20),
+                const _LoginButton(),
+                const Spacer(),
+              ],
             ),
-          );
-        },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// OPTIMIZATION 8: Extract header as const widget (never rebuilds)
+class _LoginHeader extends StatelessWidget {
+  const _LoginHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    // OPTIMIZATION 9: Use select for theme
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // OPTIMIZATION 10: Cache localization
+    final lang = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+
+    return Column(
+      children: [
+        // OPTIMIZATION 11: Precache SVG for faster loading
+        SvgPicture.asset(
+          'images/Group.svg',
+          width: 100.w,
+          height: 100.h,
+          colorFilter: isDark
+              ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+              : null,
+        ),
+        heightSpace(10),
+        Text(
+          lang.aqaria,
+          style: TextStyles.size20(color: isDark ? Colors.white : Colors.black),
+        ),
+        heightSpace(5),
+        Text(
+          lang.realEstateCrmSystem,
+          style: TextStyles.size16(color: appColor),
+        ),
+      ],
+    );
+  }
+}
+
+// OPTIMIZATION 12: Extract button to prevent unnecessary rebuilds
+class _ForgotPasswordButton extends StatelessWidget {
+  const _ForgotPasswordButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final lang = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () => context.pushNamed(Routes.forgotPassword),
+        child: Text(
+          lang.forgotPassword,
+          style: TextStyles.size14(
+            fontWeight: FontWeight.w400,
+            color: isDark ? Colors.white70 : Colors.black,
+          ),
+        ),
       ),
     );
   }
+}
 
-  void validateLogin(BuildContext context) {
+// OPTIMIZATION 13: Separate login button with BlocSelector
+class _LoginButton extends StatelessWidget {
+  const _LoginButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final lang = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+
+    return BlocSelector<LoginCubit, LoginState, bool>(
+      // OPTIMIZATION 14: Only rebuild when loading state changes
+      selector: (state) => state is LoginStateLoading,
+      builder: (context, isLoading) {
+        if (isLoading) {
+          return SizedBox(
+            height: 45.h,
+            child: Center(
+              child: CircularProgressIndicator(color: appColor, strokeWidth: 2),
+            ),
+          );
+        }
+
+        return CustomButton(
+          text: lang.login,
+          onPressed: () => _validateAndLogin(context),
+          height: 45.h,
+        );
+      },
+    );
+  }
+
+  void _validateAndLogin(BuildContext context) {
     final cubit = context.read<LoginCubit>();
-
-    if (cubit.formKey.currentState!.validate()) {
+    if (cubit.formKey.currentState?.validate() ?? false) {
       cubit.login();
     }
   }

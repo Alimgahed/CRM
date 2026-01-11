@@ -1,4 +1,3 @@
-import 'package:crm/constant/enums/enums..dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,7 +7,7 @@ part 'projects_model.g.dart';
 /*                             PROJECTS RESPONSE                              */
 /* -------------------------------------------------------------------------- */
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class ProjectsResponse {
   final List<Project> data;
   final int total;
@@ -38,7 +37,7 @@ class ProjectsResponse {
 /*                                PROJECT PLAN                                */
 /* -------------------------------------------------------------------------- */
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class ProjectPlan {
   @JsonKey(name: 'project_plan_id')
   final String projectPlanId;
@@ -107,7 +106,7 @@ class StageGroup {
 /*                               PROJECT STAGE                                */
 /* -------------------------------------------------------------------------- */
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class ProjectStage {
   @JsonKey(name: 'project_stage_id')
   final String projectStageId;
@@ -137,7 +136,7 @@ class ProjectStage {
 /*                                   PROJECT                                  */
 /* -------------------------------------------------------------------------- */
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class Project {
   @JsonKey(name: 'project_id')
   final String projectId;

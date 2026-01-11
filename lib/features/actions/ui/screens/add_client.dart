@@ -12,7 +12,6 @@ class AddClient extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final controller = Get.put(AddClientController(), permanent: false);
-    final countryController = Get.put(CountryController(), permanent: false);
 
     return SingleChildScrollView(
       child: Column(

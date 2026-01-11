@@ -36,13 +36,10 @@ class Crm extends StatelessWidget {
                     debugShowCheckedModeBanner: false,
                     title: 'CRM',
 
-                    // ✅ Locale
                     locale: Locale(localeState.locale),
 
-                    // ✅ Supported locales
                     supportedLocales: const [Locale('en'), Locale('ar')],
 
-                    // ✅ Localization delegates
                     localizationsDelegates: const [
                       GlobalMaterialLocalizations.delegate,
                       GlobalWidgetsLocalizations.delegate,

@@ -16,8 +16,8 @@ Widget buildHeader(BuildContext context, String userName) {
 }
 
 Widget _buildUserInfo(BuildContext context, String userName) {
-  final appLocalizations = AppLocalizations(
-    context.watch<LocaleCubit>().currentLocale,
+  final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+    (cubit) => AppLocalizations(cubit.currentLocale),
   );
 
   return Row(

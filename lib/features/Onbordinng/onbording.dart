@@ -1,6 +1,5 @@
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/buttons.dart';
-import 'package:crm/cache/cache.dart';
 import 'package:crm/features/home/ui/screens/layout.dart';
 import 'package:crm/main.dart';
 import 'package:flutter/material.dart';
@@ -94,13 +93,13 @@ class OnboardingController extends GetxController {
       );
     } else {
       Get.offAll(() => const Layout());
-      Cache.saveData(key: "onboarding", value: true);
+      // Cache.saveData(key: "onboarding", value: true);
     }
   }
 
   /// Skip onboarding
   void skip() {
-    Cache.saveData(key: "onboarding", value: true);
+    // Cache.saveData(key: "onboarding", value: true);
     Get.offAll(() => const Layout());
   }
 
@@ -219,7 +218,8 @@ class OnboardingScreen extends StatelessWidget {
                       // Title
                       Text(
                         controller
-                            .currentPages[controller.currentPage.value].title,
+                            .currentPages[controller.currentPage.value]
+                            .title,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
@@ -232,7 +232,8 @@ class OnboardingScreen extends StatelessWidget {
 
                       // Description
                       Text(
-                        controller.currentPages[controller.currentPage.value]
+                        controller
+                            .currentPages[controller.currentPage.value]
                             .description,
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -266,11 +267,12 @@ class OnboardingScreen extends StatelessWidget {
                             height: 60,
                             child: CustomButton(
                               margin: const EdgeInsets.all(10),
-                              text: controller.currentPage.value ==
+                              text:
+                                  controller.currentPage.value ==
                                       controller.currentPages.length - 1
                                   ? (controller.isArabic
-                                      ? "ابدأ الآن"
-                                      : "Get Started")
+                                        ? "ابدأ الآن"
+                                        : "Get Started")
                                   : (controller.isArabic ? "التالي" : "Next"),
                               onPressed: controller.nextPage,
                             ),

@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-
 class AllDeveloperShimmerWidget extends StatelessWidget {
   const AllDeveloperShimmerWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = Colors.grey.shade300;
-    final highlightColor = Colors.grey.shade100;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final baseColor = isDark ? Colors.grey.shade800 : Colors.grey.shade300;
+    final highlightColor = isDark ? Colors.grey.shade700 : Colors.grey.shade100;
+    final containerColor = isDark ? const Color(0xFF1E1E1E) : Colors.white;
+    final shadowColor = isDark ? Colors.black26 : Colors.grey.shade200;
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: containerColor,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade200,
+              color: shadowColor,
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -41,7 +44,7 @@ class AllDeveloperShimmerWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-      
+
             // Company name placeholder
             Shimmer.fromColors(
               baseColor: baseColor,
@@ -53,7 +56,7 @@ class AllDeveloperShimmerWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-      
+
             // Sales info placeholder
             Row(
               children: [
@@ -71,7 +74,7 @@ class AllDeveloperShimmerWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 5),
-      
+
             // Accountant info placeholder
             Row(
               children: [
@@ -85,7 +88,7 @@ class AllDeveloperShimmerWidget extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-      
+
             // Buttons placeholder
             Row(
               children: [
@@ -100,7 +103,11 @@ class AllDeveloperShimmerWidget extends StatelessWidget {
                 Shimmer.fromColors(
                   baseColor: baseColor,
                   highlightColor: highlightColor,
-                  child: Container(height: 45, width: 45, color: Colors.red.shade200),
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    color: isDark ? Colors.red.shade900 : Colors.red.shade200,
+                  ),
                 ),
               ],
             ),

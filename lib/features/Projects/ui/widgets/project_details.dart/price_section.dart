@@ -16,7 +16,9 @@ class ProjectPriceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
+    final l10n = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
 
     return ModernCard(
       child: Column(

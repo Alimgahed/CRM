@@ -60,15 +60,13 @@ class AppRouter {
         );
 
       case Routes.allDevelopers:
-        if (args is Map<String, dynamic>) {
-          return MaterialPageRoute(
-            builder: (_) => BlocProvider.value(
-              value: args['developerCubit'] as DeveloperCubit,
-              child: const AllDevelopers(),
-            ),
-          );
-        }
-        throw Exception('AllDevelopers route requires developerCubit argument');
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                getIt<DeveloperCubit>()..fetchAllDevelopmentCompanies(),
+            child: const AllDevelopers(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(

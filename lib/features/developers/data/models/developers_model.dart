@@ -20,7 +20,7 @@ class DevCompany {
   @JsonKey(name: "contact_number")
   final String? contactNumber;
 
-  @JsonKey(name: "Logo_url") // Matches your JSON key exactly
+  @JsonKey(name: "Logo_url")
   final String? logoUrl;
 
   @JsonKey(name: "is_active")
@@ -38,6 +38,9 @@ class DevCompany {
   @JsonKey(name: "company_id")
   final String? companyId;
 
+  @JsonKey(name: "project_count")
+  final int? projectCount;
+
   final List<Project>? projects;
 
   DevCompany({
@@ -52,6 +55,7 @@ class DevCompany {
     this.createdAt,
     this.updatedAt,
     this.companyId,
+    this.projectCount,
     this.projects,
   });
 
@@ -59,4 +63,28 @@ class DevCompany {
       _$DevCompanyFromJson(json);
 
   Map<String, dynamic> toJson() => _$DevCompanyToJson(this);
+}
+
+@JsonSerializable()
+class DevCompanyListResponse {
+  final List<DevCompany>? data;
+  final int? total;
+  final int? page;
+  @JsonKey(name: "page_size")
+  final int? pageSize;
+  @JsonKey(name: "total_pages")
+  final int? totalPages;
+
+  DevCompanyListResponse({
+    this.data,
+    this.total,
+    this.page,
+    this.pageSize,
+    this.totalPages,
+  });
+
+  factory DevCompanyListResponse.fromJson(Map<String, dynamic> json) =>
+      _$DevCompanyListResponseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DevCompanyListResponseToJson(this);
 }

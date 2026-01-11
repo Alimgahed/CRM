@@ -20,78 +20,155 @@ TextStyle smallStyle = TextStyle(
   height: 1.5,
 );
 
-const Color _grey100 = Color(0xFFF5F5F5);
-const Color _grey300 = Color(0xFFE0E0E0);
+// // ignore: camel_case_types
+class infoChip extends StatelessWidget {
+  final IconData icon;
+  final String text;
+  final Color color;
 
-Widget infoChip(IconData icon, String text, Color color) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(10.r)),
-      color: _grey100,
-    ),
-    child: Row(
-      children: [
-        Icon(icon, size: 15.sp, color: color),
-        SizedBox(width: 5.w),
-        Text(text, style: smallStyle.copyWith(color: color)),
-      ],
-    ),
-  );
-}
+  // Dictionary-match original function signature: infoChip(icon, text, color)
+  const infoChip(this.icon, this.text, this.color, {super.key});
 
-Widget buildInfoRow(String key, String value, {bool isLink = false}) {
-  final TextStyle valueStyle = TextStyle(
-    fontSize: 12.sp,
-    fontWeight: FontWeight.w400,
-    color: isLink ? Colors.blue : Colors.black,
-    decoration: isLink ? TextDecoration.underline : null,
-    decorationColor: isLink ? Colors.blue : null,
-  );
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor = isDark
+        ? Colors.grey.shade800
+        : const Color(0xFFF5F5F5);
 
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: 6.h),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Text(
-            key.tr,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.r)),
+        color: backgroundColor,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 15.sp, color: color),
+          SizedBox(width: 5.w),
+          Text(
+            text,
             style: TextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF616161),
+              fontWeight: FontWeight.w400,
+              fontSize: 10.sp,
+              height: 1.5,
+              color: color,
             ),
           ),
-        ),
-        SizedBox(width: itemSpacing.w),
-        Expanded(
-          flex: 2,
-          child: Text(value, textAlign: TextAlign.end, style: valueStyle),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
-/// Builds a styled container wrapper
-Widget buildCard({required Widget child}) {
-  return Container(
-    padding: EdgeInsets.all(standardPadding.w),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(borderRadius.r)),
-      border: Border.fromBorderSide(BorderSide(color: _grey300)),
-    ),
-    child: child,
-  );
+// // ignore: camel_case_types
+class buildInfoRow extends StatelessWidget {
+  final String keyText; // renamed from 'key' to avoid collision with Widget.key
+  final String value;
+  final bool isLink;
+
+  // Dictionary-match original function signature: buildInfoRow(key, value, {isLink})
+  const buildInfoRow(
+    this.keyText,
+    this.value, {
+    super.key,
+    this.isLink = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final labelColor = isDark ? Colors.grey.shade400 : const Color(0xFF616161);
+    final valueColor = isLink
+        ? Colors.blue
+        : (isDark ? Colors.white : Colors.black);
+
+    final valueStyle = TextStyle(
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      color: valueColor,
+      decoration: isLink ? TextDecoration.underline : null,
+      decorationColor: isLink ? Colors.blue : null,
+    );
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 6.h),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(
+              keyText.tr,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w500,
+                color: labelColor,
+              ),
+            ),
+          ),
+          SizedBox(width: itemSpacing.w),
+          Expanded(
+            flex: 2,
+            child: Text(value, textAlign: TextAlign.end, style: valueStyle),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-/// Builds section title
-Widget buildSectionTitle(String title) {
-  return Text(
-    title.tr,
-    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-  );
+// // ignore: camel_case_types
+class buildCard extends StatelessWidget {
+  final Widget child;
+
+  // Dictionary-match original function signature: buildCard({required child})
+  const buildCard({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = isDark ? Colors.grey.shade800 : const Color(0xFFE0E0E0);
+    final backgroundColor = isDark
+        ? const Color(0xFF1E1E1E)
+        : Colors.transparent;
+
+    return Container(
+      padding: EdgeInsets.all(standardPadding.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(borderRadius.r)),
+        border: Border.fromBorderSide(BorderSide(color: borderColor)),
+        color:
+            backgroundColor, // Added background for better dark mode visibility
+      ),
+      child: child,
+    );
+  }
+}
+
+// // ignore: camel_case_types
+class buildSectionTitle extends StatelessWidget {
+  final String title;
+
+  // Dictionary-match original function signature: buildSectionTitle(title)
+  const buildSectionTitle(this.title, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Text color automatically adapts via Theme, but explicit check good for custom consistency
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? Colors.white : Colors.black;
+
+    return Text(
+      title.tr,
+      style: TextStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w600,
+        color: color,
+      ),
+    );
+  }
 }
 
 enum FileType {
@@ -144,10 +221,16 @@ class AttachmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final containerColor = isDark ? const Color(0xFF2C2C2C) : Colors.white;
+    final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
+    final textColor = isDark ? Colors.white : Colors.black;
+    final iconColor = isDark ? Colors.grey.shade400 : null;
+
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.shade300),
+        color: containerColor,
+        border: Border.all(color: borderColor),
         borderRadius: BorderRadius.circular(10.r),
       ),
       child: Padding(
@@ -162,18 +245,27 @@ class AttachmentItem extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13.sp,
                   fontWeight: FontWeight.w500,
+                  color: textColor,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.download_outlined, size: 20.sp),
+              icon: Icon(
+                Icons.download_outlined,
+                size: 20.sp,
+                color: iconColor,
+              ),
               tooltip: 'Download',
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.visibility_outlined, size: 20.sp),
+              icon: Icon(
+                Icons.visibility_outlined,
+                size: 20.sp,
+                color: iconColor,
+              ),
               tooltip: 'View',
             ),
           ],

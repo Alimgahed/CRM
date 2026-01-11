@@ -22,8 +22,8 @@ class AllprojectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDark ? Colors.white70 : secondaryTextColor;
-    final appLocalizations = AppLocalizations(
-      context.watch<LocaleCubit>().currentLocale,
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
     );
 
     return Padding(

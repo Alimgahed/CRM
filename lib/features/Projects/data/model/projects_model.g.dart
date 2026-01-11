@@ -76,7 +76,7 @@ Map<String, dynamic> _$ProjectStageToJson(ProjectStage instance) =>
       'project_stage_id': instance.projectStageId,
       'project_id': instance.projectId,
       'stage_name': instance.stageName,
-      'groups': instance.groups?.map((e) => e.toJson()).toList(),
+      'groups': instance.groups,
     };
 
 Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
@@ -133,10 +133,10 @@ Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
   'updated_at': instance.updatedAt,
   'company_id': instance.companyId,
   'dev_company_id': instance.devCompanyId,
-  'plan_details': instance.planDetails?.map((e) => e.toJson()).toList(),
-  'project_stages': instance.projectStages?.map((e) => e.toJson()).toList(),
-  'dev_company': instance.devCompany?.toJson(),
-  'attachments': instance.attachments?.map((e) => e.toJson()).toList(),
+  'plan_details': instance.planDetails,
+  'project_stages': instance.projectStages,
+  'dev_company': instance.devCompany,
+  'attachments': instance.attachments,
 };
 
 Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(

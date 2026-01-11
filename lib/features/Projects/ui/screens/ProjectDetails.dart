@@ -30,8 +30,9 @@ class ProjectDetailsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Get localization from LocaleCubit
-    final locale = context.watch<LocaleCubit>().currentLocale;
-    final l10n = AppLocalizations(locale);
+    final l10n = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
 
     return BlocProvider(
       create: (context) =>
@@ -44,7 +45,7 @@ class ProjectDetailsScreen extends StatelessWidget {
           elevation: 0,
           leading: BackButton(color: appColor, onPressed: () => context.pop()),
           title: Text(
-            locale == 'ar' ? project.projectName : project.projectNameEn,
+            l10n.locale == 'ar' ? project.projectName : project.projectNameEn,
             style: TextStyle(
               color: appColor,
               fontSize: 18.sp,

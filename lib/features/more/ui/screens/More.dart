@@ -3,7 +3,6 @@ import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/services/user_service.dart';
-import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/more/ui/widgets/more.dart';
@@ -15,8 +14,9 @@ class MoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.watch<LocaleCubit>().currentLocale;
-    final l10n = AppLocalizations(locale);
+    final l10n = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -42,11 +42,7 @@ class MoreScreen extends StatelessWidget {
               icon: Icons.engineering_outlined,
               text: l10n.developersMenu,
               onTap: () {
-                final developerCubit = context.read<DeveloperCubit>();
-                context.pushNamed(
-                  Routes.allDevelopers,
-                  arguments: {'developerCubit': developerCubit},
-                );
+                context.pushNamed(Routes.allDevelopers);
               },
             ),
 

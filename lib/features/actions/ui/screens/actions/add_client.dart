@@ -11,7 +11,7 @@ class AddClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AddClientController(), permanent: false);
-    final countryController = Get.put(CountryController(), permanent: false);
+    Get.put(CountryController(), permanent: false);
 
     return SingleChildScrollView(
       child: Column(
@@ -73,7 +73,7 @@ class AddClient extends StatelessWidget {
 
                 CustomTextFormField.phone(
                   hintText: 'Phone'.tr,
-                  labelAboveField:'Phone Number'.tr,
+                  labelAboveField: 'Phone Number'.tr,
                   labelText: 'Enter Phone Number'.tr,
                   controller: controller.assignedToController,
                   onSelectCountry: () {

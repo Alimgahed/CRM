@@ -357,8 +357,8 @@ class ReusableHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get the localization instance dynamically from the current locale
-    final appLocalizations = AppLocalizations(
-      context.watch<LocaleCubit>().currentLocale,
+    final lang = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
     );
 
     return Stack(
@@ -379,7 +379,7 @@ class ReusableHeader extends StatelessWidget {
         // Foreground content
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: _buildContent(context, appLocalizations),
+          child: _buildContent(context, lang),
         ),
       ],
     );

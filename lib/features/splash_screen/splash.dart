@@ -1,4 +1,4 @@
-import 'package:crm/cache/cache.dart';
+import 'package:crm/Core/helpers/shared_preferences.dart';
 import 'package:crm/features/Onbordinng/onbording.dart';
 import 'package:crm/features/home/ui/screens/layout.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +10,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Delay navigation using GetX (no StatefulWidget needed)
     Future.delayed(const Duration(seconds: 2), () {
-      if(Cache.getdata(key: 'onboarding') == true){
+      if (SharedPreferencesHelper.getData('onboarding') == true) {
         Get.off(() => const Layout());
-      } else{      Get.off(() => const OnboardingScreen());
-
-
+      } else {
+        Get.off(() => const OnboardingScreen());
       }
     });
 

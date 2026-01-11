@@ -22,5 +22,8 @@ abstract class ApiService {
   );
 
   @GET(ApiConstants.getAllDevelopmentCompanies)
-  Future<List<DevCompany>> getAllDevelopmentCompanies();
+  Future<DevCompanyListResponse> getAllDevelopmentCompanies(
+    @Query('page') int? page,
+    @Query('page_size') int? pageSize,
+  );
 }

@@ -6,7 +6,7 @@ class DevelopersRepo {
 
   DevelopersRepo({required this.apiService});
 
-  Future<List<DevCompany>> getAllDevelopmentCompanies() async {
-    return await apiService.getAllDevelopmentCompanies();
+  Future<DevCompanyListResponse> getAllDevelopmentCompanies() async {
+    return await apiService.getAllDevelopmentCompanies(1, 10);
   }
 }

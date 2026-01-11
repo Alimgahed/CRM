@@ -31,7 +31,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     result.when(
       success: (data) async {
-        await _userService.saveToken(data.accessToken);
+        await _userService.saveToken(data.accessToken, data.refreshToken);
         await _userService.saveUser(data.user);
 
         emit(LoginState.loaded(data));

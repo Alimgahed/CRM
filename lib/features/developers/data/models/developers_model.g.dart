@@ -18,6 +18,7 @@ DevCompany _$DevCompanyFromJson(Map<String, dynamic> json) => DevCompany(
   createdAt: json['created_at'] as String?,
   updatedAt: json['updated_at'] as String?,
   companyId: json['company_id'] as String?,
+  projectCount: (json['project_count'] as num?)?.toInt(),
   projects: (json['projects'] as List<dynamic>?)
       ?.map((e) => Project.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -36,5 +37,28 @@ Map<String, dynamic> _$DevCompanyToJson(DevCompany instance) =>
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
       'company_id': instance.companyId,
+      'project_count': instance.projectCount,
       'projects': instance.projects,
     };
+
+DevCompanyListResponse _$DevCompanyListResponseFromJson(
+  Map<String, dynamic> json,
+) => DevCompanyListResponse(
+  data: (json['data'] as List<dynamic>?)
+      ?.map((e) => DevCompany.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  total: (json['total'] as num?)?.toInt(),
+  page: (json['page'] as num?)?.toInt(),
+  pageSize: (json['page_size'] as num?)?.toInt(),
+  totalPages: (json['total_pages'] as num?)?.toInt(),
+);
+
+Map<String, dynamic> _$DevCompanyListResponseToJson(
+  DevCompanyListResponse instance,
+) => <String, dynamic>{
+  'data': instance.data,
+  'total': instance.total,
+  'page': instance.page,
+  'page_size': instance.pageSize,
+  'total_pages': instance.totalPages,
+};

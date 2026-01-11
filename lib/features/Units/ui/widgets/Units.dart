@@ -37,10 +37,7 @@ class UnitsWidget extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 // Title
-                Text(
-                  'وحدة A-305',
-                  style: titleStyle.copyWith(color: secondaryTextColor),
-                ),
+                Text('وحدة A-305', style: TextStyle(color: secondaryTextColor)),
 
                 const SizedBox(height: 10),
 
@@ -56,7 +53,7 @@ class UnitsWidget extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'كمبوند مارفل بالمز – التجمع الخامس، القاهرة الجديدة',
-                        style: smallStyle.copyWith(color: secondaryTextColor),
+                        style: TextStyle(color: secondaryTextColor),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

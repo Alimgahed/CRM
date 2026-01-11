@@ -125,8 +125,9 @@ class PaymentPlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
-
+    final l10n = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
     return Container(
       padding: EdgeInsets.all(14.w),
       margin: EdgeInsets.only(bottom: 12.h),
@@ -178,7 +179,10 @@ class AttachmentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
+    final l10n = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+
     final isImage = attachment.fileType?.startsWith('image/') ?? false;
     final isPdf = attachment.fileType == 'application/pdf';
 

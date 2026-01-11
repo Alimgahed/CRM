@@ -16,7 +16,10 @@ class ProjectHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations(context.watch<LocaleCubit>().currentLocale);
+
+    final l10n = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
 
     return ModernCard(
       child: Row(

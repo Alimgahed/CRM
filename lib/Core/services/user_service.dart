@@ -33,6 +33,7 @@ class UserService {
   /// Initialize - Load user from storage on app start
   Future<void> init() async {
     await loadUser();
+    await getToken();
   }
 
   /// Load user from storage
@@ -41,7 +42,7 @@ class UserService {
       final json = await SharedPreferencesHelper.getJson(
         SharedPreferenceKeys.user,
       );
-      
+
       if (json != null) {
         _currentUser = User.fromJson(json);
         debugPrint('✅ User loaded: ${_currentUser?.fullName}');
@@ -103,10 +104,14 @@ class UserService {
   }
 
   /// Save token
-  Future<void> saveToken(String token) async {
+  Future<void> saveToken(String token, String refreshToken) async {
     await SharedPreferencesHelper.setSecureString(
       SharedPreferenceKeys.userToken,
       token,
+    );
+    await SharedPreferencesHelper.setSecureString(
+      SharedPreferenceKeys.refreshToken,
+      refreshToken,
     );
   }
 }

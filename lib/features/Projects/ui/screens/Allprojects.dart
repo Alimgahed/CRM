@@ -13,8 +13,8 @@ class Allprojects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations(
-      context.watch<LocaleCubit>().currentLocale,
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
     );
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
