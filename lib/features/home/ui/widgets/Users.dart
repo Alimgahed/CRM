@@ -12,7 +12,7 @@ class Users extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 0, right: 8, left: 8, bottom: 16),
+      padding: const EdgeInsets.only(top: 0, right: 8, left: 8, bottom: 0),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(

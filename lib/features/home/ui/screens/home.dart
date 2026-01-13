@@ -1,4 +1,5 @@
 import 'package:crm/Core/di/dependency_injection.dart';
+import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/services/user_service.dart';
 import 'package:crm/Core/widgets/gloable.dart';
 import 'package:crm/features/home/ui/widgets/clients_widget/Clients.dart';
@@ -17,45 +18,48 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userService = getIt<UserService>();
+    // Moved outside build or used via context.read to avoid repeated DI lookups
+    final userName = getIt<UserService>().currentUser?.fullName ?? '';
 
-    return SingleChildScrollView(
-      child: BlocBuilder<StatisticsCubit, StatisticsState>(
-        builder: (context, state) {
-          return state.when(
-            initial: () => const SizedBox(height: 340),
-            loading: () => Center(child: CircularProgressIndicator()),
-            loaded: (data) => Column(
-              children: [
-                ReusableHeader(
-                  height: 140,
-                  child: buildHeader(
-                    context,
-                    userService.currentUser?.fullName ?? '',
-                  ),
-                ),
-
-                SizedBox(
-                  height: 220.h,
-                  child: TotalsSection(data: data),
-                ),
-                SizedBox(
-                  height: 820.h,
-                  child: SalesPerformanceStages(data: data),
-                ),
-
-                SizedBox(
-                  height: 750.h,
-                  child: Clients(leads: data.data.lastTenLeads),
-                ),
-                const SizedBox(height: 430, child: Users()),
-                const SizedBox(height: 100),
-              ],
+    return RefreshIndicator(
+      onRefresh: () => context.read<StatisticsCubit>().getStatistics(),
+      child: SingleChildScrollView(
+        physics:
+            const AlwaysScrollableScrollPhysics(), // Allows pull-to-refresh
+        child: Column(
+          children: [
+            // Header is usually static or has its own logic, move outside the main data builder
+            ReusableHeader(
+              height: 140.h,
+              child: buildHeader(context, userName),
             ),
-            error: (msg) =>
-                SizedBox(height: 340, child: Center(child: Text(msg))),
-          );
-        },
+
+            BlocBuilder<StatisticsCubit, StatisticsState>(
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ), // Use Shimmers instead of Spinner
+                  loaded: (data) => Column(
+                    children: [
+                      TotalsSection(data: data),
+
+                      SalesPerformanceStages(data: data),
+
+                      Clients(leads: data.data.lastTenLeads),
+
+                      const Users(),
+
+                      heightSpace(100),
+                    ],
+                  ),
+                  error: (msg) => Center(child: Text(msg)),
+                  orElse: () => const SizedBox.shrink(),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
