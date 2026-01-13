@@ -2,6 +2,7 @@ import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/auth/login/data/model/login_request_body.dart';
 import 'package:crm/features/auth/login/data/model/login_response.dart';
+import 'package:crm/features/clients/data/model/leads_response.dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
 import 'package:dio/dio.dart';
@@ -29,4 +30,10 @@ abstract class ApiService {
 
   @GET(ApiConstants.getStatistics)
   Future<AgentActionStatisticsResponse> getAgentActionStatistics();
+
+  @GET(ApiConstants.getAllLeads)
+  Future<LeadsResponse> getAllLeads(
+    @Query('page') int? page,
+    @Query('page_size') int? pageSize,
+  );
 }

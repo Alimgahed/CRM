@@ -1,18 +1,67 @@
-// =============================================================
-// MAIN APP LOCALIZATION
-// lib/core/localization/app_localizations.dart
-// =============================================================
-
 class AppLocalizations {
   final String locale;
 
   AppLocalizations(this.locale);
 
+  // Assuming you have this somewhere
   bool get isArabic => locale == 'ar';
+
+  String get minutesAgo => isArabic ? 'دقائق مضت' : 'Minutes ago';
+  String get hoursAgo => isArabic ? 'ساعات مضت' : 'Hours ago';
+  String get daysAgo => isArabic ? 'أيام مضت' : 'Days ago';
+  String get justNow => isArabic ? 'الآن' : 'Just now';
+  String get allClients => isArabic ? 'كل العملاء' : 'All Clients';
+  String get myClients => isArabic ? 'عملائي' : 'My Clients';
+  String get newClients => isArabic ? 'عملاء جدد' : 'New Clients';
+  String get deferredClients => isArabic ? 'عملاء مؤجلون' : 'Deferred Clients';
+  String get followUp => isArabic ? 'متابعة' : 'Follow up';
+  String get rent => isArabic ? 'إيجار' : 'Rent';
+  String get comment => isArabic ? 'تعليق' : 'Comment';
+  String get reservation => isArabic ? 'حجز' : 'Reservation';
+  String get interest => isArabic ? 'اهتمام' : 'Interest';
+  String get archive => isArabic ? 'الأرشيف' : 'Archive';
+  String get meeting => isArabic ? 'اجتماع' : 'Meeting';
+  String get followAfterMeeting =>
+      isArabic ? 'متابعة بعد الاجتماع' : 'Follow after Meeting';
+  String get meetingSchedule => isArabic ? 'جدول المواعيد' : 'Meeting Schedule';
+  String get sold => isArabic ? 'تم البيع' : 'Sold';
+  String get newLabel => isArabic ? 'جديد' : 'New';
+  String get cancel => isArabic ? 'إلغاء' : 'Cancel';
+
+  // --- Client Details Filters (List 2) ---
+  String get details => isArabic ? 'التفاصيل' : 'Details';
+  String get comments => isArabic ? 'التعليقات' : 'Comments';
+  String get attachments => isArabic ? 'المرفقات' : 'Attachments';
+  String get timeline => isArabic ? 'سجل الأحداث' : 'Timeline';
+  String get deals => isArabic ? 'الصفقات' : 'Deals';
+  String get chances => isArabic ? 'الفرص' : 'Chances';
+  String get cliRequest => isArabic ? 'طلب العميل' : 'Cli Request';
+  String get contracts => isArabic ? 'العقود' : 'Contracts';
+  String get paymentPlan => isArabic ? 'خطة الدفع' : 'Payment Plan';
+  String get checkIn => isArabic ? 'تسجيل حضور' : 'Check In';
+
+  // Lead status translations as getters
+  String get notAssigned => isArabic ? 'غير مكلف' : 'Not Assigned';
+  String get status => isArabic ? 'الحالة' : 'Status';
+  String get project => isArabic ? 'مشروع' : 'Project';
+  String get englishName => isArabic ? 'الاسم بالإنجليزية' : 'English Name';
+  String get projectCount => isArabic ? 'عدد المشاريع' : 'Project Count';
+  String get jobTitle => isArabic ? 'الوظيفة' : 'Job Title';
+  String get email => isArabic ? 'البريد الالكتروني' : 'Email';
+  String get phone => isArabic ? 'الهاتف' : 'Phone';
+  String get secondaryPhone => isArabic ? 'هاتف اخر' : 'Secondary Phone';
+  String get channel => isArabic ? 'القناة' : 'Channel';
+  String get assignedTo => isArabic ? 'المكلف به' : 'Assigned To';
+  String get creationDate => isArabic ? 'التاريخ' : 'Creation Date';
+  String get budget => isArabic ? 'الميزانية' : 'Budget';
+  String get newLead => isArabic ? 'جديد' : 'New';
+  String get conected => isArabic ? 'تم الاتصال' : 'Connected';
+  String get qualified => isArabic ? 'صفقة مؤهلة' : 'Qualified Deal';
+  String get closed => isArabic ? 'مغلق' : 'Closed';
+  String get customer => isArabic ? 'عميل' : 'Customer';
 
   String get newDeals => isArabic ? 'الصفقات الجديدة' : 'New Deals';
   String get conversionRate => isArabic ? 'نسبة التحويل' : 'Conversion Rate';
-  String get newClients => isArabic ? 'العملاء الجدد' : 'New Clients';
   String get totalSales => isArabic ? 'إجمالي المبيعات' : 'Total Sales';
   String get loginFailed => isArabic ? 'فشل التسجيل' : 'Login Failed';
   String get enterEmail =>
@@ -54,7 +103,6 @@ class AppLocalizations {
   String get appName => isArabic ? 'إدارة علاقات العملاء' : 'CRM';
   String get loading => isArabic ? 'جاري التحميل...' : 'Loading...';
   String get save => isArabic ? 'حفظ' : 'Save';
-  String get cancel => isArabic ? 'إلغاء' : 'Cancel';
   String get delete => isArabic ? 'حذف' : 'Delete';
   String get edit => isArabic ? 'تعديل' : 'Edit';
   String get add => isArabic ? 'إضافة' : 'Add';
@@ -68,6 +116,8 @@ class AppLocalizations {
   String get yes => isArabic ? 'نعم' : 'Yes';
   String get no => isArabic ? 'لا' : 'No';
   String get ok => isArabic ? 'حسناً' : 'OK';
+  String get salesperformancestages =>
+      isArabic ? ' أداء المبيعات' : 'Sales Performance';
   String get done => isArabic ? 'تم' : 'Done';
   String get close => isArabic ? 'إغلاق' : 'Close';
   String get viewall => isArabic ? 'عرض الكل' : 'View All';
@@ -127,10 +177,7 @@ class AppLocalizations {
   String get developerCompany =>
       isArabic ? 'الشركة المطورة' : 'Developer Company';
   String get arabicName => isArabic ? 'الاسم بالعربية' : 'Arabic Name';
-  String get englishName => isArabic ? 'الاسم بالإنجليزية' : 'English Name';
-  String get phone => isArabic ? 'الهاتف' : 'Phone';
-  String get email => isArabic ? 'البريد الإلكتروني' : 'Email';
-  String get status => isArabic ? 'الحالة' : 'Status';
+
   String get active => isArabic ? 'نشط' : 'Active';
   String get inactive => isArabic ? 'غير نشط' : 'Inactive';
 
@@ -152,7 +199,6 @@ class AppLocalizations {
   String get groups => isArabic ? 'المجموعات' : 'Groups';
 
   // Attachments
-  String get attachments => isArabic ? 'المرفقات' : 'Attachments';
   String get attachment => isArabic ? 'مرفق' : 'Attachment';
   String get downloading => isArabic ? 'جاري التحميل...' : 'Downloading...';
   String get fileDownloaded => isArabic ? 'تم تحميل الملف' : 'File downloaded';
@@ -219,16 +265,12 @@ class AppLocalizations {
   String get unitPrice => isArabic ? 'سعر الوحدة' : 'Unit Price';
   String get available => isArabic ? 'متاح' : 'Available';
   String get reserved => isArabic ? 'محجوز' : 'Reserved';
-  String get sold => isArabic ? 'مباع' : 'Sold';
 
   // =============================================================
   // SALES / DEALS
   // =============================================================
   String get sales => isArabic ? 'المبيعات' : 'Sales';
-  String get deals => isArabic ? 'الصفقات' : 'Deals';
   String get contract => isArabic ? 'العقد' : 'Contract';
-  String get contracts => isArabic ? 'العقود' : 'Contracts';
-  String get reservation => isArabic ? 'الحجز' : 'Reservation';
   String get reservations => isArabic ? 'الحجوزات' : 'Reservations';
 
   // =============================================================
@@ -243,7 +285,6 @@ class AppLocalizations {
   String get receipts => isArabic ? 'الإيصالات' : 'Receipts';
   String get paymentDate => isArabic ? 'تاريخ الدفع' : 'Payment Date';
   String get amount => isArabic ? 'المبلغ' : 'Amount';
-  String get budget => isArabic ? 'الميزانية' : 'Budget';
 
   String get paidAmount => isArabic ? 'المبلغ المدفوع' : 'Paid Amount';
   String get remainingAmount =>
@@ -266,7 +307,7 @@ class AppLocalizations {
   // SETTINGS
   // =============================================================
   String get profile => isArabic ? 'الملف الشخصي' : 'Profile';
-  String get language => isArabic ? 'اللغة' : 'Language';
+  String get changelanguage => isArabic ? 'تغيير اللغة' : 'Change Language';
   String get notifications => isArabic ? 'الإشعارات' : 'Notifications';
   String get theme => isArabic ? 'المظهر' : 'Theme';
   String get darkMode => isArabic ? 'الوضع الداكن' : 'Dark Mode';

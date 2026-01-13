@@ -12,9 +12,10 @@ class ClientsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
-      color: appColor,
+      color: isDark ? darkColor : appColor,
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [

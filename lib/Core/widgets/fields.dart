@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
-import 'package:crm/controller/Features/Country_code.dart';
+import 'package:crm/logic/Features/Country_code.dart';
 
 /// ============================
 /// CUSTOM TEXT FORM FIELD
@@ -374,7 +374,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
         _FieldContainer(
           isDark: isDark,
           child: DropdownButtonFormField<T>(
-            value: value,
+            initialValue: value,
             items: items,
             onChanged: readOnly ? null : onChanged,
             validator: useValidator

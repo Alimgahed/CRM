@@ -14,7 +14,8 @@ class ClientAction {
 }
 
 class ClientTimeline extends StatelessWidget {
-  const ClientTimeline({super.key});
+  final String leadid;
+  const ClientTimeline({super.key, required this.leadid});
 
   static final List<ClientAction> _dummyData = [
     ClientAction(

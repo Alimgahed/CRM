@@ -1,21 +1,38 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/features/language/localazation.dart';
+import 'package:flutter/material.dart';
 
-enum ProjectStatus {
-  @JsonValue(1) active,
-  @JsonValue(2) onHold,
-  @JsonValue(3) complete,
+String getStatusText(int status, AppLocalizations loc) {
+  switch (status) {
+    case 1:
+      return loc.newLead;
+    case 2:
+      return loc.conected;
+    case 3:
+      return loc.qualified;
+    case 4:
+      return loc.closed;
+    case 5:
+      return loc.customer;
+    default:
+      return loc.customer;
+  }
 }
 
-enum UnitStatus {
-  @JsonValue(1) available,
-  @JsonValue(2) sold,
-  @JsonValue(3) reserved,
-  @JsonValue(4) rented,
-}
-
-enum UnitType {
-  @JsonValue(1) apartment,
-  @JsonValue(2) villa,
-  @JsonValue(3) townhouse,
-  @JsonValue(4) studio,
+/// Optimized colors according to your app theme
+Color getStatusColor(int status) {
+  switch (status) {
+    case 1: // New
+      return infoColor; // previously Colors.yellow.shade600
+    case 2: // Contacted
+      return buttonColor; // previously Colors.blue.shade600
+    case 3: // Qualified Deal
+      return appColor; // previously Colors.orange.shade600
+    case 4: // Closed
+      return successColor; // previously Colors.green.shade600
+    case 5: // Customer / Lost
+      return warningColor; // previously Colors.red.shade600
+    default:
+      return secondaryTextColor; // fallback color
+  }
 }

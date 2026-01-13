@@ -1,72 +1,97 @@
-import 'package:crm/Core/theming/colors.dart';
-import 'package:crm/features/clients/logic/all_clients/Clients_controller.dart';
-import 'package:crm/Core/widgets/buttons.dart';
+import 'package:crm/features/clients/logic/cubit/filiter_cubit.dart';
+import 'package:crm/features/language/cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/features/language/localazation.dart'; // Ensure correct path
+import 'package:crm/Core/widgets/buttons.dart'; // For FloatingCloseButton
+
+// --- 1. DATA MODEL ---
+
+class FilterItem {
+  final int index;
+  final String Function(AppLocalizations) label;
+  final IconData? icon;
+
+  FilterItem({required this.index, required this.label, this.icon});
+}
+
+// Data for Client Status (Horizontal Bar)
+final List<FilterItem> clientStatusFilters = [
+  FilterItem(index: 1, label: (l) => l.allClients),
+  FilterItem(index: 2, label: (l) => l.myClients),
+  FilterItem(index: 3, label: (l) => l.newClients),
+  FilterItem(index: 4, label: (l) => l.deferredClients),
+  FilterItem(index: 5, label: (l) => l.followUp),
+  FilterItem(index: 6, label: (l) => l.rent),
+  FilterItem(index: 7, label: (l) => l.comment),
+  FilterItem(index: 8, label: (l) => l.reservation),
+  FilterItem(index: 9, label: (l) => l.interest),
+  FilterItem(index: 10, label: (l) => l.archive),
+  FilterItem(index: 11, label: (l) => l.meeting),
+  FilterItem(index: 12, label: (l) => l.followAfterMeeting),
+  FilterItem(index: 13, label: (l) => l.meetingSchedule),
+  FilterItem(index: 14, label: (l) => l.sold),
+  FilterItem(index: 15, label: (l) => l.newLabel),
+  FilterItem(index: 16, label: (l) => l.cancel),
+];
+
+// Data for Client Details (Bottom Sheet)
+final List<FilterItem> clientDetailsFilters = [
+  FilterItem(index: 18, label: (l) => l.details),
+  FilterItem(index: 19, label: (l) => l.comments),
+  FilterItem(index: 20, label: (l) => l.attachments),
+  FilterItem(index: 21, label: (l) => l.timeline),
+  FilterItem(index: 22, label: (l) => l.deals),
+  FilterItem(index: 23, label: (l) => l.chances),
+  FilterItem(index: 24, label: (l) => l.cliRequest),
+  FilterItem(index: 25, label: (l) => l.contracts),
+  FilterItem(index: 26, label: (l) => l.paymentPlan),
+  FilterItem(index: 27, label: (l) => l.checkIn),
+];
+
+// --- 2. MAIN FILTER SECTION ---
 
 class ClientsFilterSection extends StatelessWidget {
   const ClientsFilterSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+    return Container(
+      height: 56,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         scrollDirection: Axis.horizontal,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              FilterButton(index: 0, icon: Icons.now_widgets_outlined),
-              const SizedBox(width: 8),
-              FilterButton(index: 1, label: "All Clients".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 2, label: "My Clients".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 3, label: "New Clients".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 4, label: "Deferred Clients".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 5, label: "Follow up".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 6, label: "Rent".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 7, label: "Comment".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 8, label: "Reservation".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 9, label: "Interest".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 10, label: "Archive".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 11, label: "Meeting".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 12, label: "Follow after Meeting".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 13, label: "Meeting Schedule".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 14, label: "Sold".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 15, label: "New".tr),
-              const SizedBox(width: 8),
-              FilterButton(index: 16, label: "Cancel".tr),
-            ],
-          ),
-        ),
+        itemCount: clientStatusFilters.length + 1,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, i) {
+          if (i == 0) {
+            return const FilterButton(
+              index: 0,
+              icon: Icons.now_widgets_outlined,
+            );
+          }
+          final item = clientStatusFilters[i - 1];
+          return FilterButton(
+            index: item.index,
+            label: item.label(appLocalizations),
+          );
+        },
       ),
     );
   }
 }
 
+// --- 3. REUSABLE FILTER BUTTON ---
+
 class FilterButton extends StatelessWidget {
   final int index;
   final IconData? icon;
   final String? label;
-  final double? width;
   final VoidCallback? onTap;
 
   const FilterButton({
@@ -74,216 +99,181 @@ class FilterButton extends StatelessWidget {
     required this.index,
     this.icon,
     this.label,
-    this.width,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ClientsController>();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Obx(() {
-      final isSelected = controller.selectedFilter.value == index;
+    return BlocBuilder<FiliterCubit, int>(
+      buildWhen: (prev, curr) => prev == index || curr == index,
+      builder: (context, selectedIndex) {
+        final bool isSelected = selectedIndex == index;
 
-      return InkWell(
-        onTap: () {
-          controller.selectedFilter.value = index;
-          onTap?.call();
-
-          if (controller.selectedFilter.value == 0) {
-            Get.bottomSheet(
-              FractionallySizedBox(
-                heightFactor: 0.93,
-                child: const allClientFiliter(),
-              ),
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-            );
-          }
-          if (controller.selectedFilter.value == 17) {
-            Get.bottomSheet(
-              FractionallySizedBox(
-                heightFactor: 0.93,
-                child: const allClientDetailsFiliter(),
-              ),
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-            );
-          }
-        },
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          height: 40,
-          width: width ?? (icon != null ? 40 : null),
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
+            color: isSelected ? appColor : (isDark ? darkColor : Colors.white),
             borderRadius: BorderRadius.circular(10),
-            color: isSelected ? appColor : Colors.white,
+            border: Border.all(
+              color: isSelected
+                  ? Colors.transparent
+                  : (isDark ? darkBorder : Colors.grey.shade300),
+            ),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Center(
-            child: icon != null
-                ? Icon(
-                    icon,
-                    color: isSelected ? Colors.white : secondaryTextColor,
-                    size: 20,
-                  )
-                : Text(
-                    label ?? '',
-                    style: TextStyle(
-                      color: isSelected ? Colors.white : secondaryTextColor,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      height: 1,
-                    ),
-                  ),
+          child: InkWell(
+            onTap: () {
+              context.read<FiliterCubit>().change(index);
+              if (index == 0) _showSheet(context, const AllClientFilter());
+              if (index == 17)
+                _showSheet(context, const AllClientDetailsFilter());
+            },
+            borderRadius: BorderRadius.circular(10),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: Center(
+                child: icon != null
+                    ? Icon(
+                        icon,
+                        color: isSelected ? Colors.white : secondaryTextColor,
+                        size: 20,
+                      )
+                    : Text(
+                        label ?? '',
+                        style: TextStyle(
+                          color: isSelected
+                              ? Colors.white
+                              : (isDark ? Colors.white70 : Colors.black87),
+                          fontWeight: isSelected
+                              ? FontWeight.bold
+                              : FontWeight.w500,
+                          fontSize: 12,
+                        ),
+                      ),
+              ),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
+  }
+
+  void _showSheet(BuildContext context, Widget content) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => content,
+    );
   }
 }
 
-// ignore: camel_case_types
-class allClientFiliter extends StatelessWidget {
-  const allClientFiliter({super.key});
+// --- 4. BOTTOM SHEETS ---
+
+class GenericFilterSheet extends StatelessWidget {
+  final String title;
+  final List<FilterItem> items;
+
+  const GenericFilterSheet({
+    super.key,
+    required this.title,
+    required this.items,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const FloatingCloseButton(),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
 
-          Container(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 50), // Space for status bar
+        const FloatingCloseButton(),
+        Expanded(
+          child: Container(
             margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.now_widgets_outlined),
-                      const SizedBox(width: 8),
-                      Text(
-                        "Table of Contents".tr,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 1, label: "All Clients".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 2, label: "My Clients".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 3, label: "New Clients".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 4, label: "Deferred Clients".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 5, label: "Follow up".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 6, label: "Rent".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 7, label: "Comment".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 8, label: "Reservation".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 9, label: "Interest".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 10, label: "Archive".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 11, label: "Meeting".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 12, label: "Follow after Meeting".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 13, label: "Meeting Schedule".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 14, label: "Sold".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 15, label: "New".tr),
-                  const SizedBox(height: 8),
-                  FilterButton(index: 16, label: "Cancel".tr),
-                ],
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: isDark ? darkColor : Colors.white,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
               ),
             ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.now_widgets_outlined,
+                      color: isDark ? Colors.white : appColor,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(height: 30),
+                Expanded(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 3.2,
+                        ),
+                    itemCount: items.length,
+                    itemBuilder: (context, i) => FilterButton(
+                      index: items[i].index,
+                      label: items[i].label(appLocalizations),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
+      ],
+    );
+  }
+}
+
+class AllClientFilter extends StatelessWidget {
+  const AllClientFilter({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+    return BlocProvider(
+      create: (context) => FiliterCubit(),
+      child: GenericFilterSheet(
+        title: appLocalizations.deals,
+        items: clientStatusFilters,
       ),
     );
   }
 }
 
-// ignore: camel_case_types
-class allClientDetailsFiliter extends StatelessWidget {
-  const allClientDetailsFiliter({super.key});
-
+class AllClientDetailsFilter extends StatelessWidget {
+  const AllClientDetailsFilter({super.key});
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const FloatingCloseButton(),
-
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.now_widgets_outlined),
-                      const SizedBox(width: 8),
-                      Text(
-                        "Table of Contents".tr,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  FilterButton(index: 18, label: "Details".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 19, label: "Comments".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 20, label: "Attachments".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 21, label: "Timeline".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 22, label: "Deals".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 23, label: "Chances".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 24, label: "Cli Request".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 25, label: "Contracts".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 26, label: "Payment Plan".tr),
-                  const SizedBox(width: 8),
-                  FilterButton(index: 27, label: "Check In".tr),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+    return GenericFilterSheet(
+      title: appLocalizations.clientDetails,
+      items: clientDetailsFilters,
     );
   }
 }

@@ -1,15 +1,12 @@
-// =======================
-// Model: Dialog Item
-// =======================
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/actions/ui/screens/add_client.dart';
 import 'package:crm/features/actions/ui/screens/add_project.dart';
 import 'package:crm/features/actions/ui/screens/add_task.dart';
+import 'package:crm/features/home/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// lib/features/home/logic/cubit/dialog_cubit.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DialogCubit extends Cubit<int> {
@@ -20,21 +17,6 @@ class DialogCubit extends Cubit<int> {
   void reset() => emit(-1);
 }
 
-class DialogItem {
-  final IconData icon;
-  final String text;
-  final VoidCallback onTap;
-
-  const DialogItem({
-    required this.icon,
-    required this.text,
-    required this.onTap,
-  });
-}
-
-/// =======================
-/// Custom Bottom Sheet
-/// =======================
 class CustomBottomSheetDialog extends StatelessWidget {
   final List<DialogItem> items;
 

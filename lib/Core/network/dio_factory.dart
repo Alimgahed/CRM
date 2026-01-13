@@ -39,6 +39,7 @@ class DioFactory {
           debugPrint('🔑 Token from Storage: $token');
 
           options.headers.addAll({
+            "MobileSecret": 'zIwfTeW6BOphToEX2AdmRPgMZw==',
             "Authorization": token,
             "refresh_token": refreshToken,
           });

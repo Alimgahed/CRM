@@ -3,7 +3,7 @@ import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
-import 'package:crm/features/home/ui/widgets/clients_widget/client_enms.dart';
+import 'package:crm/constant/enums/enums..dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/statistics/data/model/lead_model.dart';
@@ -41,7 +41,7 @@ class ClientsWidget extends StatelessWidget {
     final loc = AppLocalizations(currentLocale);
 
     final statusColor = getStatusColor(lead.status);
-    final statusText = getStatusText(context, lead.status);
+    final statusText = getStatusText(lead.status, loc);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -145,9 +145,6 @@ class ClientsWidget extends StatelessWidget {
     );
   }
 }
-
-// OPTIMIZATION: Extracted small widgets to their own const classes.
-// This allows Flutter to skip rebuilding them if their inputs haven't changed.
 
 class _LabelRow extends StatelessWidget {
   final AppLocalizations loc;

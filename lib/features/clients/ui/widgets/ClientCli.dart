@@ -16,8 +16,9 @@ class ClientAction {
 }
 
 class Clientcli extends StatelessWidget {
+  final String leadid;
   final controller = Get.find<ClientsController>();
-  Clientcli({super.key});
+  Clientcli({super.key, required this.leadid});
 
   static final List<ClientAction> _dummyData = List.generate(
     50,

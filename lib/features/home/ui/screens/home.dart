@@ -4,8 +4,8 @@ import 'package:crm/Core/services/user_service.dart';
 import 'package:crm/Core/widgets/gloable.dart';
 import 'package:crm/features/home/ui/widgets/clients_widget/Clients.dart';
 import 'package:crm/features/home/ui/widgets/Sales_performance_stages.dart';
-import 'package:crm/features/home/ui/widgets/Users.dart';
 import 'package:crm/features/home/ui/widgets/header.dart';
+import 'package:crm/features/home/ui/widgets/loading.dart';
 import 'package:crm/features/home/ui/widgets/totals.dart';
 import 'package:crm/features/statistics/logic/statistics_cubit.dart';
 import 'package:crm/features/statistics/logic/statistics_state.dart';
@@ -31,15 +31,14 @@ class Home extends StatelessWidget {
             // Header is usually static or has its own logic, move outside the main data builder
             ReusableHeader(
               height: 140.h,
-              child: buildHeader(context, userName),
+              child: HeaderWidget(userName: userName),
             ),
 
             BlocBuilder<StatisticsCubit, StatisticsState>(
               builder: (context, state) {
                 return state.maybeWhen(
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(),
-                  ), // Use Shimmers instead of Spinner
+                  loading: () =>
+                      HomeShimmerLoading(), // Use Shimmers instead of Spinner
                   loaded: (data) => Column(
                     children: [
                       TotalsSection(data: data),
@@ -48,8 +47,7 @@ class Home extends StatelessWidget {
 
                       Clients(leads: data.data.lastTenLeads),
 
-                      const Users(),
-
+                      // const Users(),
                       heightSpace(100),
                     ],
                   ),

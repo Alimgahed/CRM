@@ -1,6 +1,6 @@
 import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/colors.dart';
-import 'package:crm/controller/Features/ImageController.dart';
+import 'package:crm/logic/Features/ImageController.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -157,9 +157,8 @@ class SearchBarWidget extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Use provided colors or default based on theme
-    final bg =
-        backgroundColor ?? (isDark ? const Color(0xFF2C2C2C) : Colors.white);
-    final icColor = iconColor ?? (isDark ? Colors.grey[400] : Colors.grey);
+    final bg = backgroundColor ?? (isDark ? darkColor : Colors.white);
+    final icColor = iconColor ?? (isDark ? Colors.white : Colors.grey);
 
     return Container(
       height: height,
@@ -167,9 +166,7 @@ class SearchBarWidget extends StatelessWidget {
         color: bg,
         borderRadius: BorderRadius.circular(borderRadius),
         // Optional: Add border for better definition in dark mode
-        border: isDark
-            ? Border.all(color: Colors.grey.shade700, width: 1)
-            : null,
+        border: isDark ? Border.all(color: darkBorder, width: 1) : null,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
@@ -182,11 +179,13 @@ class SearchBarWidget extends StatelessWidget {
             child: TextFormField(
               controller: controller,
               onChanged: onChanged,
+
               style: TextStyle(
                 fontSize: 13,
-                color: isDark ? Colors.white : Colors.black,
+                color: isDark ? Colors.white : darkColor,
               ),
               decoration: InputDecoration(
+                fillColor: bg,
                 hintText: hintText.tr,
                 hintStyle: TextStyle(color: icColor, fontSize: 12),
                 isDense: true,

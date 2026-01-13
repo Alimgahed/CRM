@@ -1,9 +1,11 @@
+import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:crm/Core/theming/colors.dart';
 
 class ClientAttachment extends StatelessWidget {
-  const ClientAttachment({super.key});
+  final List<Attachment> attachment;
+  const ClientAttachment({super.key, required this.attachment});
 
   static const List<String> _attachments = [
     "عرض سعر عميل - امكان.pdf",
@@ -84,12 +86,12 @@ class AttachmentTile extends StatelessWidget {
 
           /// ===== Action Buttons =====
           IconButton(
-            onPressed: (){},
+            onPressed: () {},
             icon: const Icon(Icons.download, color: appColor),
             tooltip: "Download",
           ),
           IconButton(
-            onPressed: (){},
+            onPressed: () {},
             icon: const Icon(Icons.delete_outline, color: Colors.red),
             tooltip: "Delete",
           ),

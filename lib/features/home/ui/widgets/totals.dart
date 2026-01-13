@@ -1,4 +1,6 @@
+import 'package:crm/Core/helpers/number_format.dart';
 import 'package:crm/Core/theming/theme.dart';
+import 'package:crm/features/home/data/model/model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +55,10 @@ class TotalsSection extends StatelessWidget {
       TotalItem(title: locale.newDeals, amount: stats.newDeals.toString()),
       TotalItem(title: locale.conversionRate, ratio: stats.conversionRate),
       TotalItem(title: locale.newClients, amount: stats.newClients.toString()),
-      TotalItem(title: locale.totalSales, amount: stats.totalSales.toString()),
+      TotalItem(
+        title: locale.totalSales,
+        amount: stats.totalSales.toDecimalPrice(),
+      ),
     ];
   }
 }
@@ -137,14 +142,3 @@ class TotalCard extends StatelessWidget {
     );
   }
 }
-
-/// Model class for a single total card
-class TotalItem {
-  final String title;
-  final String? amount;
-  final double? ratio;
-
-  TotalItem({required this.title, this.amount, this.ratio});
-}
-
-/// Single card widget

@@ -2,7 +2,8 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
 
 class Clientcomments extends StatelessWidget {
-  const Clientcomments({super.key});
+  final String leadid;
+  const Clientcomments({super.key, required this.leadid});
 
   @override
   Widget build(BuildContext context) {

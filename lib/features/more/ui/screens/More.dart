@@ -96,7 +96,7 @@ class MoreScreen extends StatelessWidget {
 
             MoreWidget(
               icon: Icons.language,
-              text: l10n.language,
+              text: l10n.changelanguage,
               onTap: () {
                 context.read<LocaleCubit>().toggleLocale();
               },

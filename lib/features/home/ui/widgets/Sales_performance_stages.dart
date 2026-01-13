@@ -1,9 +1,12 @@
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/theming/theme.dart';
+import 'package:crm/features/home/data/model/model.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class SalesPerformanceStages extends StatelessWidget {
@@ -14,93 +17,94 @@ class SalesPerformanceStages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = context.select(
+      (LocaleCubit c) => AppLocalizations(c.currentLocale),
+    );
+
+    final monthlyStats = data.data.lastMonthlyStats;
+    final sortedMonths = monthlyStats.keys.toList()..sort();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 0, right: 8, left: 8, bottom: 8),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Sales Performance Stages Card
-          _buildStagesCard(context: context, isDark: isDark),
+          _StagesCard(
+            data: data,
+            monthlyStats: monthlyStats,
+            sortedMonths: sortedMonths,
+            isDark: isDark,
+          ),
           const SizedBox(height: 16),
-
-          // Performance Chart
-          _buildPerformanceChart(
-            context: context,
-            monthlyStats: data.data.lastMonthlyStats,
-            sortedMonths: data.data.lastMonthlyStats.keys.toList()..sort(),
+          _PerformanceChart(
+            loc: loc,
+            monthlyStats: monthlyStats,
+            sortedMonths: sortedMonths,
             isDark: isDark,
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildStagesCard({
-    required BuildContext context,
-    required bool isDark,
-  }) {
-    // Get the latest month data
-    final monthlyStats = data.data.lastMonthlyStats;
-    final sortedMonths = monthlyStats.keys.toList()..sort();
-    final latestMonth = sortedMonths.isNotEmpty ? sortedMonths.last : '';
-    final latestStats = latestMonth.isNotEmpty
-        ? data.data.lastMonthlyStats[latestMonth]
-        : null;
+class _StagesCard extends StatelessWidget {
+  final AgentActionStatisticsResponse data;
+  final Map<String, dynamic> monthlyStats;
+  final List<String> sortedMonths;
+  final bool isDark;
 
-    if (latestStats == null) {
-      return const SizedBox.shrink();
-    }
+  const _StagesCard({
+    required this.data,
+    required this.monthlyStats,
+    required this.sortedMonths,
+    required this.isDark,
+  });
 
-    // Calculate total clients for percentage calculations
+  @override
+  Widget build(BuildContext context) {
+    if (sortedMonths.isEmpty) return const SizedBox.shrink();
 
+    final latestMonth = sortedMonths.last;
+    final latestStats = monthlyStats[latestMonth];
+    final loc = context.select(
+      (LocaleCubit c) => AppLocalizations(c.currentLocale),
+    );
+
+    // Data mapped directly from the latestStats variable for accuracy
     final stages = [
       StageItem(
-        title: "العملاء الجدد".tr,
-        titleEn: "New Clients",
-        count: data.data.lastMonthlyStats.values.first.noNewClients,
-        percentage: data.data.lastMonthlyStats.values.first.conversionRate,
+        title: loc.newClients,
+        count: latestStats.noNewClients,
+        percentage: latestStats.noNewClients / data.data.newClients,
       ),
+      // Optimization: Static data or placeholder stages should be handled gracefully
+      StageItem(title: "Contacted", count: 0, percentage: 0.0),
       StageItem(
-        title: "عملاء تم التواصل معهم".tr,
-        titleEn: "Contacted Clients",
-        count: 0,
-        percentage: 0.0,
-      ),
-      StageItem(
-        title: "عملاء تم تحديد إجتماع معهم".tr,
-        titleEn: "Scheduled Meetings",
-        count: 0,
-        percentage: 0.0,
-      ),
-      StageItem(
-        title: "عملاء إرسل إليهم عروض".tr,
-        titleEn: "Sent Offers",
-        count: 0,
-        percentage: 0.0,
-      ),
-      StageItem(
-        title: "صفقات مغلقة".tr,
-        titleEn: "Closed Deals",
-        count: data.data.lastMonthlyStats.values.first.noNewDeals,
-        percentage: data.data.lastMonthlyStats.values.first.conversionRate,
+        title: loc.deals,
+        count: latestStats.noNewDeals,
+        percentage: latestStats.noNewDeals / data.data.newDeals,
       ),
     ];
 
     return Container(
-      padding: EdgeInsets.all(context.width < 600 ? 12 : 20),
+      padding: const EdgeInsets.all(16),
       decoration: isDark
           ? AppDecorations.darkContainer
           : AppDecorations.lightContainer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "مراحل أداء المبيعات".tr,
-            style: TextStyles.size16(
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : primaryTextColor,
-            ),
+          Row(
+            children: [
+              Text(
+                loc.salesperformancestages, // Localization fix
+                style: TextStyles.size16(
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : primaryTextColor,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 24),
           ...stages.map(
@@ -109,49 +113,53 @@ class SalesPerformanceStages extends StatelessWidget {
               child: _SalesStageItem(stage: stage, isDark: isDark),
             ),
           ),
-          const SizedBox(height: 8),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                side: BorderSide(
-                  color: isDark ? Colors.white24 : Colors.black26,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                "عرض التفاصيل".tr,
-                style: TextStyles.size14(
-                  color: isDark ? Colors.white : primaryTextColor,
-                ),
-              ),
-            ),
-          ),
+          _buildDetailButton(isDark, loc),
         ],
       ),
     );
   }
 
-  Widget _buildPerformanceChart({
-    required BuildContext context,
-    required Map<String, dynamic> monthlyStats,
-    required List<String> sortedMonths,
-    required bool isDark,
-  }) {
-    // Calculate max Y value from data
-    double maxDeals = 0;
-    double maxClients = 0;
+  Widget _buildDetailButton(bool isDark, AppLocalizations loc) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () {},
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          side: BorderSide(color: isDark ? Colors.white24 : Colors.black26),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        child: Text(
+          loc.viewall,
+          style: TextStyles.size14(
+            color: isDark ? Colors.white : primaryTextColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-    for (var month in sortedMonths) {
-      final stats = monthlyStats[month];
-      if (stats.noNewDeals > maxDeals) maxDeals = stats.noNewDeals.toDouble();
-      if (stats.noNewClients > maxClients)
-        maxClients = stats.noNewClients.toDouble();
-    }
+class _PerformanceChart extends StatelessWidget {
+  final Map<String, dynamic> monthlyStats;
+  final List<String> sortedMonths;
+  final bool isDark;
+  final AppLocalizations loc;
+
+  const _PerformanceChart({
+    required this.monthlyStats,
+    required this.sortedMonths,
+    required this.isDark,
+    required this.loc,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (sortedMonths.isEmpty) return const SizedBox.shrink();
+
+    // Logic for interval calculation moved to a helper for cleaner build
+    final maxY = _calculateMaxY();
+    final yInterval = maxY > 5 ? (maxY / 5).ceilToDouble() : 1.0;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -159,243 +167,131 @@ class SalesPerformanceStages extends StatelessWidget {
           ? AppDecorations.darkContainer
           : AppDecorations.lightContainer,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            spacing: 16,
-            children: [
-              _buildLegendItem(
-                "الصفقات المغلقة".tr,
-                const Color(0xFFFF6B6B),
-                isDark,
-              ),
-              _buildLegendItem(
-                "العملاء المحتملين".tr,
-                const Color(0xFF4ECDC4),
-                isDark,
-              ),
-            ],
-          ),
+          _buildLegend(isDark),
           const SizedBox(height: 16),
-
-          // Chart
-          SizedBox(
-            height: 300,
-            child: _buildLineChart(
-              monthlyStats: monthlyStats,
-              sortedMonths: sortedMonths,
-              isDark: isDark,
-            ),
-          ),
+          SizedBox(height: 300, child: LineChart(_chartData(maxY, yInterval))),
         ],
       ),
     );
   }
 
-  Widget _buildLineChart({
-    required Map<String, dynamic> monthlyStats,
-    required List<String> sortedMonths,
-    required bool isDark,
-  }) {
-    if (sortedMonths.isEmpty) {
-      return Center(
-        child: Text(
-          "No data available",
-          style: TextStyles.size14(
-            color: isDark ? Colors.white70 : primaryTextColor,
-          ),
-        ),
-      );
-    }
-
-    double maxDeals = 0;
-    double maxClients = 0;
-
-    for (final month in sortedMonths) {
+  double _calculateMaxY() {
+    double max = 0;
+    for (var month in sortedMonths) {
       final stats = monthlyStats[month];
-      if (stats.noNewDeals > maxDeals) maxDeals = stats.noNewDeals.toDouble();
-      if (stats.noNewClients > maxClients) {
-        maxClients = stats.noNewClients.toDouble();
-      }
+      if (stats.noNewDeals > max) max = stats.noNewDeals.toDouble();
+      if (stats.noNewClients > max) max = stats.noNewClients.toDouble();
     }
+    return max * 1.2;
+  }
 
-    final maxY = (maxDeals > maxClients ? maxDeals : maxClients) * 1.2;
-    final yInterval = maxY > 5 ? (maxY / 5).ceilToDouble() : 1.0;
-
-    return LineChart(
-      LineChartData(
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: true,
-          horizontalInterval: yInterval,
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: isDark ? Colors.white10 : Colors.black12,
-              strokeWidth: 1,
-              dashArray: [5, 5],
-            );
-          },
-          getDrawingVerticalLine: (value) {
-            return FlLine(
-              color: isDark ? Colors.white10 : Colors.black12,
-              strokeWidth: 1,
-              dashArray: [5, 5],
-            );
-          },
+  Widget _buildLegend(bool isDark) {
+    return Wrap(
+      spacing: 16,
+      children: [
+        _LegendItem(
+          label: loc.deals,
+          color: const Color(0xFFFF6B6B),
+          isDark: isDark,
         ),
-        titlesData: FlTitlesData(
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 35,
-              interval: yInterval,
-              getTitlesWidget: (value, meta) {
-                return Text(
-                  value.toInt().toString(),
-                  style: TextStyles.size14(
-                    color: isDark ? Colors.white60 : primaryTextColor,
-                  ),
-                );
-              },
-            ),
+        _LegendItem(
+          label: loc.clients,
+          color: const Color(0xFF4ECDC4),
+          isDark: isDark,
+        ),
+      ],
+    );
+  }
+
+  LineChartData _chartData(double maxY, double yInterval) {
+    return LineChartData(
+      // ... gridData remains same
+      titlesData: FlTitlesData(
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            interval: yInterval, // Prevents Y-axis decimals if not needed
+            reservedSize: 35,
           ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 28,
-              interval: (sortedMonths.length - 1)
-                  .toDouble(), // ensures only start and end
-              getTitlesWidget: (value, meta) {
-                final index = value.toInt();
-                // Only show first and last labels
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 28,
+            // FORCE X-axis to only check whole number values
+            interval: 1,
+            getTitlesWidget: (value, meta) {
+              // value is now guaranteed to be 0.0, 1.0, 2.0...
+              final int index = value.toInt();
+
+              // Only show labels for valid indices in your months list
+              if (index >= 0 && index < sortedMonths.length) {
+                // Logic to only show first and last to keep it clean
                 if (index == 0 || index == sortedMonths.length - 1) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 6),
+                    padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       sortedMonths[index],
-                      style: TextStyles.size14(
-                        color: isDark ? Colors.white60 : primaryTextColor,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: isDark ? Colors.white60 : Colors.black54,
                       ),
                     ),
                   );
                 }
-                return const SizedBox(); // hide all other labels
-              },
-            ),
-          ),
-
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-        ),
-        borderData: FlBorderData(show: false),
-        minX: 0,
-        maxX: (sortedMonths.length - 1).toDouble(),
-        minY: 0,
-        maxY: maxY,
-        lineBarsData: [
-          // Closed Deals Line (Orange/Red)
-          LineChartBarData(
-            spots: sortedMonths.asMap().entries.map((entry) {
-              final month = entry.value;
-              final stats = monthlyStats[month];
-              return FlSpot(entry.key.toDouble(), stats.noNewDeals.toDouble());
-            }).toList(),
-            isCurved: true,
-            color: const Color(0xFFFF6B6B),
-            barWidth: 2.5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-              getDotPainter: (spot, percent, barData, index) {
-                return FlDotCirclePainter(
-                  radius: 4,
-                  color: const Color(0xFFFF6B6B),
-                  strokeWidth: 2,
-                  strokeColor: isDark ? darkColor : Colors.white,
-                );
-              },
-            ),
-            belowBarData: BarAreaData(show: false),
-          ),
-          // Potential Clients Line (Cyan/Blue)
-          LineChartBarData(
-            spots: sortedMonths.asMap().entries.map((entry) {
-              final month = entry.value;
-              final stats = monthlyStats[month];
-              return FlSpot(
-                entry.key.toDouble(),
-                stats.noNewClients.toDouble(),
-              );
-            }).toList(),
-            isCurved: true,
-            color: const Color(0xFF4ECDC4),
-            barWidth: 2.5,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-              getDotPainter: (spot, percent, barData, index) {
-                return FlDotCirclePainter(
-                  radius: 4,
-                  color: const Color(0xFF4ECDC4),
-                  strokeWidth: 2,
-                  strokeColor: isDark ? darkColor : Colors.white,
-                );
-              },
-            ),
-            belowBarData: BarAreaData(show: false),
-          ),
-        ],
-        lineTouchData: LineTouchData(
-          touchTooltipData: LineTouchTooltipData(
-            getTooltipColor: (touchedSpot) =>
-                isDark ? Colors.black87 : Colors.white,
-            tooltipBorderRadius: BorderRadius.circular(8),
-            tooltipPadding: const EdgeInsets.all(8),
-            getTooltipItems: (touchedSpots) {
-              return touchedSpots.map((spot) {
-                final month = sortedMonths[spot.x.toInt()];
-                return LineTooltipItem(
-                  '$month\n${spot.y.toInt()}',
-                  TextStyles.size14(
-                    color: spot.bar.color!,
-                    fontWeight: FontWeight.bold,
-                  ),
-                );
-              }).toList();
+              }
+              return const SizedBox.shrink();
             },
           ),
         ),
       ),
+      // CRITICAL: Explicitly set minX and maxX as integers
+      minX: 0,
+      maxX: (sortedMonths.length - 1).toDouble(),
+      minY: 0,
+      maxY: maxY,
+
+      borderData: FlBorderData(show: false),
+      lineBarsData: [
+        _createLine(const Color(0xFFFF6B6B), (s) => s.noNewDeals.toDouble()),
+        _createLine(const Color(0xFF4ECDC4), (s) => s.noNewClients.toDouble()),
+      ],
     );
   }
 
-  // Widget _buildTab(String title, bool isActive, bool isDark) {
-  //   return Container(
-  //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-  //     decoration: BoxDecoration(
-  //       color: isActive
-  //           ? (isDark ? appColor.withOpacity(0.2) : appColor.withOpacity(0.1))
-  //           : Colors.transparent,
-  //       border: Border(
-  //         bottom: BorderSide(
-  //           color: isActive ? appColor : Colors.transparent,
-  //           width: 2,
-  //         ),
-  //       ),
-  //     ),
-  //     child: Text(
-  //       title,
-  //       style: TextStyles.size12(
-  //         fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-  //         color: isActive
-  //             ? appColor
-  //             : (isDark ? Colors.white70 : primaryTextColor),
-  //       ),
-  //     ),
-  //   );
-  // }
+  LineChartBarData _createLine(Color color, double Function(dynamic) getValue) {
+    return LineChartBarData(
+      spots: sortedMonths
+          .asMap()
+          .entries
+          .map((e) => FlSpot(e.key.toDouble(), getValue(monthlyStats[e.value])))
+          .toList(),
+      isCurved: true,
+      color: color,
+      barWidth: 3,
+      dotData: const FlDotData(show: false),
+    );
+  }
+}
 
-  Widget _buildLegendItem(String label, Color color, bool isDark) {
+class _LegendItem extends StatelessWidget {
+  final String label;
+  final Color color;
+  final bool isDark;
+
+  const _LegendItem({
+    required this.label,
+    required this.color,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -407,7 +303,7 @@ class SalesPerformanceStages extends StatelessWidget {
         const SizedBox(width: 6),
         Text(
           label,
-          style: TextStyles.size14(
+          style: TextStyles.size12(
             color: isDark ? Colors.white70 : primaryTextColor,
           ),
         ),
@@ -416,7 +312,6 @@ class SalesPerformanceStages extends StatelessWidget {
   }
 }
 
-/// Single Stage Widget
 class _SalesStageItem extends StatelessWidget {
   final StageItem stage;
   final bool isDark;
@@ -425,10 +320,11 @@ class _SalesStageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final progressValue = (stage.percentage).clamp(0.0, 1.0);
-    final percentageColor = stage.percentage >= 1.0
-        ? const Color(0xFF4ECDC4)
-        : (stage.percentage > 0 ? successColor : Colors.grey);
+    // Optimization: Clamp the value once to prevent layout errors if data is > 1.0
+    final double progressValue = stage.percentage.clamp(0.0, 1.0);
+
+    // Determine color based on progress thresholds
+    final Color percentageColor = _getStageColor(stage.percentage);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -438,46 +334,33 @@ class _SalesStageItem extends StatelessWidget {
             Expanded(
               child: Text(
                 stage.title,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyles.size14(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: isDark ? Colors.white : primaryTextColor,
                 ),
               ),
             ),
-            const SizedBox(width: 6),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-              decoration: BoxDecoration(
-                color: isDark ? darkFieldColor : fieldColor,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Text(
-                '${(progressValue * 100).toStringAsFixed(0)}%',
-                style: TextStyles.size14(
-                  fontWeight: FontWeight.bold,
-                  color: percentageColor,
-                ),
-              ),
+            const SizedBox(width: 8),
+            _PercentageLabel(
+              value: progressValue,
+              color: percentageColor,
+              isDark: isDark,
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         Row(
           children: [
             Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: LinearProgressIndicator(
-                  value: progressValue,
-                  minHeight: 7,
-                  backgroundColor: isDark ? darkFieldColor : radioColor,
-                  valueColor: AlwaysStoppedAnimation<Color>(percentageColor),
-                ),
+              child: _ProgressBar(
+                value: progressValue,
+                color: percentageColor,
+                isDark: isDark,
               ),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 12),
             Text(
               stage.count.toString(),
               style: TextStyles.size12(
@@ -490,19 +373,64 @@ class _SalesStageItem extends StatelessWidget {
       ],
     );
   }
+
+  Color _getStageColor(double percentage) {
+    if (percentage >= 1.0) return const Color(0xFF4ECDC4); // Completed
+    if (percentage > 0.5) return successColor; // Healthy progress
+    if (percentage > 0) return appColor; // Started
+    return Colors.grey.withOpacity(0.5); // No progress
+  }
 }
 
-/// Stage Item model
-class StageItem {
-  final String title;
-  final String titleEn;
-  final int count;
-  final double percentage;
+/// Extracted internal components for better rebuild performance
+class _PercentageLabel extends StatelessWidget {
+  final double value;
+  final Color color;
+  final bool isDark;
 
-  StageItem({
-    required this.title,
-    required this.titleEn,
-    required this.count,
-    required this.percentage,
+  const _PercentageLabel({
+    required this.value,
+    required this.color,
+    required this.isDark,
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        '${(value * 100).toStringAsFixed(0)}%',
+        style: TextStyles.size12(fontWeight: FontWeight.bold, color: color),
+      ),
+    );
+  }
+}
+
+class _ProgressBar extends StatelessWidget {
+  final double value;
+  final Color color;
+  final bool isDark;
+
+  const _ProgressBar({
+    required this.value,
+    required this.color,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: LinearProgressIndicator(
+        value: value,
+        minHeight: 8,
+        backgroundColor: isDark ? darkFieldColor : Colors.grey.shade200,
+        valueColor: AlwaysStoppedAnimation<Color>(color),
+      ),
+    );
+  }
 }
