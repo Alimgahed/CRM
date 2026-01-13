@@ -10,11 +10,18 @@ class AppLocalizations {
 
   bool get isArabic => locale == 'ar';
 
+  String get newDeals => isArabic ? 'الصفقات الجديدة' : 'New Deals';
+  String get conversionRate => isArabic ? 'نسبة التحويل' : 'Conversion Rate';
+  String get newClients => isArabic ? 'العملاء الجدد' : 'New Clients';
+  String get totalSales => isArabic ? 'إجمالي المبيعات' : 'Total Sales';
   String get loginFailed => isArabic ? 'فشل التسجيل' : 'Login Failed';
-  String get enterEmail => isArabic ? '  ادخل البريد الالكتروني' : 'Enter Email';
-  String get enterPassword => isArabic ? '  ادخل كلمة المرور' : 'Enter Password';
-  String get passwordMustBeAtLeast8CharactersLong =>
-      isArabic ? 'يجب أن تكون كلمة المرور على الأقل 8 أحرف' : 'Password must be at least 8 characters long';
+  String get enterEmail =>
+      isArabic ? '  ادخل البريد الالكتروني' : 'Enter Email';
+  String get enterPassword =>
+      isArabic ? '  ادخل كلمة المرور' : 'Enter Password';
+  String get passwordMustBeAtLeast8CharactersLong => isArabic
+      ? 'يجب أن تكون كلمة المرور على الأقل 8 أحرف'
+      : 'Password must be at least 8 characters long';
 
   String get atLeastOneLowercaseLetter =>
       isArabic ? 'يجب أن تحتوي على حرف صغير' : 'At least one lowercase letter';
@@ -30,7 +37,6 @@ class AppLocalizations {
 
   String get atLeast8Characters =>
       isArabic ? 'يجب أن تحتوي على 8 أحرف' : 'At least 8 characters';
-
 
   String get realEstateCrmSystem =>
       isArabic ? 'نظام إدارة علاقات العملاء' : 'Real Estate CRM System';
@@ -64,6 +70,8 @@ class AppLocalizations {
   String get ok => isArabic ? 'حسناً' : 'OK';
   String get done => isArabic ? 'تم' : 'Done';
   String get close => isArabic ? 'إغلاق' : 'Close';
+  String get viewall => isArabic ? 'عرض الكل' : 'View All';
+
   String get view => isArabic ? 'عرض التفاصيل' : 'View Details';
   String get download => isArabic ? 'تحميل' : 'Download';
   String get open => isArabic ? 'فتح' : 'Open';
@@ -235,6 +243,8 @@ class AppLocalizations {
   String get receipts => isArabic ? 'الإيصالات' : 'Receipts';
   String get paymentDate => isArabic ? 'تاريخ الدفع' : 'Payment Date';
   String get amount => isArabic ? 'المبلغ' : 'Amount';
+  String get budget => isArabic ? 'الميزانية' : 'Budget';
+
   String get paidAmount => isArabic ? 'المبلغ المدفوع' : 'Paid Amount';
   String get remainingAmount =>
       isArabic ? 'المبلغ المتبقي' : 'Remaining Amount';

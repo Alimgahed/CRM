@@ -1,4 +1,6 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/dark_cubit.dart';
+import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -16,73 +18,62 @@ Widget buildHeader(BuildContext context, String userName) {
 }
 
 Widget _buildUserInfo(BuildContext context, String userName) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+
   final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
     (cubit) => AppLocalizations(cubit.currentLocale),
   );
 
+  final Color textColor = isDark ? Colors.white : Colors.black;
+
   return Row(
     children: [
-      // const CircleAvatar(backgroundColor: Colors.white, radius: 28),
       const SizedBox(width: 12),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 30),
           Text(
             appLocalizations.welcome,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
+            style: TextStyles.size14(
               fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             userName,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
+            style: TextStyles.size20(
               fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
         ],
       ),
       const Spacer(),
-      // Animated theme toggle
+
+      /// Theme toggle
       BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           final isDark = themeMode == ThemeMode.dark;
           return IconButton(
-            onPressed: () {
-              print("press");
-              context.read<ThemeCubit>().toggleTheme();
-            },
+            onPressed: () => context.read<ThemeCubit>().toggleTheme(),
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) {
-                return RotationTransition(
-                  turns: animation,
-                  child: FadeTransition(opacity: animation, child: child),
-                );
-              },
               child: Icon(
                 isDark ? Icons.light_mode : Icons.dark_mode_outlined,
                 key: ValueKey(isDark),
-                color: Colors.white,
+                color: textColor,
                 size: 26,
               ),
             ),
           );
         },
       ),
+
       IconButton(
         onPressed: () {},
-        icon: const Icon(
-          Icons.notifications_outlined,
-          color: Colors.white,
-          size: 26,
-        ),
+        icon: Icon(Icons.notifications_outlined, color: textColor, size: 26),
       ),
     ],
   );
@@ -94,27 +85,23 @@ Widget _buildSearchBar(BuildContext context) {
   return Container(
     height: 48,
     decoration: BoxDecoration(
-      color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
+      color: isDark ? darkColor2 : Colors.white,
       borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
+          color: Colors.black.withOpacity(isDark ? 0.35 : 0.08),
           blurRadius: 12,
           offset: const Offset(0, 4),
         ),
       ],
     ),
     child: TextField(
-      style: TextStyle(color: isDark ? Colors.white : Colors.black),
+      style: TextStyles.size16(color: isDark ? Colors.white : appColor),
       decoration: InputDecoration(
+        fillColor: isDark ? darkColor2 : Colors.white,
         hintText: "Search".tr,
-        hintStyle: TextStyle(
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
-        ),
-        prefixIcon: Icon(
-          Icons.search,
-          color: isDark ? Colors.grey[400] : Colors.grey[600],
-        ),
+        hintStyle: TextStyles.size14(color: secondaryTextColor),
+        prefixIcon: Icon(Icons.search, color: secondaryTextColor),
         border: InputBorder.none,
         contentPadding: const EdgeInsets.symmetric(vertical: 14),
       ),

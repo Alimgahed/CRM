@@ -1,11 +1,14 @@
-import 'package:crm/Core/theming/colors.dart';
-import 'package:crm/Core/theming/styles.dart';
-import 'package:crm/controller/Features/Country_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/theming/styles.dart';
+import 'package:crm/controller/Features/Country_code.dart';
 
+/// ============================
+/// CUSTOM TEXT FORM FIELD
+/// ============================
 class CustomTextFormField extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
@@ -22,7 +25,7 @@ class CustomTextFormField extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool useValidator;
   final bool obscureText;
-  final String? text;
+  final String? text; // label above field
   final Widget? prefixWidget;
   final Widget? suffixWidget;
   final int? maxLines;
@@ -63,9 +66,9 @@ class CustomTextFormField extends StatefulWidget {
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
 
-  // ================================
-  // FACTORY METHODS
-  // ================================
+  /// -----------------------------
+  /// Factory methods
+  /// -----------------------------
   static CustomTextFormField password({
     Key? key,
     TextEditingController? controller,
@@ -77,23 +80,21 @@ class CustomTextFormField extends StatefulWidget {
     Function(String)? onFieldSubmitted,
     TextInputAction? textInputAction,
     FocusNode? focusNode,
-  }) {
-    return CustomTextFormField(
-      key: key,
-      controller: controller,
-      labelText: labelText,
-      hintText: hintText,
-      text: labelAboveField,
-      iconData: Icons.lock_outline,
-      obscureText: true,
-      enableTogglePassword: true,
-      validator: validator,
-      onChanged: onChanged,
-      onFieldSubmitted: onFieldSubmitted,
-      textInputAction: textInputAction ?? TextInputAction.done,
-      focusNode: focusNode,
-    );
-  }
+  }) => CustomTextFormField(
+    key: key,
+    controller: controller,
+    labelText: labelText,
+    hintText: hintText,
+    text: labelAboveField,
+    iconData: Icons.lock_outline,
+    obscureText: true,
+    enableTogglePassword: true,
+    validator: validator,
+    onChanged: onChanged,
+    onFieldSubmitted: onFieldSubmitted,
+    textInputAction: textInputAction ?? TextInputAction.done,
+    focusNode: focusNode,
+  );
 
   static CustomTextFormField phone({
     Key? key,
@@ -106,23 +107,21 @@ class CustomTextFormField extends StatefulWidget {
     Function(String)? onChanged,
     TextInputAction? textInputAction,
     FocusNode? focusNode,
-  }) {
-    return CustomTextFormField(
-      key: key,
-      controller: controller,
-      labelText: labelText,
-      hintText: hintText,
-      text: labelAboveField,
-      isPhoneField: true,
-      onSelectCountry: onSelectCountry,
-      keyboardType: TextInputType.phone,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      validator: validator,
-      onChanged: onChanged,
-      textInputAction: textInputAction ?? TextInputAction.next,
-      focusNode: focusNode,
-    );
-  }
+  }) => CustomTextFormField(
+    key: key,
+    controller: controller,
+    labelText: labelText,
+    hintText: hintText,
+    text: labelAboveField,
+    isPhoneField: true,
+    onSelectCountry: onSelectCountry,
+    keyboardType: TextInputType.phone,
+    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+    validator: validator,
+    onChanged: onChanged,
+    textInputAction: textInputAction ?? TextInputAction.next,
+    focusNode: focusNode,
+  );
 
   static CustomTextFormField email({
     Key? key,
@@ -134,25 +133,22 @@ class CustomTextFormField extends StatefulWidget {
     Function(String)? onChanged,
     TextInputAction? textInputAction,
     FocusNode? focusNode,
-  }) {
-    return CustomTextFormField(
-      key: key,
-      controller: controller,
-      labelText: labelText,
-      hintText: hintText,
-      text: labelAboveField,
-      iconData: Icons.email_outlined,
-      keyboardType: TextInputType.emailAddress,
-      validator: validator,
-      onChanged: onChanged,
-      textInputAction: textInputAction ?? TextInputAction.next,
-      focusNode: focusNode,
-    );
-  }
+  }) => CustomTextFormField(
+    key: key,
+    controller: controller,
+    labelText: labelText,
+    hintText: hintText,
+    text: labelAboveField,
+    iconData: Icons.email_outlined,
+    keyboardType: TextInputType.emailAddress,
+    validator: validator,
+    onChanged: onChanged,
+    textInputAction: textInputAction ?? TextInputAction.next,
+    focusNode: focusNode,
+  );
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  // OPTIMIZATION 2: Local state for password toggle (no GetX dependency)
   late bool _isObscured;
 
   @override
@@ -163,19 +159,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
-    // OPTIMIZATION 3: Cache theme check once
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min, // OPTIMIZATION 4: Minimize space
+      mainAxisSize: MainAxisSize.min,
       children: [
-        // Label above field
         if (widget.text != null && widget.text!.isNotEmpty)
           _FieldLabel(text: widget.text!, isDark: isDark),
-        if (widget.text != null && widget.text!.isNotEmpty) SizedBox(height: 10.h),
-
-        // OPTIMIZATION 5: Extract container decoration for reuse
+        if (widget.text != null && widget.text!.isNotEmpty)
+          SizedBox(height: 10.h),
         _FieldContainer(
           isDark: isDark,
           child: TextFormField(
@@ -183,35 +176,35 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             focusNode: widget.focusNode,
             onTap: widget.onTap,
             readOnly: widget.readOnly,
+            cursorColor: isDark ? darkColor : Colors.black,
             obscureText: _isObscured,
             keyboardType:
                 widget.keyboardType ??
-                (widget.isPhoneField ? TextInputType.phone : TextInputType.text),
-            textInputAction: widget.textInputAction,
-            inputFormatters:
-                widget.inputFormatters ??
                 (widget.isPhoneField
-                    ? [FilteringTextInputFormatter.digitsOnly]
-                    : null),
+                    ? TextInputType.phone
+                    : TextInputType.text),
+            textInputAction: widget.textInputAction,
+            inputFormatters: widget.inputFormatters,
             maxLines: widget.obscureText ? 1 : widget.maxLines,
             maxLength: widget.maxLength,
             style: TextStyle(
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? darkText : Colors.black,
               fontSize: 16,
             ),
             decoration: InputDecoration(
+              fillColor: isDark ? darkFieldColor : fieldColor,
               labelText: widget.labelText,
               labelStyle: TextStyles.size12(
-                color: isDark ? Colors.grey[400]! : Colors.grey,
-              ),
-              hintStyle: TextStyles.size12(
-                color: isDark ? Colors.grey[500]! : Colors.grey,
+                color: isDark ? darkText : Colors.grey,
               ),
               hintText: widget.hintText,
+              hintStyle: TextStyles.size12(
+                color: isDark ? darkText.withOpacity(0.7) : Colors.grey,
+              ),
               border: InputBorder.none,
               counterText: widget.maxLength != null ? null : '',
               counterStyle: TextStyle(
-                color: isDark ? Colors.grey[400] : Colors.grey,
+                color: isDark ? darkTextSecondary : Colors.grey,
               ),
               prefixIcon: _buildPrefixWidget(isDark),
               suffixIcon: _buildSuffixWidget(isDark),
@@ -227,31 +220,24 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     );
   }
 
-  // OPTIMIZATION 6: Extract prefix widget building
   Widget? _buildPrefixWidget(bool isDark) {
     if (widget.prefixWidget != null) return widget.prefixWidget;
-
     if (widget.isPhoneField && widget.onSelectCountry != null) {
-      // OPTIMIZATION 7: Lazy load country controller
       return _PhonePrefix(onSelectCountry: widget.onSelectCountry!);
     }
-
     if (widget.iconData != null) {
       return _IconPrefix(iconData: widget.iconData!, isDark: isDark);
     }
-
     return null;
   }
 
-  // OPTIMIZATION 8: Stateless password toggle
   Widget? _buildSuffixWidget(bool isDark) {
     if (widget.suffixWidget != null) return widget.suffixWidget;
-
     if (widget.enableTogglePassword && widget.obscureText) {
       return IconButton(
         icon: Icon(
           _isObscured ? Icons.visibility_off : Icons.visibility,
-          color: isDark ? Colors.grey[400] : Colors.grey,
+          color: isDark ? darkText : Colors.grey,
         ),
         onPressed: () {
           setState(() {
@@ -260,91 +246,79 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         },
       );
     }
-
     return null;
   }
 
-  String? Function(String?)? _getValidator() {
-    return widget.validator ??
-        (value) {
-          if (value == null || value.isEmpty) {
-            return "This field cannot be empty".tr;
-          }
-          return null;
-        };
-  }
+  String? Function(String?)? _getValidator() =>
+      widget.validator ??
+      (value) => (value == null || value.isEmpty)
+          ? "This field cannot be empty".tr
+          : null;
 }
 
-// OPTIMIZATION 9: Extract static widgets as separate classes
+/// ============================
+/// FIELD LABEL & CONTAINER
+/// ============================
 class _FieldLabel extends StatelessWidget {
   final String text;
   final bool isDark;
-
   const _FieldLabel({required this.text, required this.isDark});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.w),
-      child: Text(
-        text,
-        style: TextStyles.size16(
-          fontWeight: FontWeight.w400,
-          color: isDark ? Colors.white : Colors.black87,
-        ),
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: 4.w),
+    child: Text(
+      text,
+      style: TextStyles.size16(
+        fontWeight: FontWeight.w400,
+        color: isDark ? darkText : Colors.black87,
       ),
-    );
-  }
+    ),
+  );
 }
 
 class _FieldContainer extends StatelessWidget {
   final bool isDark;
   final Widget child;
-
   const _FieldContainer({required this.isDark, required this.child});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8.0.h),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
-        borderRadius: BorderRadius.circular(12),
-        border: isDark
-            ? Border.all(color: Colors.grey.shade700, width: 1)
-            : null,
+  Widget build(BuildContext context) => Container(
+    padding: EdgeInsets.all(8.0.h),
+    decoration: BoxDecoration(
+      color: isDark ? darkFieldColor : fieldColor,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(
+        color: isDark ? darkBorder : Colors.transparent,
+        width: 1,
       ),
-      child: child,
-    );
-  }
+    ),
+    child: child,
+  );
 }
 
 class _IconPrefix extends StatelessWidget {
   final IconData iconData;
   final bool isDark;
-
   const _IconPrefix({required this.iconData, required this.isDark});
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(iconData, color: appColor),
-        const SizedBox(width: 8),
-        Container(
-          height: 24,
-          width: 1,
-          color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
-        ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Icon(iconData, color: appColor),
+      const SizedBox(width: 8),
+      Container(
+        height: 24,
+        width: 1,
+        color: isDark ? darkColor2 : Colors.grey.shade300,
+      ),
+    ],
+  );
 }
 
 class _PhonePrefix extends StatelessWidget {
   final VoidCallback onSelectCountry;
-
   const _PhonePrefix({required this.onSelectCountry});
 
   @override
@@ -352,16 +326,15 @@ class _PhonePrefix extends StatelessWidget {
     try {
       final countryController = Get.find<CountryController>();
       return countryController.prefixWidget(onSelectCountry);
-    } catch (e) {
-      // Fallback if controller not found
+    } catch (_) {
       return const SizedBox.shrink();
     }
   }
 }
 
-// ================================
-// OPTIMIZED DROPDOWN
-// ================================
+/// ============================
+/// DROPDOWN FORM FIELD
+/// ============================
 class CustomDropdownFormField<T> extends StatelessWidget {
   final String labelText;
   final String? text;
@@ -391,37 +364,33 @@ class CustomDropdownFormField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         if (text != null && text!.isNotEmpty)
           _FieldLabel(text: text!, isDark: isDark),
-        if (text != null && text!.isNotEmpty) const SizedBox(height: 10),
-        
+        if (text != null && text!.isNotEmpty) SizedBox(height: 10.h),
         _FieldContainer(
           isDark: isDark,
           child: DropdownButtonFormField<T>(
-            initialValue: value,
+            value: value,
             items: items,
             onChanged: readOnly ? null : onChanged,
             validator: useValidator
                 ? validator ??
-                      (val) {
-                        if (val == null) return "This field cannot be empty".tr;
-                        return null;
-                      }
+                      (val) =>
+                          val == null ? "This field cannot be empty".tr : null
                 : null,
             decoration: InputDecoration(
               labelText: labelText,
               labelStyle: TextStyle(
-                color: isDark ? Colors.grey[400] : Colors.grey,
+                color: isDark ? darkText : Colors.grey,
                 fontSize: 12,
               ),
               hintText: hintText,
               hintStyle: TextStyle(
-                color: isDark ? Colors.grey[500] : Colors.grey,
+                color: isDark ? darkText.withOpacity(0.7) : Colors.grey,
               ),
               prefixIcon: iconData != null
                   ? Icon(iconData, color: appColor)
@@ -431,14 +400,13 @@ class CustomDropdownFormField<T> extends StatelessWidget {
             ),
             style: TextStyle(
               fontSize: 16,
-              color: isDark ? Colors.white : Colors.black,
+              color: isDark ? darkText : Colors.black,
             ),
-            dropdownColor: isDark ? const Color(0xFF2C2C2C) : Colors.white,
+            dropdownColor: isDark ? darkFieldColor : Colors.white,
             icon: Icon(
               Icons.arrow_drop_down,
-              color: isDark ? Colors.grey[400] : Colors.grey,
+              color: isDark ? darkText : Colors.grey,
             ),
-            // OPTIMIZATION 10: Prevent dropdown overflow
             isExpanded: true,
             menuMaxHeight: 300,
           ),
@@ -448,9 +416,9 @@ class CustomDropdownFormField<T> extends StatelessWidget {
   }
 }
 
-// ================================
-// OPTIMIZED POPUP MENU
-// ================================
+/// ============================
+/// POPUP MENU
+/// ============================
 class GlobalPopupMenu extends StatelessWidget {
   final List<PopupMenuItemModel> items;
   final Icon? icon;
@@ -466,83 +434,74 @@ class GlobalPopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return PopupMenuButton<int>(
       icon:
           icon ??
           Icon(
             Icons.more_vert_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? darkText : Colors.black87,
           ),
       tooltip: tooltip ?? 'More options',
-      color: isDark ? const Color(0xFF2C2C2C) : Colors.white,
+      color: isDark ? darkCardColor : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: isDark ? darkBorder : Colors.grey.shade200,
+          width: 1,
+        ),
       ),
+      elevation: isDark ? 8 : 2,
       onSelected: (index) {
-        if (index >= 0 && index < items.length) {
-          items[index].onTap?.call();
-        }
+        if (index >= 0 && index < items.length) items[index].onTap?.call();
       },
-      // OPTIMIZATION 11: Use List.generate for better performance
       itemBuilder: (context) => List.generate(
         items.length,
-        (index) {
-          final item = items[index];
-          return PopupMenuItem(
-            value: index,
-            child: _PopupMenuItem(item: item, isDark: isDark),
-          );
-        },
+        (index) => PopupMenuItem(
+          value: index,
+          child: _PopupMenuItem(item: items[index], isDark: isDark),
+        ),
       ),
     );
   }
 }
 
-// OPTIMIZATION 12: Extract popup menu item as separate widget
 class _PopupMenuItem extends StatelessWidget {
   final PopupMenuItemModel item;
   final bool isDark;
-
   const _PopupMenuItem({required this.item, required this.isDark});
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (item.icon != null) ...[
-          Icon(
-            item.icon,
-            color:
-                item.iconColor ??
-                (isDark ? Colors.white70 : Colors.black87),
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-        ],
-        Flexible(
-          child: Text(
-            item.title,
-            style: TextStyle(
-              color: isDark ? Colors.white : Colors.black87,
-              fontSize: 14,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
+  Widget build(BuildContext context) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      if (item.icon != null) ...[
+        Icon(
+          item.icon,
+          color: item.iconColor ?? (isDark ? darkText : Colors.black87),
+          size: 20,
         ),
+        const SizedBox(width: 12),
       ],
-    );
-  }
+      Flexible(
+        child: Text(
+          item.title,
+          style: TextStyle(
+            color: isDark ? darkText : Colors.black87,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    ],
+  );
 }
 
-/// Model class for popup menu item
 class PopupMenuItemModel {
   final String title;
   final IconData? icon;
   final Color? iconColor;
   final VoidCallback? onTap;
-
   const PopupMenuItemModel({
     required this.title,
     this.icon,

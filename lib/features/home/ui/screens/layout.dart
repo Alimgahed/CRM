@@ -1,17 +1,30 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/calender/screens/ui/Calender.dart';
 import 'package:crm/features/clients/ui/screens/ClientsScreen.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
-import 'package:crm/features/home/logic/cubit/layout_states.dart';
 import 'package:crm/features/home/ui/screens/home.dart';
-import 'package:crm/features/home/ui/widgets/layout_widget.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/more/ui/screens/More.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../widgets/layout_widget.dart';
 
-class Layout extends StatelessWidget {
+class Layout extends StatefulWidget {
   const Layout({super.key});
+
+  @override
+  State<Layout> createState() => _LayoutState();
+}
+
+class _LayoutState extends State<Layout> {
+  late final List<Widget> screens;
+
+  @override
+  void initState() {
+    super.initState();
+    screens = const [Home(), ClientsScreen(), Calendar(), MoreScreen()];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,90 +32,90 @@ class Layout extends StatelessWidget {
       (cubit) => AppLocalizations(cubit.currentLocale),
     );
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final double width = MediaQuery.of(context).size.width;
-    final cubit = context.read<LayoutCubit>();
+    final width = MediaQuery.of(context).size.width;
 
-    // Provide screens here (works only once)
-    cubit.setScreens([Home(), ClientsScreen(), Calendar(), MoreScreen()]);
-
-    return BlocBuilder<LayoutCubit, LayoutState>(
-      builder: (context, state) {
+    return BlocBuilder<LayoutCubit, int>(
+      builder: (context, index) {
         return Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: isDark ? darkColor : Colors.white,
           extendBody: true,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
 
-          bottomNavigationBar: SizedBox(
+          bottomNavigationBar: _BottomNavBar(
             width: width,
-            height: 80,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                CustomPaint(
-                  size: Size(width, 80),
-                  painter: BNBCustomPainter(isDark: isDark),
-                ),
-
-                Center(heightFactor: 0.6, child: CenterFAB()),
-
-                SizedBox(
-                  width: width,
-                  height: 80,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            BottomNavBarItem(
-                              icon: Icons.home_outlined,
-                              label: appLocalizations.home,
-                              isSelected: cubit.currentIndex == 0,
-                              onTap: () => cubit.change(0),
-                            ),
-                            BottomNavBarItem(
-                              icon: Icons.people_outline,
-                              label: appLocalizations.clients,
-                              isSelected: cubit.currentIndex == 1,
-                              onTap: () => cubit.change(1),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(width: 80),
-
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            BottomNavBarItem(
-                              icon: Icons.calendar_month_outlined,
-                              label: appLocalizations.calendar,
-                              isSelected: cubit.currentIndex == 2,
-                              onTap: () => cubit.change(2),
-                            ),
-                            BottomNavBarItem(
-                              icon: Icons.more_horiz_outlined,
-                              label: appLocalizations.more,
-                              isSelected: cubit.currentIndex == 3,
-                              onTap: () => cubit.change(3),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            isDark: isDark,
+            labels: appLocalizations,
+            currentIndex: index,
           ),
 
-          body: cubit.screens[cubit.currentIndex],
+          body: screens[index],
         );
       },
+    );
+  }
+}
+
+class _BottomNavBar extends StatelessWidget {
+  final double width;
+  final bool isDark;
+  final AppLocalizations labels;
+  final int currentIndex;
+
+  const _BottomNavBar({
+    required this.width,
+    required this.isDark,
+    required this.labels,
+    required this.currentIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<LayoutCubit>();
+
+    return SizedBox(
+      width: width,
+      height: 80,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          CustomPaint(
+            size: Size(width, 80),
+            painter: BNBCustomPainter(isDark: isDark),
+          ),
+          const Center(heightFactor: 0.6, child: CenterFAB()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              BottomNavBarItem(
+                icon: Icons.home_outlined,
+                label: labels.home,
+                isSelected: currentIndex == 0,
+                onTap: () => cubit.change(0),
+              ),
+              BottomNavBarItem(
+                icon: Icons.people_outline,
+                label: labels.clients,
+                isSelected: currentIndex == 1,
+                onTap: () => cubit.change(1),
+              ),
+              const SizedBox(width: 80),
+              BottomNavBarItem(
+                icon: Icons.calendar_month_outlined,
+                label: labels.calendar,
+                isSelected: currentIndex == 2,
+                onTap: () => cubit.change(2),
+              ),
+              BottomNavBarItem(
+                icon: Icons.more_horiz_outlined,
+                label: labels.more,
+                isSelected: currentIndex == 3,
+                onTap: () => cubit.change(3),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -118,7 +131,7 @@ class BNBCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = isDark ? const Color(0xFF1E1E1E) : Colors.white
+      ..color = isDark ? darkColor : Colors.white
       ..style = PaintingStyle.fill;
 
     final path = Path()
@@ -141,7 +154,6 @@ class BNBCustomPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return oldDelegate is BNBCustomPainter && oldDelegate.isDark != isDark;
-  }
+  bool shouldRepaint(covariant BNBCustomPainter oldDelegate) =>
+      oldDelegate.isDark != isDark;
 }

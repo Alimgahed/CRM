@@ -1,6 +1,7 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
+import 'package:crm/features/statistics/logic/statistics_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm/Core/routing/routes.dart';
@@ -9,7 +10,6 @@ import 'package:crm/features/Projects/ui/screens/Allprojects.dart';
 import 'package:crm/features/Projects/ui/screens/ProjectDetails.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
 import 'package:crm/features/developers/ui/screens/AllDeveloper.dart';
-import 'package:crm/features/home/ui/screens/home.dart';
 import 'package:crm/features/home/ui/screens/layout.dart';
 import 'package:crm/features/auth/login/ui/screens/Login.dart';
 import 'package:crm/features/auth/forget_password/ui/forget_password.dart';
@@ -18,8 +18,6 @@ import 'package:crm/features/splash_screen/splash.dart';
 
 class AppRouter {
   Route generateRoute(RouteSettings? settings) {
-    final args = settings?.arguments;
-
     switch (settings?.name) {
       case Routes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
@@ -30,13 +28,15 @@ class AppRouter {
       case Routes.login:
         return MaterialPageRoute(builder: (_) => const Login());
 
-      case Routes.home:
-        return MaterialPageRoute(builder: (_) => Home());
-
       case Routes.layout:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<LayoutCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => getIt<LayoutCubit>()),
+              BlocProvider(
+                create: (_) => getIt<StatisticsCubit>()..getStatistics(),
+              ),
+            ],
             child: const Layout(),
           ),
         );

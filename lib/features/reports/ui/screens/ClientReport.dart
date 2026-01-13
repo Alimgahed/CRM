@@ -1,7 +1,5 @@
 import 'package:crm/Core/widgets/Charts.dart';
-import 'package:crm/features/home/ui/widgets/totals.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Clientreport extends StatelessWidget {
   const Clientreport({super.key});
@@ -43,50 +41,50 @@ class Clientreport extends StatelessWidget {
         child: Column(
           children: [
             // Total Cards Row 1
-            Row(
-              children: [
-                Expanded(
-                  child: TotalCard(
-                    title: "Total Clients".tr,
-                    amount: "40",
-                    ratio: 0.15,
-                    date: "منذ الشهر السابق",
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: TotalCard(
-                    title: "conversion rate".tr,
-                    amount: "18",
-                    ratio: 0.10,
-                    date: "منذ الشهر السابق",
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            // Total Cards Row 2
-            Row(
-              children: [
-                Expanded(
-                  child: TotalCard(
-                    title: "Active Clients".tr,
-                    amount: "45",
-                    ratio: 0.20,
-                    date: "منذ الشهر السابق",
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: TotalCard(
-                    title: "Non-following Clients".tr,
-                    amount: "\$25,000",
-                    ratio: 0.12,
-                    date: "منذ الشهر السابق",
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: TotalCard(
+            //         title: "Total Clients".tr,
+            //         amount: "40",
+            //         ratio: 0.15,
+            //         date: "منذ الشهر السابق",
+            //       ),
+            //     ),
+            //     const SizedBox(width: 12),
+            //     Expanded(
+            //       child: TotalCard(
+            //         title: "conversion rate".tr,
+            //         amount: "18",
+            //         ratio: 0.10,
+            //         date: "منذ الشهر السابق",
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(height: 12),
+            // // Total Cards Row 2
+            // Row(
+            //   children: [
+            //     Expanded(
+            //       child: TotalCard(
+            //         title: "Active Clients".tr,
+            //         amount: "45",
+            //         ratio: 0.20,
+            //         date: "منذ الشهر السابق",
+            //       ),
+            //     ),
+            //     const SizedBox(width: 12),
+            //     Expanded(
+            //       child: TotalCard(
+            //         title: "Non-following Clients".tr,
+            //         amount: "\$25,000",
+            //         ratio: 0.12,
+            //         date: "منذ الشهر السابق",
+            //       ),
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 24),
 
             // Customer Journey Chart

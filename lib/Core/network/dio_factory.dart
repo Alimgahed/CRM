@@ -40,7 +40,7 @@ class DioFactory {
 
           options.headers.addAll({
             "Authorization": token,
-            "refresh_token": token,
+            "refresh_token": refreshToken,
           });
 
           return handler.next(options);

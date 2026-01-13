@@ -10,6 +10,7 @@ double width = 0.0;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await setup();
 
   runApp(Crm(appRouter: AppRouter()));

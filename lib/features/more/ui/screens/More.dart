@@ -95,6 +95,14 @@ class MoreScreen extends StatelessWidget {
             ),
 
             MoreWidget(
+              icon: Icons.language,
+              text: l10n.language,
+              onTap: () {
+                context.read<LocaleCubit>().toggleLocale();
+              },
+            ),
+
+            MoreWidget(
               icon: Icons.logout_outlined,
               text: l10n.logout,
               onTap: () async {

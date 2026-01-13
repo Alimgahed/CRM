@@ -1,3 +1,5 @@
+import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/theming/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +23,7 @@ TextStyle smallStyle = TextStyle(
 );
 
 // // ignore: camel_case_types
+// ignore: camel_case_types
 class infoChip extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -32,9 +35,7 @@ class infoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark
-        ? Colors.grey.shade800
-        : const Color(0xFFF5F5F5);
+    final backgroundColor = isDark ? darkColor : const Color(0xFFF5F5F5);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
@@ -47,16 +48,49 @@ class infoChip extends StatelessWidget {
         children: [
           Icon(icon, size: 15.sp, color: color),
           SizedBox(width: 5.w),
-          Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 10.sp,
-              height: 1.5,
-              color: color,
+          Expanded(
+            child: Text(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 10.sp,
+                height: 1.5,
+                color: color,
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class StatusChip extends StatelessWidget {
+  final String statusText;
+  final Color statusColor;
+
+  const StatusChip({
+    super.key,
+    required this.statusText,
+    required this.statusColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: statusColor.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        statusText,
+        style: TextStyles.size12(
+          fontWeight: FontWeight.w600,
+          color: statusColor,
+        ),
       ),
     );
   }

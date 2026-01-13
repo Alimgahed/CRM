@@ -5,6 +5,7 @@ import 'package:crm/Core/services/user_service.dart';
 import 'package:crm/Core/theming/dark_cubit.dart';
 import 'package:crm/Core/theming/theme.dart';
 import 'package:crm/features/language/cubit.dart';
+import 'package:crm/Core/helpers/number_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -30,6 +31,9 @@ class Crm extends StatelessWidget {
           ],
           child: BlocBuilder<LocaleCubit, LocaleState>(
             builder: (context, localeState) {
+              // Update NumberFormatService with the current locale
+              NumberFormatService.instance.updateLocale(localeState.locale);
+
               return BlocBuilder<ThemeCubit, ThemeMode>(
                 builder: (context, themeMode) {
                   return MaterialApp(

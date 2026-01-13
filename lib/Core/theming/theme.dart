@@ -2,90 +2,139 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  // =======================
+  // Light Theme
+  // =======================
   static ThemeData get lightTheme {
     return ThemeData(
-      // Default app color set to white
       scaffoldBackgroundColor: Colors.white,
-
       primaryColor: Colors.white,
       fontFamily: 'Alexandria',
-      colorScheme: ColorScheme.light(
+
+      // Color scheme
+      colorScheme: const ColorScheme.light(
         primary: Colors.white,
         surface: Colors.white,
         onPrimary: Colors.black,
       ),
 
-      // Icon color set to appColor
+      // Icons
       iconTheme: IconThemeData(color: appColor),
       primaryIconTheme: IconThemeData(color: appColor),
 
+      // AppBar
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
-        titleTextStyle: TextStyle(color: appColor, fontSize: 22),
-        iconTheme: IconThemeData(color: appColor),
-      ),
-
-      progressIndicatorTheme: ProgressIndicatorThemeData(color: appColor),
-
-      brightness: Brightness.light,
-      primarySwatch: Colors.blue,
-    );
-  }
-
-  static ThemeData get darkTheme {
-    return ThemeData(
-      // Dark theme background
-      scaffoldBackgroundColor: const Color(0xFF121212),
-
-      primaryColor: const Color(0xFF1E1E1E),
-      fontFamily: 'Alexandria',
-      colorScheme: ColorScheme.dark(
-        primary: appColor,
-        surface: const Color(0xFF1E1E1E),
-        onPrimary: Colors.white,
-        onSurface: Colors.white,
-      ),
-
-      // Icon color set to appColor
-      iconTheme: IconThemeData(color: appColor),
-      primaryIconTheme: IconThemeData(color: appColor),
-
-      appBarTheme: AppBarTheme(
-        backgroundColor: const Color(0xFF1E1E1E),
-        surfaceTintColor: const Color(0xFF1E1E1E),
-        titleTextStyle: TextStyle(color: appColor, fontSize: 22),
+        titleTextStyle: TextStyle(
+          color: appColor,
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+        ),
         iconTheme: IconThemeData(color: appColor),
         elevation: 0,
       ),
 
       progressIndicatorTheme: ProgressIndicatorThemeData(color: appColor),
 
-      // Card theme for dark mode
-      cardTheme: CardThemeData(color: const Color(0xFF1E1E1E), elevation: 2),
+      // Text
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.black87),
+        bodyMedium: TextStyle(color: Colors.black54),
+        bodySmall: TextStyle(color: Colors.black45),
+      ),
 
-      // Input decoration theme
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+    );
+  }
+
+  // =======================
+  // Dark Theme
+  // =======================
+  static ThemeData get darkTheme {
+    return ThemeData(
+      scaffoldBackgroundColor: darkColor,
+      primaryColor: darkColor2,
+      fontFamily: 'Alexandria',
+
+      colorScheme: ColorScheme.dark(
+        primary: appColor,
+        surface: darkColor2,
+        onPrimary: Colors.white,
+        onSurface: Colors.white70,
+      ),
+
+      // Icons
+      iconTheme: IconThemeData(color: appColor),
+      primaryIconTheme: IconThemeData(color: appColor),
+
+      // AppBar
+      appBarTheme: AppBarTheme(
+        backgroundColor: darkColor2,
+        surfaceTintColor: darkColor2,
+        titleTextStyle: TextStyle(
+          color: appColor,
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+        ),
+        iconTheme: IconThemeData(color: appColor),
+        elevation: 0,
+      ),
+
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: appColor),
+
+      // Card
+      cardTheme: CardThemeData(color: containerColor, elevation: 2),
+
+      // Input fields
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF2C2C2C),
+        fillColor: containerColor,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
       ),
 
-      // Text theme
+      // Text
       textTheme: const TextTheme(
         bodyLarge: TextStyle(color: Colors.white),
         bodyMedium: TextStyle(color: Colors.white70),
         bodySmall: TextStyle(color: Colors.white60),
       ),
 
-      // Divider theme
+      // Divider
       dividerTheme: DividerThemeData(color: Colors.white24, thickness: 1),
 
       brightness: Brightness.dark,
       primarySwatch: Colors.blue,
     );
   }
+}
+
+class AppDecorations {
+  static const BoxDecoration lightContainer = BoxDecoration(
+    color: containerColor,
+    borderRadius: BorderRadius.all(Radius.circular(12)),
+    boxShadow: [
+      BoxShadow(
+        color: Color(0x1A000000), // black with 0.1 opacity
+        blurRadius: 8,
+        offset: Offset(0, 2),
+      ),
+    ],
+  );
+
+  static const BoxDecoration darkContainer = BoxDecoration(
+    color: darkColor,
+    borderRadius: BorderRadius.all(Radius.circular(12)),
+    boxShadow: [
+      BoxShadow(
+        color: Color(0x66000000), // black with 0.4 opacity
+        blurRadius: 8,
+        offset: Offset(0, 2),
+      ),
+    ],
+  );
 }

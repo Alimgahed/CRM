@@ -1,5 +1,4 @@
 import 'package:crm/Core/theming/colors.dart';
-import 'package:crm/features/clients/logic/Client_more/AddChanceController.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,8 +8,6 @@ class DeleteClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(Addchancecontroller(), permanent: false);
-
     return SingleChildScrollView(
       child: Column(
         children: [

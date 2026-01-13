@@ -8,6 +8,8 @@ import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/developers/data/repo/developers_repo.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
+import 'package:crm/features/statistics/data/repo/statistics_repo.dart';
+import 'package:crm/features/statistics/logic/statistics_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -28,10 +30,14 @@ Future<void> setup() async {
   getIt.registerLazySingleton(() => LoginRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => ProjectsRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => DevelopersRepo(apiService: getIt()));
+  getIt.registerLazySingleton(() => StatisticsRepo(apiService: getIt()));
+
+  getIt.registerFactory(() => StatisticsCubit(getIt()));
 
   // ⭐⭐⭐ Cubits - Register LoginCubit as Factory
   getIt.registerFactory(() => LoginCubit(loginRepo: getIt()));
   getIt.registerFactory(() => ProjectCubit(projectsRepo: getIt()));
   getIt.registerFactory(() => DeveloperCubit(developersRepo: getIt()));
-  getIt.registerLazySingleton(() => LayoutCubit());
+
+  getIt.registerFactory(() => LayoutCubit());
 }

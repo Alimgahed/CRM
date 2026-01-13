@@ -2,6 +2,7 @@
 // Model: Dialog Item
 // =======================
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/actions/ui/screens/add_client.dart';
 import 'package:crm/features/actions/ui/screens/add_project.dart';
@@ -18,9 +19,6 @@ class DialogCubit extends Cubit<int> {
 
   void reset() => emit(-1);
 }
-// =======================
-// Model: Dialog Item
-// =======================
 
 class DialogItem {
   final IconData icon;
@@ -34,10 +32,9 @@ class DialogItem {
   });
 }
 
-// =======================
-// Widget: Custom Bottom Sheet Dialog
-// =======================
-
+/// =======================
+/// Custom Bottom Sheet
+/// =======================
 class CustomBottomSheetDialog extends StatelessWidget {
   final List<DialogItem> items;
 
@@ -53,55 +50,50 @@ class CustomBottomSheetDialog extends StatelessWidget {
         child: Column(
           children: [
             const FloatingCloseButton(),
-
             Container(
-              margin: const EdgeInsets.only(top: 10), // space for FAB
+              margin: const EdgeInsets.only(top: 12),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                color: isDark ? darkColor : Colors.white,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(16),
                 ),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: items.asMap().entries.map((entry) {
-                  final idx = entry.key;
-                  final item = entry.value;
+                children: List.generate(items.length, (index) {
+                  final item = items[index];
                   return BlocBuilder<DialogCubit, int>(
                     builder: (context, selectedIndex) {
-                      return Container(
-                        height: 56,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: isDark ? Colors.grey.shade700 : Colors.grey,
+                      final isSelected = selectedIndex == index;
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          context.read<DialogCubit>().selectIndex(index);
+                          Navigator.pop(context);
+                          item.onTap();
+                        },
+                        child: Container(
+                          height: 56,
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? appColor.withOpacity(0.08)
+                                : (isDark ? darkColor2 : containerColor),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(8),
-                          // Highlight selected item
-                          color: selectedIndex == idx
-                              ? appColor.withOpacity(0.05)
-                              : null,
-                        ),
-                        child: InkWell(
-                          onTap: () {
-                            context.read<DialogCubit>().selectIndex(idx);
-                            Navigator.pop(context); // Close this sheet
-                            item.onTap();
-                          },
                           child: Row(
                             children: [
-                              const SizedBox(width: 20),
                               Icon(item.icon, color: appColor),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  item.text,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                    color: isDark ? Colors.white : Colors.black,
+                                  item.text.tr,
+                                  style: TextStyles.size14(
+                                    color: isDark
+                                        ? Colors.white
+                                        : primaryTextColor,
                                   ),
                                 ),
                               ),
@@ -111,7 +103,7 @@ class CustomBottomSheetDialog extends StatelessWidget {
                       );
                     },
                   );
-                }).toList(),
+                }),
               ),
             ),
           ],
@@ -121,6 +113,9 @@ class CustomBottomSheetDialog extends StatelessWidget {
   }
 }
 
+/// =======================
+/// Center FAB
+/// =======================
 class CenterFAB extends StatelessWidget {
   const CenterFAB({super.key});
 
@@ -132,78 +127,40 @@ class CenterFAB extends StatelessWidget {
       onTap: () {
         showModalBottomSheet(
           context: context,
-          backgroundColor: Colors.transparent,
           isScrollControlled: true,
-          builder: (context) => CustomBottomSheetDialog(
+          backgroundColor: Colors.transparent,
+          builder: (_) => CustomBottomSheetDialog(
             items: [
               DialogItem(
                 icon: Icons.task_alt,
-                text: 'Create New Task'.tr,
-                onTap: () {
-                  // Open AddTask as bottom sheet
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => const AddTask(),
-                  );
-                },
+                text: 'Create New Task',
+                onTap: () => showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => const AddTask(),
+                ),
               ),
-
               DialogItem(
                 icon: Icons.person_add,
-                text: 'Create New Client'.tr,
-                onTap: () {
-                  // Open AddClient as bottom sheet
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => FractionallySizedBox(
-                      heightFactor: 0.8,
-                      child: const AddClient(),
-                    ),
-                  );
-                },
+                text: 'Create New Client',
+                onTap: () => showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => const AddClient(),
+                ),
               ),
               DialogItem(
-                icon: Icons.business_sharp,
-                text: 'Add New Project'.tr,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) =>
-                        FileUploadScreen(text: "Upload Project Details".tr),
-                  );
-                },
-              ),
-              DialogItem(
-                icon: Icons.apartment,
-                text: 'Add New Property'.tr,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) =>
-                        FileUploadScreen(text: "Upload Property Details".tr),
-                  );
-                },
-              ),
-              DialogItem(
-                icon: Icons.engineering,
-                text: 'Add New Developer'.tr,
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) =>
-                        FileUploadScreen(text: "Upload Developer Details".tr),
-                  );
-                },
+                icon: Icons.business,
+                text: 'Add New Project',
+                onTap: () => showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) =>
+                      FileUploadScreen(text: "Upload Project Details".tr),
+                ),
               ),
             ],
           ),
@@ -213,30 +170,29 @@ class CenterFAB extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+            color: isDark ? darkColor2 : Colors.white,
             width: 6,
           ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(isDark ? 0.4 : 0.1),
               blurRadius: 8,
-              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: const CircleAvatar(
           radius: 28,
           backgroundColor: appColor,
-          child: Icon(Icons.add_box_rounded, color: Colors.white, size: 28),
+          child: Icon(Icons.add, color: Colors.white, size: 28),
         ),
       ),
     );
   }
 }
 
-// =======================
-// Bottom Navigation Item
-// =======================
+/// =======================
+/// Bottom Navigation Item
+/// =======================
 class BottomNavBarItem extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -256,33 +212,26 @@ class BottomNavBarItem extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isSelected
         ? appColor
-        : (isDark ? Colors.grey.shade400 : Colors.grey);
+        : (isDark ? secondaryTextColor : Colors.grey);
 
     return Expanded(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: color, size: 24),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                  color: color,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color),
+            const SizedBox(height: 4),
+            Text(
+              label.tr,
+              style: TextStyles.size12(
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                color: color,
               ),
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

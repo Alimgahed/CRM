@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 class UnitDetails extends StatelessWidget {
   const UnitDetails({super.key});
 
-
   Widget _buildDetailsSection() {
     return buildCard(
       child: Column(
@@ -38,33 +37,6 @@ class UnitDetails extends StatelessWidget {
   }
 
   // ==================== Payment Plan Section ====================
-  Widget _buildPaymentPlanSection() {
-    return buildCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildSectionTitle("مكونات الوحدة"),
-          const SizedBox(height: 8),
-          ExpansionTile(
-            iconColor: Colors.black,
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: EdgeInsets.zero,
-            title: const _PaymentPlanHeader(),
-            children: [
-              buildInfoRow("Spaces (from–to)", "٩٠ - ٢٠٠ م²"),
-              buildInfoRow("Price per meter", "٥٬٠٠٠ - ٨٬٠٠٠ جنيه"),
-              buildInfoRow("Installment Years", "٥ سنوات"),
-              buildInfoRow("Down Payment", "٢٥٪"),
-              buildInfoRow(
-                "Plan Description",
-                "خطة الاختيار الذكي تشمل ٢٥٪ مقدم وأقساط ربع سنوية لمدة ٥ سنوات. يوجد خصم ٦٪ للكاش.",
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildMediaSection(List<String> media) {
     return buildCard(
@@ -95,6 +67,7 @@ class UnitDetails extends StatelessWidget {
       ),
     );
   }
+
   // ignore: non_constant_identifier_names
   Widget _UnitComponentsSection() {
     return buildCard(
@@ -113,6 +86,7 @@ class UnitDetails extends StatelessWidget {
       ),
     );
   }
+
   // ==================== Main Build ====================
   @override
   Widget build(BuildContext context) {
@@ -152,6 +126,7 @@ class UnitDetails extends StatelessWidget {
 // ==================== Extracted Widgets ====================
 
 /// Payment Plan Header - extracted to const for performance
+// ignore: unused_element
 class _PaymentPlanHeader extends StatelessWidget {
   const _PaymentPlanHeader();
 
@@ -225,4 +200,3 @@ class _MediaGrid extends StatelessWidget {
 /// Individual Media Grid Item - optimized with const constructor
 
 /// File type enum for better type safety
-

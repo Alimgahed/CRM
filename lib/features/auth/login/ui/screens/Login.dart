@@ -66,7 +66,7 @@ class _LoginScaffold extends StatelessWidget {
     final isDark = context.watch<ThemeCubit>().state == ThemeMode.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
+      backgroundColor: isDark ? darkColor : fieldColor,
       body: const SafeArea(child: _LoginBody()),
     );
   }
@@ -103,23 +103,18 @@ class _LoginBody extends StatelessWidget {
   }
 }
 
-// OPTIMIZATION 8: Extract header as const widget (never rebuilds)
 class _LoginHeader extends StatelessWidget {
   const _LoginHeader();
 
   @override
   Widget build(BuildContext context) {
-    // OPTIMIZATION 9: Use select for theme
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    // OPTIMIZATION 10: Cache localization
     final lang = context.select<LocaleCubit, AppLocalizations>(
       (cubit) => AppLocalizations(cubit.currentLocale),
     );
 
     return Column(
       children: [
-        // OPTIMIZATION 11: Precache SVG for faster loading
         SvgPicture.asset(
           'images/Group.svg',
           width: 100.w,
@@ -131,7 +126,9 @@ class _LoginHeader extends StatelessWidget {
         heightSpace(10),
         Text(
           lang.aqaria,
-          style: TextStyles.size20(color: isDark ? Colors.white : Colors.black),
+          style: TextStyles.size20(
+            color: isDark ? Colors.white : Colors.black87,
+          ),
         ),
         heightSpace(5),
         Text(
@@ -143,7 +140,6 @@ class _LoginHeader extends StatelessWidget {
   }
 }
 
-// OPTIMIZATION 12: Extract button to prevent unnecessary rebuilds
 class _ForgotPasswordButton extends StatelessWidget {
   const _ForgotPasswordButton();
 
@@ -162,7 +158,7 @@ class _ForgotPasswordButton extends StatelessWidget {
           lang.forgotPassword,
           style: TextStyles.size14(
             fontWeight: FontWeight.w400,
-            color: isDark ? Colors.white70 : Colors.black,
+            color: isDark ? Colors.white70 : Colors.black87,
           ),
         ),
       ),
@@ -170,7 +166,6 @@ class _ForgotPasswordButton extends StatelessWidget {
   }
 }
 
-// OPTIMIZATION 13: Separate login button with BlocSelector
 class _LoginButton extends StatelessWidget {
   const _LoginButton();
 
@@ -181,7 +176,6 @@ class _LoginButton extends StatelessWidget {
     );
 
     return BlocSelector<LoginCubit, LoginState, bool>(
-      // OPTIMIZATION 14: Only rebuild when loading state changes
       selector: (state) => state is LoginStateLoading,
       builder: (context, isLoading) {
         if (isLoading) {
@@ -197,6 +191,8 @@ class _LoginButton extends StatelessWidget {
           text: lang.login,
           onPressed: () => _validateAndLogin(context),
           height: 45.h,
+          backgroundColor: appColor,
+          textColor: Colors.white,
         );
       },
     );
