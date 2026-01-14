@@ -1,3 +1,4 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -12,7 +13,7 @@ class AllProjectShimmer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          color: isDark ? darkColor : Colors.white,
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
@@ -28,14 +29,12 @@ class AllProjectShimmer extends StatelessWidget {
           children: [
             // IMAGE
             Shimmer.fromColors(
-              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
-              highlightColor: isDark
-                  ? Colors.grey.shade700
-                  : Colors.grey.shade100,
+              baseColor: isDark ? darkFieldColor : Colors.grey.shade300,
+              highlightColor: isDark ? darkFieldColor : Colors.grey.shade100,
               child: Container(
                 height: 190,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                  color: isDark ? darkFieldColor : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
@@ -44,15 +43,13 @@ class AllProjectShimmer extends StatelessWidget {
 
             // TITLE
             Shimmer.fromColors(
-              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
-              highlightColor: isDark
-                  ? Colors.grey.shade700
-                  : Colors.grey.shade100,
+              baseColor: isDark ? darkFieldColor : Colors.grey.shade300,
+              highlightColor: isDark ? darkFieldColor : Colors.grey.shade100,
               child: Container(
                 height: 20,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                  color: isDark ? darkFieldColor : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -61,15 +58,13 @@ class AllProjectShimmer extends StatelessWidget {
 
             // DESCRIPTION/LOCATION
             Shimmer.fromColors(
-              baseColor: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
-              highlightColor: isDark
-                  ? Colors.grey.shade700
-                  : Colors.grey.shade100,
+              baseColor: isDark ? darkFieldColor : Colors.grey.shade300,
+              highlightColor: isDark ? darkFieldColor : Colors.grey.shade100,
               child: Container(
                 height: 15,
                 width: 150,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                  color: isDark ? darkFieldColor : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -83,19 +78,15 @@ class AllProjectShimmer extends StatelessWidget {
                 (_) => Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Shimmer.fromColors(
-                    baseColor: isDark
-                        ? Colors.grey.shade800
-                        : Colors.grey.shade300,
+                    baseColor: isDark ? darkFieldColor : Colors.grey.shade300,
                     highlightColor: isDark
-                        ? Colors.grey.shade700
+                        ? darkFieldColor
                         : Colors.grey.shade100,
                     child: Container(
                       height: 25,
                       width: 80,
                       decoration: BoxDecoration(
-                        color: isDark
-                            ? Colors.grey.shade800
-                            : Colors.grey.shade300,
+                        color: isDark ? darkFieldColor : Colors.grey.shade300,
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),

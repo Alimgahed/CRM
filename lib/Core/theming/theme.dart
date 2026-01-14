@@ -127,11 +127,11 @@ class AppDecorations {
   );
 
   static const BoxDecoration darkContainer = BoxDecoration(
-    color: darkColor,
+    color: darkFieldColor,
     borderRadius: BorderRadius.all(Radius.circular(12)),
     boxShadow: [
       BoxShadow(
-        color: Color(0x66000000), // black with 0.4 opacity
+        color: darkColor, // black with 0.4 opacity
         blurRadius: 8,
         offset: Offset(0, 2),
       ),

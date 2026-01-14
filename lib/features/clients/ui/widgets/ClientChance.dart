@@ -18,6 +18,7 @@ class ClientAction {
 class Clientchance extends StatelessWidget {
   final String leadid;
   final controller = Get.find<ClientsController>();
+  // ignore: non_constant_identifier_names
   Clientchance({super.key, required this.leadid});
 
   static final List<ClientAction> _dummyData = List.generate(

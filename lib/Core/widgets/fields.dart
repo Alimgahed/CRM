@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
-import 'package:crm/logic/Features/Country_code.dart';
 
 /// ============================
 /// CUSTOM TEXT FORM FIELD
@@ -222,9 +221,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   Widget? _buildPrefixWidget(bool isDark) {
     if (widget.prefixWidget != null) return widget.prefixWidget;
-    if (widget.isPhoneField && widget.onSelectCountry != null) {
-      return _PhonePrefix(onSelectCountry: widget.onSelectCountry!);
-    }
+    if (widget.isPhoneField && widget.onSelectCountry != null) {}
     if (widget.iconData != null) {
       return _IconPrefix(iconData: widget.iconData!, isDark: isDark);
     }
@@ -317,21 +314,6 @@ class _IconPrefix extends StatelessWidget {
   );
 }
 
-class _PhonePrefix extends StatelessWidget {
-  final VoidCallback onSelectCountry;
-  const _PhonePrefix({required this.onSelectCountry});
-
-  @override
-  Widget build(BuildContext context) {
-    try {
-      final countryController = Get.find<CountryController>();
-      return countryController.prefixWidget(onSelectCountry);
-    } catch (_) {
-      return const SizedBox.shrink();
-    }
-  }
-}
-
 /// ============================
 /// DROPDOWN FORM FIELD
 /// ============================
@@ -384,6 +366,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
                 : null,
             decoration: InputDecoration(
               labelText: labelText,
+              fillColor: isDark ? darkFieldColor : fieldColor,
               labelStyle: TextStyle(
                 color: isDark ? darkText : Colors.grey,
                 fontSize: 12,

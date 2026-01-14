@@ -4,7 +4,10 @@ import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/Core/widgets/gloable.dart';
 import 'package:crm/features/actions/ui/screens/add_client.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class ClientsHeader extends StatelessWidget {
@@ -15,7 +18,7 @@ class ClientsHeader extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
-      color: isDark ? darkColor : appColor,
+      color: isDark ? darkFieldColor : appColor,
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
@@ -47,12 +50,16 @@ class ClientsTitleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
     return Row(
       children: [
         Text(
-          "Clients".tr,
-          style: const TextStyle(
-            color: Colors.white,
+          appLocalizations.clients,
+          style: TextStyle(
+            color: isDark ? appColor : Colors.white,
             fontWeight: FontWeight.w600,
             fontSize: 20,
           ),
@@ -69,7 +76,10 @@ class ClientsTitleRow extends StatelessWidget {
               backgroundColor: Colors.transparent,
             );
           },
-          icon: const Icon(Icons.add_box_rounded, color: Colors.white),
+          icon: Icon(
+            Icons.add_box_rounded,
+            color: isDark ? appColor : Colors.white,
+          ),
         ),
       ],
     );

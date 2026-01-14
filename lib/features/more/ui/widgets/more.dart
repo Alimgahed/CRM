@@ -25,11 +25,11 @@ class MoreWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+            color: isDark ? darkFieldColor : Colors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(isDark ? 0.3 : 0.05),
+                color: darkFieldColor.withOpacity(isDark ? 0.5 : 0.05),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -61,7 +61,7 @@ class MoreWidget extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 18,
-                color: isDark ? Colors.grey[500] : Colors.grey[400],
+                color: isDark ? Colors.white : Colors.grey[400],
               ),
             ],
           ),

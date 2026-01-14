@@ -1,3 +1,4 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,8 +9,8 @@ class HomeShimmerLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final baseColor = isDark ? Colors.grey[800]! : Colors.grey[300]!;
-    final highlightColor = isDark ? Colors.grey[700]! : Colors.grey[100]!;
+    final baseColor = isDark ? darkColor2 : Colors.grey[300]!;
+    final highlightColor = isDark ? darkFieldColor : Colors.grey[100]!;
 
     return Shimmer.fromColors(
       baseColor: baseColor,

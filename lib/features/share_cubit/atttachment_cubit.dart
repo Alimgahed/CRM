@@ -8,36 +8,36 @@ import 'dart:io';
 // =============================================================
 // CUBIT STATE
 // =============================================================
-abstract class ProjectDetailsState {}
+abstract class AttachmentState {}
 
-class ProjectDetailsInitial extends ProjectDetailsState {}
+class AttachmentInitial extends AttachmentState {}
 
-class ProjectDetailsLoading extends ProjectDetailsState {}
+class AttachmentLoading extends AttachmentState {}
 
-class ProjectDetailsLoaded extends ProjectDetailsState {
+class AttachmentLoaded extends AttachmentState {
   final Project project;
-  ProjectDetailsLoaded(this.project);
+  AttachmentLoaded(this.project);
 }
 
-class ProjectDetailsError extends ProjectDetailsState {
+class AttachmentError extends AttachmentState {
   final String message;
-  ProjectDetailsError(this.message);
+  AttachmentError(this.message);
 }
 
 // Attachment download states
-class AttachmentDownloading extends ProjectDetailsState {
+class AttachmentDownloading extends AttachmentState {
   final String attachmentId;
   final double progress;
   AttachmentDownloading(this.attachmentId, this.progress);
 }
 
-class AttachmentDownloadSuccess extends ProjectDetailsState {
+class AttachmentDownloadSuccess extends AttachmentState {
   final String filePath;
   final String message;
   AttachmentDownloadSuccess(this.filePath, this.message);
 }
 
-class AttachmentDownloadError extends ProjectDetailsState {
+class AttachmentDownloadError extends AttachmentState {
   final String message;
   AttachmentDownloadError(this.message);
 }
@@ -45,18 +45,15 @@ class AttachmentDownloadError extends ProjectDetailsState {
 // =============================================================
 // CUBIT
 // =============================================================
-class ProjectDetailsCubit extends Cubit<ProjectDetailsState> {
+class AttachmentCubit extends Cubit<AttachmentState> {
   final Dio _dio;
   final String baseUrl;
 
-  ProjectDetailsCubit({required this.baseUrl, Dio? dio})
+  AttachmentCubit({required this.baseUrl, Dio? dio})
     : _dio = dio ?? Dio(),
-      super(ProjectDetailsInitial());
+      super(AttachmentInitial());
 
   // Load project details
-  void loadProject(Project project) {
-    emit(ProjectDetailsLoaded(project));
-  }
 
   // Download attachment
   Future<void> downloadAttachment(Attachment attachment) async {
@@ -110,6 +107,6 @@ class ProjectDetailsCubit extends Cubit<ProjectDetailsState> {
 
   // Reset to loaded state
   void resetToLoaded(Project project) {
-    emit(ProjectDetailsLoaded(project));
+    emit(AttachmentLoaded(project));
   }
 }

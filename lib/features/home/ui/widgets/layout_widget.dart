@@ -5,6 +5,8 @@ import 'package:crm/features/actions/ui/screens/add_client.dart';
 import 'package:crm/features/actions/ui/screens/add_project.dart';
 import 'package:crm/features/actions/ui/screens/add_task.dart';
 import 'package:crm/features/home/data/model/model.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,6 +106,9 @@ class CenterFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
 
     return GestureDetector(
       onTap: () {
@@ -115,7 +120,7 @@ class CenterFAB extends StatelessWidget {
             items: [
               DialogItem(
                 icon: Icons.task_alt,
-                text: 'Create New Task',
+                text: appLocalizations.addTask,
                 onTap: () => showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -125,17 +130,20 @@ class CenterFAB extends StatelessWidget {
               ),
               DialogItem(
                 icon: Icons.person_add,
-                text: 'Create New Client',
+                text: appLocalizations.createNewClient,
                 onTap: () => showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
-                  builder: (_) => const AddClient(),
+                  builder: (_) => FractionallySizedBox(
+                    heightFactor: 0.8,
+                    child: const AddClient(),
+                  ),
                 ),
               ),
               DialogItem(
                 icon: Icons.business,
-                text: 'Add New Project',
+                text: appLocalizations.addProject,
                 onTap: () => showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,

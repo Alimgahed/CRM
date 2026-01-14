@@ -33,8 +33,6 @@ class ClientsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // OPTIMIZATION: Using select ensures this widget only rebuilds if the locale changes,
-    // not for every change in the LocaleCubit state.
     final currentLocale = context.select(
       (LocaleCubit cubit) => cubit.currentLocale,
     );
@@ -47,10 +45,10 @@ class ClientsWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 6),
       padding: EdgeInsets.all(10.h),
       decoration: BoxDecoration(
-        color: isDark ? darkColor2 : fieldColor,
-        borderRadius: BorderRadius.circular(
-          10,
-        ), // Added const implicit via literal
+        color: isDark ? darkFieldColor : fieldColor,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: isDark ? Colors.white : fieldColor),
+        // Added const implicit via literal
       ),
       child: Column(
         children: [
@@ -80,7 +78,9 @@ class ClientsWidget extends StatelessWidget {
                       lead.jobTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyles.size12(color: secondaryTextColor),
+                      style: TextStyles.size12(
+                        color: isDark ? Colors.white : secondaryTextColor,
+                      ),
                     ),
                   ],
                 ),
@@ -95,7 +95,7 @@ class ClientsWidget extends StatelessWidget {
                 child: infoChip(
                   Icons.email_outlined,
                   lead.email,
-                  secondaryTextColor,
+                  isDark ? Colors.white : secondaryTextColor,
                 ),
               ),
               widthSpace(8),
@@ -103,7 +103,7 @@ class ClientsWidget extends StatelessWidget {
                 child: infoChip(
                   Icons.phone_outlined,
                   lead.phone,
-                  secondaryTextColor,
+                  isDark ? Colors.white : secondaryTextColor,
                 ),
               ),
             ],
@@ -117,7 +117,7 @@ class ClientsWidget extends StatelessWidget {
                 child: infoChip(
                   Icons.folder_outlined,
                   lead.getProjectDisplay(currentLocale),
-                  secondaryTextColor,
+                  isDark ? Colors.white : secondaryTextColor,
                 ),
               ),
               Expanded(
@@ -152,9 +152,10 @@ class _LabelRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final style = TextStyles.size12(
       fontWeight: FontWeight.w600,
-      color: secondaryTextColor.withOpacity(0.8),
+      color: isDark ? Colors.white : secondaryTextColor.withOpacity(0.8),
     );
     return Row(
       children: [

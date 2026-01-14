@@ -30,13 +30,11 @@ class AllprojectWidget extends StatelessWidget {
       padding: EdgeInsets.all(8.w),
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          color: isDark ? darkColor : Colors.white,
           borderRadius: BorderRadius.circular(8.r),
           boxShadow: [
             BoxShadow(
-              color: isDark
-                  ? Colors.black.withOpacity(0.3)
-                  : Colors.grey.shade200,
+              color: isDark ? darkColor2 : Colors.grey.shade200,
               blurRadius: 6.r,
               offset: Offset(0, 3.h),
             ),
@@ -58,26 +56,22 @@ class AllprojectWidget extends StatelessWidget {
                 height: 190.h,
                 fit: BoxFit.cover,
                 placeholder: (_, __) => Shimmer.fromColors(
-                  baseColor: isDark
-                      ? Colors.grey.shade800
-                      : Colors.grey.shade300,
-                  highlightColor: isDark
-                      ? Colors.grey.shade700
-                      : Colors.grey.shade100,
+                  baseColor: isDark ? darkColor : Colors.grey.shade300,
+                  highlightColor: isDark ? darkColor2 : Colors.grey.shade100,
                   child: Container(
                     width: double.infinity,
                     height: 190.h,
-                    color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                    color: isDark ? darkColor : Colors.grey.shade300,
                   ),
                 ),
                 errorWidget: (_, __, ___) => Container(
                   width: double.infinity,
                   height: 190.h,
-                  color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                  color: isDark ? darkColor : Colors.grey.shade300,
                   child: Icon(
                     Icons.broken_image,
                     size: 60.sp,
-                    color: isDark ? Colors.grey[600] : Colors.grey,
+                    color: isDark ? darkColor2 : Colors.grey,
                   ),
                 ),
               ),
@@ -129,12 +123,12 @@ class AllprojectWidget extends StatelessWidget {
                   isDark,
                 ),
                 widthSpace(8),
-                infoChip(
-                  Icons.business,
-                  project.devCompany?.companyNameAr ?? appLocalizations.noData,
-                  textColor,
-                  isDark,
-                ),
+                // infoChip(
+                //   Icons.business,
+                //   project.devCompany?.companyNameAr ?? appLocalizations.noData,
+                //   textColor,
+                //   isDark,
+                // ),
               ],
             ),
             heightSpace(10),

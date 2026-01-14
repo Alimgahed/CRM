@@ -1,9 +1,12 @@
+import 'package:crm/Core/theming/Colors.dart';
 import 'package:crm/Core/widgets/fields.dart';
-import 'package:crm/logic/Features/Country_code.dart';
-import 'package:crm/features/actions/logic/add_client.dart';
 import 'package:crm/Core/widgets/buttons.dart';
+import 'package:crm/features/actions/logic/add_client.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
+import 'package:crm/logic/Features/Country_code.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddClient extends StatelessWidget {
   const AddClient({super.key});
@@ -11,172 +14,185 @@ class AddClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final controller = Get.put(AddClientController(), permanent: false);
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
+    return BlocProvider(
+      create: (context) => AddClientCubit(),
+      child: BlocBuilder<AddClientCubit, void>(
+        builder: (context, _) {
+          final cubit = context.read<AddClientCubit>();
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const FloatingCloseButton(),
-
-          Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.only(top: 8),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(16),
-              ),
-            ),
+          return SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header
-                Row(
-                  children: [
-                    Icon(
-                      Icons.person_add,
-                      color: isDark ? Colors.white : Colors.black87,
+                const FloatingCloseButton(),
+
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.only(top: 8),
+                  decoration: BoxDecoration(
+                    color: isDark ? darkColor : Colors.white,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(16),
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Create New Client'.tr,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.person_add, color: appColor),
+                          const SizedBox(width: 8),
+                          Text(
+                            appLocalizations.createNewClient,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: appColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
 
-                const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-                // --- Form Fields ---
-                CustomTextFormField(
-                  text: 'Full Name'.tr,
-                  labelText: 'Enter Client Name Here'.tr,
-                  controller: controller.clientNameController,
-                ),
-                const SizedBox(height: 10),
+                      CustomTextFormField(
+                        text: appLocalizations.clientName,
+                        labelText: appLocalizations.enterClientNameHere,
+                        controller: cubit.clientNameController,
+                      ),
+                      const SizedBox(height: 10),
 
-                Obx(
-                  () => CustomDropdownFormField<String>(
-                    text: 'Project Name'.tr,
-                    labelText: 'Select Project Name'.tr,
-                    value: controller.taskPriority.value.isEmpty
-                        ? null
-                        : controller.taskPriority.value,
-                    items: const [
-                      DropdownMenuItem(value: 'low', child: Text('Low')),
-                      DropdownMenuItem(value: 'medium', child: Text('Medium')),
-                      DropdownMenuItem(value: 'high', child: Text('High')),
+                      CustomDropdownFormField<String>(
+                        text: appLocalizations.project,
+                        labelText: appLocalizations.selectProject,
+                        value: cubit.taskPriority.isEmpty
+                            ? null
+                            : cubit.taskPriority,
+                        items: const [
+                          DropdownMenuItem(value: 'low', child: Text('Low')),
+                          DropdownMenuItem(
+                            value: 'medium',
+                            child: Text('Medium'),
+                          ),
+                          DropdownMenuItem(value: 'high', child: Text('High')),
+                        ],
+                        onChanged: (val) {
+                          cubit.taskPriority = val ?? '';
+                          cubit.rebuild();
+                        },
+                      ),
+                      const SizedBox(height: 10),
+
+                      CountryPhoneField(
+                        hintText: appLocalizations.writePhoneNumber,
+                        country: appLocalizations.selectCountry,
+                        phoneController: cubit.phoneController,
+                      ),
+                      const SizedBox(height: 10),
+
+                      CountryPhoneField(
+                        hintText: appLocalizations.writeOtherPhoneNumber,
+                        country: appLocalizations.selectCountry,
+                        phoneController: cubit.phoneController2,
+                      ),
+                      const SizedBox(height: 10),
+
+                      CustomTextFormField(
+                        text: appLocalizations.jobTitle,
+                        labelText: appLocalizations.writeJob,
+                        controller: cubit.taskDescriptionController,
+                      ),
+                      const SizedBox(height: 10),
+
+                      CustomTextFormField(
+                        text: appLocalizations.email,
+                        labelText: appLocalizations.writeEmail,
+                        controller: cubit.emailController,
+                      ),
+                      const SizedBox(height: 10),
+
+                      CustomDropdownFormField<String>(
+                        text: appLocalizations.channel,
+                        labelText: appLocalizations.selectChannel,
+                        value: cubit.channel.isEmpty ? null : cubit.channel,
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'social',
+                            child: Text('Social Media'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'referral',
+                            child: Text('Referral'),
+                          ),
+                        ],
+                        onChanged: (val) {
+                          cubit.channel = val ?? '';
+                          cubit.rebuild();
+                        },
+                      ),
+                      const SizedBox(height: 10),
+
+                      CustomDropdownFormField<String>(
+                        text: appLocalizations.preferredMethodOfContact,
+                        labelText:
+                            appLocalizations.selectPreferredMethodOfContact,
+                        value: cubit.preferredMethod.isEmpty
+                            ? null
+                            : cubit.preferredMethod,
+                        items: [
+                          DropdownMenuItem(
+                            value: appLocalizations.email,
+                            child: Text(appLocalizations.email),
+                          ),
+                          DropdownMenuItem(
+                            value: appLocalizations.phone,
+                            child: Text(appLocalizations.phone),
+                          ),
+                        ],
+                        onChanged: (val) {
+                          cubit.preferredMethod = val ?? '';
+                          cubit.rebuild();
+                        },
+                      ),
+                      SizedBox(height: 10),
+
+                      CustomDropdownFormField<String>(
+                        text: appLocalizations.clientStatus,
+                        labelText: appLocalizations.selectClientStatus,
+                        value: cubit.clientStatus.isEmpty
+                            ? null
+                            : cubit.clientStatus,
+                        items: [
+                          DropdownMenuItem(
+                            value: appLocalizations.active,
+                            child: Text(appLocalizations.active),
+                          ),
+                          DropdownMenuItem(
+                            value: appLocalizations.inactive,
+                            child: Text(appLocalizations.inactive),
+                          ),
+                        ],
+                        onChanged: (val) {
+                          cubit.clientStatus = val ?? '';
+                          cubit.rebuild();
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      CustomButton(
+                        text: appLocalizations.save,
+                        onPressed: () => cubit.saveTask(context),
+                      ),
                     ],
-                    onChanged: (val) =>
-                        controller.taskPriority.value = val ?? '',
                   ),
                 ),
-                const SizedBox(height: 10),
-
-                CustomTextFormField.phone(
-                  hintText: 'Phone'.tr,
-                  labelAboveField: 'Phone Number'.tr,
-                  labelText: 'Enter Phone Number'.tr,
-                  controller: controller.assignedToController,
-                  onSelectCountry: () {
-                    showCountrydialog();
-                  },
-                ),
-                const SizedBox(height: 10),
-
-                CustomTextFormField(
-                  text: 'Other Phone'.tr,
-                  labelText: 'Write Other Phone Number'.tr,
-                  controller: controller.expirationDateController,
-                ),
-                const SizedBox(height: 10),
-
-                CustomTextFormField(
-                  text: 'Job'.tr,
-                  labelText: 'Write Job'.tr,
-                  controller: controller.taskDescriptionController,
-                ),
-                const SizedBox(height: 10),
-
-                CustomTextFormField(
-                  text: 'E-Mail'.tr,
-                  labelText: 'Write E-Mail'.tr,
-                  controller: controller.emailController,
-                ),
-                const SizedBox(height: 10),
-
-                // Channel Dropdown
-                Obx(
-                  () => CustomDropdownFormField<String>(
-                    text: 'Channel'.tr,
-                    labelText: 'Select Channel'.tr,
-                    value: controller.channel.value.isEmpty
-                        ? null
-                        : controller.channel.value,
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'social',
-                        child: Text('Social Media'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'referral',
-                        child: Text('Referral'),
-                      ),
-                    ],
-                    onChanged: (val) => controller.channel.value = val ?? '',
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Preferred Contact
-                Obx(
-                  () => CustomDropdownFormField<String>(
-                    text: 'Preferred method of contact'.tr,
-                    labelText: 'Select Preferred method of contact'.tr,
-                    value: controller.preferredMethod.value.isEmpty
-                        ? null
-                        : controller.preferredMethod.value,
-                    items: const [
-                      DropdownMenuItem(value: 'email', child: Text('E-Mail')),
-                      DropdownMenuItem(value: 'phone', child: Text('Phone')),
-                    ],
-                    onChanged: (val) =>
-                        controller.preferredMethod.value = val ?? '',
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Client Status
-                Obx(
-                  () => CustomDropdownFormField<String>(
-                    text: 'Client Status'.tr,
-                    labelText: 'Select Client Status'.tr,
-                    value: controller.clientStatus.value.isEmpty
-                        ? null
-                        : controller.clientStatus.value,
-                    items: const [
-                      DropdownMenuItem(value: 'active', child: Text('Active')),
-                      DropdownMenuItem(
-                        value: 'inactive',
-                        child: Text('Inactive'),
-                      ),
-                    ],
-                    onChanged: (val) =>
-                        controller.clientStatus.value = val ?? '',
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                CustomButton(text: "Save".tr, onPressed: controller.saveTask),
               ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

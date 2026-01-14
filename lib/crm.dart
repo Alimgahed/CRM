@@ -49,8 +49,6 @@ class Crm extends StatelessWidget {
                       GlobalWidgetsLocalizations.delegate,
                       GlobalCupertinoLocalizations.delegate,
                     ],
-
-                    // ✅ Theme configuration
                     theme: AppTheme.lightTheme,
                     darkTheme: AppTheme.darkTheme,
                     themeMode: themeMode,

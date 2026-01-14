@@ -59,36 +59,3 @@ Map<String, dynamic> _$LeadToJson(Lead instance) => <String, dynamic>{
   'contracts': instance.contracts,
   'project_ids': instance.projectIds,
 };
-
-Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(
-  attachmentId: json['attachment_id'] as String,
-  entityType: (json['entity_type'] as num).toInt(),
-  category: (json['category'] as num?)?.toInt(),
-  entityId: json['entity_id'] as String,
-  fileName: json['file_name'] as String,
-  filePath: json['file_path'] as String,
-  fileType: json['file_type'] as String,
-  fileSize: (json['file_size'] as num).toInt(),
-  uploadedBy: json['uploaded_by'] as String,
-  isDeleted: json['is_deleted'] as bool,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String,
-  companyId: json['company_id'] as String,
-);
-
-Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>
-    <String, dynamic>{
-      'attachment_id': instance.attachmentId,
-      'entity_type': instance.entityType,
-      'category': instance.category,
-      'entity_id': instance.entityId,
-      'file_name': instance.fileName,
-      'file_path': instance.filePath,
-      'file_type': instance.fileType,
-      'file_size': instance.fileSize,
-      'uploaded_by': instance.uploadedBy,
-      'is_deleted': instance.isDeleted,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'company_id': instance.companyId,
-    };

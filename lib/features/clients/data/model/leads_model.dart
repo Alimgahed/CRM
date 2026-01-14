@@ -1,3 +1,4 @@
+import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/clients/data/model/lead_source.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -87,66 +88,4 @@ class Lead {
   factory Lead.fromJson(Map<String, dynamic> json) => _$LeadFromJson(json);
 
   Map<String, dynamic> toJson() => _$LeadToJson(this);
-}
-
-@JsonSerializable()
-class Attachment {
-  @JsonKey(name: 'attachment_id')
-  final String attachmentId;
-
-  @JsonKey(name: 'entity_type')
-  final int entityType;
-
-  final int? category;
-
-  @JsonKey(name: 'entity_id')
-  final String entityId;
-
-  @JsonKey(name: 'file_name')
-  final String fileName;
-
-  @JsonKey(name: 'file_path')
-  final String filePath;
-
-  @JsonKey(name: 'file_type')
-  final String fileType;
-
-  @JsonKey(name: 'file_size')
-  final int fileSize;
-
-  @JsonKey(name: 'uploaded_by')
-  final String uploadedBy;
-
-  @JsonKey(name: 'is_deleted')
-  final bool isDeleted;
-
-  @JsonKey(name: 'created_at')
-  final String createdAt;
-
-  @JsonKey(name: 'updated_at')
-  final String updatedAt;
-
-  @JsonKey(name: 'company_id')
-  final String companyId;
-
-  Attachment({
-    required this.attachmentId,
-    required this.entityType,
-    this.category,
-    required this.entityId,
-    required this.fileName,
-    required this.filePath,
-    required this.fileType,
-    required this.fileSize,
-    required this.uploadedBy,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.companyId,
-  });
-
-  factory Attachment.fromJson(Map<String, dynamic> json) =>
-      _$AttachmentFromJson(json);
-
-  Map<String, dynamic> toJson() => _$AttachmentToJson(this);
 }

@@ -35,7 +35,7 @@ class infoChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? darkColor : const Color(0xFFF5F5F5);
+    final backgroundColor = isDark ? darkFieldColor : const Color(0xFFF5F5F5);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),

@@ -3,7 +3,6 @@ import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
-import 'package:crm/features/Projects/logic/cubit/project_details_cubit.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/attachment_section.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/details.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/developer_section.dart';
@@ -13,6 +12,7 @@ import 'package:crm/features/Projects/ui/widgets/project_details.dart/project_he
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/stages.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
+import 'package:crm/features/share_cubit/atttachment_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,13 +35,10 @@ class ProjectDetailsScreen extends StatelessWidget {
     );
 
     return BlocProvider(
-      create: (context) =>
-          ProjectDetailsCubit(baseUrl: ApiConstants.baseUrl)
-            ..loadProject(project),
+      create: (context) => AttachmentCubit(baseUrl: ApiConstants.baseUrl),
       child: Scaffold(
-        backgroundColor: isDark ? const Color(0xFF121212) : Colors.white,
         appBar: AppBar(
-          backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          backgroundColor: isDark ? darkColor : Colors.white,
           elevation: 0,
           leading: BackButton(color: appColor, onPressed: () => context.pop()),
           title: Text(
@@ -54,7 +51,7 @@ class ProjectDetailsScreen extends StatelessWidget {
           ),
         ),
 
-        body: BlocListener<ProjectDetailsCubit, ProjectDetailsState>(
+        body: BlocListener<AttachmentCubit, AttachmentState>(
           listener: (context, state) {
             if (state is AttachmentDownloadSuccess) {
               // Get translated message
@@ -69,14 +66,12 @@ class ProjectDetailsScreen extends StatelessWidget {
                     label: l10n.open,
                     textColor: Colors.white,
                     onPressed: () {
-                      context.read<ProjectDetailsCubit>().openFile(
-                        state.filePath,
-                      );
+                      context.read<AttachmentCubit>().openFile(state.filePath);
                     },
                   ),
                 ),
               );
-              context.read<ProjectDetailsCubit>().resetToLoaded(project);
+              context.read<AttachmentCubit>().resetToLoaded(project);
             } else if (state is AttachmentDownloadError) {
               // Get translated error message
               final message = state.message.isNotEmpty
@@ -90,7 +85,7 @@ class ProjectDetailsScreen extends StatelessWidget {
                   behavior: SnackBarBehavior.floating,
                 ),
               );
-              context.read<ProjectDetailsCubit>().resetToLoaded(project);
+              context.read<AttachmentCubit>().resetToLoaded(project);
             }
           },
           child: SingleChildScrollView(

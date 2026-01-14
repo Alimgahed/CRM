@@ -17,10 +17,8 @@ class MoreScreen extends StatelessWidget {
     final l10n = context.select<LocaleCubit, AppLocalizations>(
       (cubit) => AppLocalizations(cubit.currentLocale),
     );
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [

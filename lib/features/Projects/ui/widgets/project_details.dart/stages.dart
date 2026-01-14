@@ -47,12 +47,9 @@ class StageCard extends StatelessWidget {
       padding: EdgeInsets.all(14.w),
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
+        color: isDark ? darkFieldColor : containerColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: isDark ? Colors.grey.shade700 : divColor,
-          width: 1,
-        ),
+        border: Border.all(color: isDark ? Colors.white : divColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

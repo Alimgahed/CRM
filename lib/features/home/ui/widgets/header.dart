@@ -120,11 +120,16 @@ class _SearchBar extends StatelessWidget {
       child: TextField(
         style: TextStyles.size16(color: isDark ? Colors.white : appColor),
         decoration: InputDecoration(
-          hintText:
-              loc.search, // Fixed: Use Bloc/AppLocalizations instead of .tr
+          hintText: loc.search,
+          fillColor: isDark ? darkFieldColor : Colors.white,
           hintStyle: TextStyles.size14(color: secondaryTextColor),
           prefixIcon: Icon(Icons.search, color: secondaryTextColor),
-          border: InputBorder.none,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+              color: isDark ? darkFieldColor : Colors.white,
+            ),
+          ),
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
         ),
       ),

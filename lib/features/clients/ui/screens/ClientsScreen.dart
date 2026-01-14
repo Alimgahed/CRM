@@ -22,7 +22,6 @@ class ClientsScreen extends StatelessWidget {
     final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
       (cubit) => AppLocalizations(cubit.currentLocale),
     );
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocProvider(
       create: (context) => getIt<LeadsCubit>()..fetchAllLeads(),
       child: Scaffold(
@@ -33,9 +32,7 @@ class ClientsScreen extends StatelessWidget {
                 initial: () => Center(
                   child: Text(
                     appLocalizations.noData,
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.black87,
-                    ),
+                    style: TextStyle(color: Colors.black87),
                   ),
                 ),
                 loading: () => const Center(child: CircularProgressIndicator()),
@@ -51,12 +48,7 @@ class ClientsScreen extends StatelessWidget {
                   ],
                 ),
                 error: (message) => Center(
-                  child: Text(
-                    message,
-                    style: TextStyle(
-                      color: isDark ? Colors.red[300] : Colors.red,
-                    ),
-                  ),
+                  child: Text(message, style: TextStyle(color: Colors.red)),
                 ),
               );
             },

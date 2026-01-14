@@ -110,13 +110,13 @@ class ClientCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 6),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: isDark ? darkColor : Colors.white,
+        color: isDark ? darkFieldColor : Colors.white,
+        border: Border.all(color: isDark ? Colors.white : divColor),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header (name + menu)
           Row(
             children: [
               Expanded(
@@ -206,7 +206,7 @@ class ClientCard extends StatelessWidget {
                   Expanded(
                     child: CustomButton(
                       height: 40,
-                      text: "Show Details",
+                      text: appLocalizations.details,
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,

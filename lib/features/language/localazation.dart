@@ -8,11 +8,41 @@ class AppLocalizations {
 
   String get minutesAgo => isArabic ? 'دقائق مضت' : 'Minutes ago';
   String get hoursAgo => isArabic ? 'ساعات مضت' : 'Hours ago';
+  String get selectCountry => isArabic ? 'اختر الدولة' : 'Select Country';
   String get daysAgo => isArabic ? 'أيام مضت' : 'Days ago';
   String get justNow => isArabic ? 'الآن' : 'Just now';
+  String get preferredMethodOfContact =>
+      isArabic ? 'الاتصال' : 'Preferred method of contact';
+  String get selectPreferredMethodOfContact =>
+      isArabic ? 'اختر طريقة الاتصال' : 'Select Preferred method of contact';
+  String get clientStatus => isArabic ? 'الحالة' : 'Client Status';
+  String get addProject => isArabic ? 'إضافة مشروع' : 'Add Project';
+  String get addTask => isArabic ? 'إضافة مهمة' : 'Add Task';
+  String get addClient => isArabic ? 'إضافة عميل' : 'Add Client';
+
+  String get selectClientStatus =>
+      isArabic ? 'اختر حالة العميل' : 'Select Client Status';
+  String get writeJob => isArabic ? 'اكتب الوظيفة' : 'Write Job';
+  String get writeOtherPhoneNumber =>
+      isArabic ? 'اكتب رقم الهاتف الآخر' : 'Write Other Phone Number';
+  String get writePhoneNumber =>
+      isArabic ? 'اكتب رقم الهاتف' : 'Write Phone Number';
+  String get writeSecondaryPhoneNumber =>
+      isArabic ? 'اكتب رقم الهاتف الآخر' : 'Write Secondary Phone Number';
+  String get writeEmail => isArabic ? 'اكتب البريد الالكتروني' : 'Write Email';
+  String get active => isArabic ? 'نشط' : 'Active';
+  String get inactive => isArabic ? 'غير نشط' : 'Inactive';
+  String get save => isArabic ? 'حفظ' : 'Save';
   String get allClients => isArabic ? 'كل العملاء' : 'All Clients';
   String get myClients => isArabic ? 'عملائي' : 'My Clients';
+  String get createNewClient =>
+      isArabic ? 'إنشاء عميل جديد' : 'Create New Client';
+  String get enterClientNameHere =>
+      isArabic ? 'أدخل اسم العميل هنا' : 'Enter Client Name Here';
   String get newClients => isArabic ? 'عملاء جدد' : 'New Clients';
+  String get selectProject => isArabic ? 'اختر المشروع' : 'Select Project';
+  String get selectChannel => isArabic ? 'اختر القناة' : 'Select Channel';
+  String get selectPriority => isArabic ? 'اختر الأولوية' : 'Select Priority';
   String get deferredClients => isArabic ? 'عملاء مؤجلون' : 'Deferred Clients';
   String get followUp => isArabic ? 'متابعة' : 'Follow up';
   String get rent => isArabic ? 'إيجار' : 'Rent';
@@ -102,7 +132,6 @@ class AppLocalizations {
   String get welcome => isArabic ? 'مرحباً' : 'Welcome';
   String get appName => isArabic ? 'إدارة علاقات العملاء' : 'CRM';
   String get loading => isArabic ? 'جاري التحميل...' : 'Loading...';
-  String get save => isArabic ? 'حفظ' : 'Save';
   String get delete => isArabic ? 'حذف' : 'Delete';
   String get edit => isArabic ? 'تعديل' : 'Edit';
   String get add => isArabic ? 'إضافة' : 'Add';
@@ -178,9 +207,6 @@ class AppLocalizations {
       isArabic ? 'الشركة المطورة' : 'Developer Company';
   String get arabicName => isArabic ? 'الاسم بالعربية' : 'Arabic Name';
 
-  String get active => isArabic ? 'نشط' : 'Active';
-  String get inactive => isArabic ? 'غير نشط' : 'Inactive';
-
   // Payment Plans
   String get paymentPlans => isArabic ? 'خطط الدفع' : 'Payment Plans';
   String get years => isArabic ? 'السنوات' : 'Years';
@@ -250,7 +276,6 @@ class AppLocalizations {
   String get client => isArabic ? 'عميل' : 'Client';
   String get clientName => isArabic ? 'اسم العميل' : 'Client Name';
   String get clientDetails => isArabic ? 'تفاصيل العميل' : 'Client Details';
-  String get addClient => isArabic ? 'إضافة عميل' : 'Add Client';
   String get editClient => isArabic ? 'تعديل العميل' : 'Edit Client';
   String get deleteClient => isArabic ? 'حذف العميل' : 'Delete Client';
 

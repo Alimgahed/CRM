@@ -1,3 +1,4 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ class Allprojects extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF121212) : Colors.grey[50],
       body: Column(
         children: [
           ReusableHeader(title: appLocalizations.projects),
@@ -41,7 +41,7 @@ class Allprojects extends StatelessWidget {
                     child: Text(
                       appLocalizations.noData,
                       style: TextStyle(
-                        color: isDark ? Colors.white70 : Colors.black87,
+                        color: isDark ? Colors.white70 : darkColor,
                       ),
                     ),
                   ),
@@ -54,12 +54,12 @@ class Allprojects extends StatelessWidget {
                           child: Text(
                             appLocalizations.noData,
                             style: TextStyle(
-                              color: isDark ? Colors.white70 : Colors.black87,
+                              color: isDark ? Colors.white70 : darkColor,
                             ),
                           ),
                         )
                       : ListView.builder(
-                          itemCount: projects.length,
+                          itemCount: 1,
                           itemBuilder: (_, index) {
                             return AllprojectWidget(project: projects[index]);
                           },

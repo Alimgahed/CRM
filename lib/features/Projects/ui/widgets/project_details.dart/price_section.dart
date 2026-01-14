@@ -64,12 +64,9 @@ class PriceCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(14.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
+        color: isDark ? darkFieldColor : containerColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: isDark ? Colors.grey.shade700 : divColor,
-          width: 1,
-        ),
+        border: Border.all(color: isDark ? Colors.white : divColor, width: 1),
       ),
       child: Row(
         children: [

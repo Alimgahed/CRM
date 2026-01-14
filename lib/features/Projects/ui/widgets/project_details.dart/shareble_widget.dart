@@ -4,9 +4,9 @@ import 'package:crm/Core/helpers/spacing.dart';
 import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
-import 'package:crm/features/Projects/logic/cubit/project_details_cubit.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
+import 'package:crm/features/share_cubit/atttachment_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,12 +25,9 @@ class ModernCard extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+        color: isDark ? darkFieldColor : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(
-          color: isDark ? Colors.grey.shade700 : divColor,
-          width: 1,
-        ),
+        border: Border.all(color: isDark ? Colors.white : divColor, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(isDark ? 0.3 : 0.03),
@@ -132,12 +129,9 @@ class PaymentPlanCard extends StatelessWidget {
       padding: EdgeInsets.all(14.w),
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2C2C2C) : containerColor,
+        color: isDark ? darkFieldColor : containerColor,
         borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(
-          color: isDark ? Colors.grey.shade700 : divColor,
-          width: 1,
-        ),
+        border: Border.all(color: isDark ? Colors.white : divColor, width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,23 +177,24 @@ class AttachmentTile extends StatelessWidget {
       (cubit) => AppLocalizations(cubit.currentLocale),
     );
 
-    final isImage = attachment.fileType?.startsWith('image/') ?? false;
-    final isPdf = attachment.fileType == 'application/pdf';
+    final isImage = _isImageFile(attachment.fileType!);
+    final isPdf = _isPdfFile(attachment.fileType!);
 
-    return BlocBuilder<ProjectDetailsCubit, ProjectDetailsState>(
+    return BlocBuilder<AttachmentCubit, AttachmentState>(
       builder: (context, state) {
         final isDownloading =
             state is AttachmentDownloading &&
             state.attachmentId == attachment.attachmentId;
+
         final progress = isDownloading ? (state).progress : 0.0;
 
         return Container(
           margin: EdgeInsets.only(bottom: 12.h),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF2C2C2C) : containerColor,
+            color: isDark ? darkFieldColor : containerColor,
             borderRadius: BorderRadius.circular(12.r),
             border: Border.all(
-              color: isDark ? Colors.grey.shade700 : divColor,
+              color: isDark ? Colors.white : divColor,
               width: 1,
             ),
           ),
@@ -243,18 +238,16 @@ class AttachmentTile extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          if (attachment.fileSize != null) ...[
-                            heightSpace(4),
-                            Text(
-                              _formatFileSize(attachment.fileSize!),
-                              style: TextStyle(
-                                fontSize: 11.sp,
-                                color: isDark
-                                    ? Colors.white60
-                                    : secondaryTextColor,
-                              ),
+                          heightSpace(4),
+                          Text(
+                            _formatFileSize(attachment.fileSize!),
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: isDark
+                                  ? Colors.white60
+                                  : secondaryTextColor,
                             ),
-                          ],
+                          ),
                           if (isDownloading) ...[
                             heightSpace(8),
                             ClipRRect(
@@ -264,7 +257,7 @@ class AttachmentTile extends StatelessWidget {
                                 backgroundColor: isDark
                                     ? Colors.grey.shade800
                                     : fieldColor,
-                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                valueColor: const AlwaysStoppedAnimation(
                                   appColor,
                                 ),
                                 minHeight: 4.h,
@@ -282,9 +275,7 @@ class AttachmentTile extends StatelessWidget {
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
                           value: progress,
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            appColor,
-                          ),
+                          valueColor: const AlwaysStoppedAnimation(appColor),
                         ),
                       )
                     else
@@ -294,29 +285,30 @@ class AttachmentTile extends StatelessWidget {
                           size: 22.sp,
                           color: appColor,
                         ),
-                        onPressed: () {
-                          context
-                              .read<ProjectDetailsCubit>()
-                              .downloadAttachment(attachment);
-                        },
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
+                        onPressed: () {
+                          context.read<AttachmentCubit>().downloadAttachment(
+                            attachment,
+                          );
+                        },
                       ),
                   ],
                 ),
               ),
+
+              /// ===== Image Preview =====
               if (isImage && attachment.filePath.isNotEmpty)
                 ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(12.r),
-                    bottomRight: Radius.circular(12.r),
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(12.r),
                   ),
                   child: CachedNetworkImage(
                     imageUrl: ApiConstants.baseUrl + attachment.filePath,
                     width: double.infinity,
+                    height: 180.h,
                     memCacheHeight: 400,
                     memCacheWidth: 400,
-                    height: 180.h,
                     fit: BoxFit.cover,
                     placeholder: (_, __) => Shimmer.fromColors(
                       baseColor: isDark
@@ -333,8 +325,9 @@ class AttachmentTile extends StatelessWidget {
                     errorWidget: (_, __, ___) => Container(
                       height: 180.h,
                       color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
+                      alignment: Alignment.center,
                       child: Icon(
-                        Icons.error_outline,
+                        Icons.broken_image_outlined,
                         size: 40.sp,
                         color: isDark ? Colors.grey[600] : Colors.grey,
                       ),
@@ -348,9 +341,27 @@ class AttachmentTile extends StatelessWidget {
     );
   }
 
+  /// ===== Helpers =====
+
+  bool _isImageFile(String type) {
+    final t = type.toLowerCase();
+    return t.startsWith('image/') ||
+        t.endsWith('png') ||
+        t.endsWith('jpg') ||
+        t.endsWith('jpeg') ||
+        t.endsWith('webp');
+  }
+
+  bool _isPdfFile(String type) {
+    final t = type.toLowerCase();
+    return t == 'application/pdf' || t.endsWith('pdf');
+  }
+
   String _formatFileSize(int bytes) {
     if (bytes < 1024) return '$bytes B';
-    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    if (bytes < 1024 * 1024) {
+      return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    }
     return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 }

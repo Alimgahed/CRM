@@ -250,7 +250,7 @@ class ClientsDetails extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
                               child: ClientAttachment(
-                                attachment: lead.attchments ?? [],
+                                attachments: lead.attchments ?? [],
                               ),
                             );
                           }
@@ -304,7 +304,7 @@ class ClientsDetails extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
                               child: ClientAttachment(
-                                attachment: lead.contracts ?? [],
+                                attachments: lead.contracts ?? [],
                               ),
                             );
                           }

@@ -35,7 +35,7 @@ class ProjectDeveloperSection extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
               child: Container(
-                color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
+                color: isDark ? darkFieldColor : fieldColor,
                 padding: EdgeInsets.all(16.w),
                 child: CachedNetworkImage(
                   memCacheHeight: 800,
@@ -45,15 +45,13 @@ class ProjectDeveloperSection extends StatelessWidget {
                   width: double.infinity,
                   fit: BoxFit.contain,
                   placeholder: (_, __) => Shimmer.fromColors(
-                    baseColor: isDark
-                        ? Colors.grey.shade800
-                        : Colors.grey.shade300,
+                    baseColor: isDark ? darkFieldColor : Colors.grey.shade300,
                     highlightColor: isDark
-                        ? Colors.grey.shade700
+                        ? darkFieldColor
                         : Colors.grey.shade100,
                     child: Container(
                       height: 80.h,
-                      color: isDark ? Colors.grey.shade800 : Colors.grey,
+                      color: isDark ? darkFieldColor : Colors.grey,
                     ),
                   ),
                   errorWidget: (_, __, ___) => Icon(
