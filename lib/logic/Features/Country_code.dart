@@ -80,9 +80,17 @@ class _CountryPhoneFieldState extends State<CountryPhoneField> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return 'Phone number is required';
+        }
+        return null;
+      },
+
       controller: widget.phoneController,
       keyboardType: TextInputType.phone,
+
       decoration: InputDecoration(
         fillColor: isDark ? darkFieldColor : Colors.white,
         hintText: widget.hintText,

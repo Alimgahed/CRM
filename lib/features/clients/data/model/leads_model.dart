@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'leads_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Lead {
   @JsonKey(name: 'lead_id')
   final String leadId;

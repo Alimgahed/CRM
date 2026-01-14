@@ -2,6 +2,7 @@ import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/auth/login/data/model/login_request_body.dart';
 import 'package:crm/features/auth/login/data/model/login_response.dart';
+import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/data/model/leads_response.dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
@@ -36,4 +37,6 @@ abstract class ApiService {
     @Query('page') int? page,
     @Query('page_size') int? pageSize,
   );
+  @POST(ApiConstants.getAllLeads)
+  Future<String> addLead(@Body() Lead body);
 }

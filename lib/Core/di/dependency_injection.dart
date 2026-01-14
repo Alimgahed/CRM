@@ -3,6 +3,8 @@ import 'package:crm/Core/network/dio_factory.dart';
 import 'package:crm/Core/services/user_service.dart';
 import 'package:crm/features/Projects/data/repo/projects_repo.dart';
 import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
+import 'package:crm/features/actions/data/repo/add_client_repo.dart';
+import 'package:crm/features/actions/logic/add_client.dart';
 import 'package:crm/features/auth/login/data/repos/login_repo.dart';
 import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/clients/data/repo/all_clients.dart';
@@ -34,11 +36,13 @@ Future<void> setup() async {
   getIt.registerLazySingleton(() => DevelopersRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => StatisticsRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => LeadsRepo(apiService: getIt()));
+  getIt.registerLazySingleton(() => AddClientRepo(apiService: getIt()));
 
   getIt.registerFactory(() => StatisticsCubit(getIt()));
 
   // ⭐⭐⭐ Cubits - Register LoginCubit as Factory
   getIt.registerFactory(() => LoginCubit(loginRepo: getIt()));
+  getIt.registerFactory(() => AddClientCubit(addClientRepo: getIt()));
   getIt.registerFactory(() => ProjectCubit(projectsRepo: getIt()));
   getIt.registerFactory(() => DeveloperCubit(developersRepo: getIt()));
   getIt.registerFactory(() => LeadsCubit(projectsRepo: getIt()));

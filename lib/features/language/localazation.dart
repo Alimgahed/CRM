@@ -11,6 +11,8 @@ class AppLocalizations {
   String get selectCountry => isArabic ? 'اختر الدولة' : 'Select Country';
   String get daysAgo => isArabic ? 'أيام مضت' : 'Days ago';
   String get justNow => isArabic ? 'الآن' : 'Just now';
+  String get clientNameen =>
+      isArabic ? 'اسم العميل باللغة الإنجليزية' : 'Client Name en';
   String get preferredMethodOfContact =>
       isArabic ? 'الاتصال' : 'Preferred method of contact';
   String get selectPreferredMethodOfContact =>

@@ -54,8 +54,8 @@ Map<String, dynamic> _$LeadToJson(Lead instance) => <String, dynamic>{
   'created_at': instance.createdAt,
   'updated_at': instance.updatedAt,
   'company_id': instance.companyId,
-  'lead_source': instance.leadSource,
-  'attchments': instance.attchments,
-  'contracts': instance.contracts,
+  'lead_source': instance.leadSource?.toJson(),
+  'attchments': instance.attchments?.map((e) => e.toJson()).toList(),
+  'contracts': instance.contracts?.map((e) => e.toJson()).toList(),
   'project_ids': instance.projectIds,
 };
