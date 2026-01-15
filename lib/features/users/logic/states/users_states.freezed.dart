@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'statistics_state.dart';
+part of 'users_states.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,7 +12,7 @@ part of 'statistics_state.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$StatisticsState {
+mixin _$UsersState {
 
 
 
@@ -20,7 +20,7 @@ mixin _$StatisticsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StatisticsState);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UsersState);
 }
 
 
@@ -29,20 +29,20 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'StatisticsState()';
+  return 'UsersState()';
 }
 
 
 }
 
 /// @nodoc
-class $StatisticsStateCopyWith<$Res>  {
-$StatisticsStateCopyWith(StatisticsState _, $Res Function(StatisticsState) __);
+class $UsersStateCopyWith<$Res>  {
+$UsersStateCopyWith(UsersState _, $Res Function(UsersState) __);
 }
 
 
-/// Adds pattern-matching-related methods to [StatisticsState].
-extension StatisticsStatePatterns on StatisticsState {
+/// Adds pattern-matching-related methods to [UsersState].
+extension UsersStatePatterns on UsersState {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -55,13 +55,13 @@ extension StatisticsStatePatterns on StatisticsState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initial value)?  initial,TResult Function( Loading value)?  loading,TResult Function( Loaded value)?  loaded,TResult Function( Error value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Initial value)?  initial,TResult Function( Loading value)?  loading,TResult Function( Loaded value)?  loaded,TResult Function( _Error value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial(_that);case Loading() when loading != null:
 return loading(_that);case Loaded() when loaded != null:
-return loaded(_that);case Error() when error != null:
+return loaded(_that);case _Error() when error != null:
 return error(_that);case _:
   return orElse();
 
@@ -80,13 +80,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initial value)  initial,required TResult Function( Loading value)  loading,required TResult Function( Loaded value)  loaded,required TResult Function( Error value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Initial value)  initial,required TResult Function( Loading value)  loading,required TResult Function( Loaded value)  loaded,required TResult Function( _Error value)  error,}){
 final _that = this;
 switch (_that) {
 case Initial():
 return initial(_that);case Loading():
 return loading(_that);case Loaded():
-return loaded(_that);case Error():
+return loaded(_that);case _Error():
 return error(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +104,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initial value)?  initial,TResult? Function( Loading value)?  loading,TResult? Function( Loaded value)?  loaded,TResult? Function( Error value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Initial value)?  initial,TResult? Function( Loading value)?  loading,TResult? Function( Loaded value)?  loaded,TResult? Function( _Error value)?  error,}){
 final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial(_that);case Loading() when loading != null:
 return loading(_that);case Loaded() when loaded != null:
-return loaded(_that);case Error() when error != null:
+return loaded(_that);case _Error() when error != null:
 return error(_that);case _:
   return null;
 
@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( AgentActionStatisticsResponse data)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<User> data)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Loaded() when loaded != null:
-return loaded(_that.data);case Error() when error != null:
+return loaded(_that.data);case _Error() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( AgentActionStatisticsResponse data)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<User> data)  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case Initial():
 return initial();case Loading():
 return loading();case Loaded():
-return loaded(_that.data);case Error():
+return loaded(_that.data);case _Error():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( AgentActionStatisticsResponse data)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<User> data)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
 return loading();case Loaded() when loaded != null:
-return loaded(_that.data);case Error() when error != null:
+return loaded(_that.data);case _Error() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -192,7 +192,7 @@ return error(_that.message);case _:
 /// @nodoc
 
 
-class Initial implements StatisticsState {
+class Initial implements UsersState {
   const Initial();
   
 
@@ -212,7 +212,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'StatisticsState.initial()';
+  return 'UsersState.initial()';
 }
 
 
@@ -224,7 +224,7 @@ String toString() {
 /// @nodoc
 
 
-class Loading implements StatisticsState {
+class Loading implements UsersState {
   const Loading();
   
 
@@ -244,7 +244,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'StatisticsState.loading()';
+  return 'UsersState.loading()';
 }
 
 
@@ -256,13 +256,19 @@ String toString() {
 /// @nodoc
 
 
-class Loaded implements StatisticsState {
-  const Loaded(this.data);
+class Loaded implements UsersState {
+  const Loaded(final  List<User> data): _data = data;
   
 
- final  AgentActionStatisticsResponse data;
+ final  List<User> _data;
+ List<User> get data {
+  if (_data is EqualUnmodifiableListView) return _data;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_data);
+}
 
-/// Create a copy of StatisticsState
+
+/// Create a copy of UsersState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -272,27 +278,27 @@ $LoadedCopyWith<Loaded> get copyWith => _$LoadedCopyWithImpl<Loaded>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&(identical(other.data, data) || other.data == data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Loaded&&const DeepCollectionEquality().equals(other._data, _data));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,data);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_data));
 
 @override
 String toString() {
-  return 'StatisticsState.loaded(data: $data)';
+  return 'UsersState.loaded(data: $data)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $LoadedCopyWith<$Res> implements $StatisticsStateCopyWith<$Res> {
+abstract mixin class $LoadedCopyWith<$Res> implements $UsersStateCopyWith<$Res> {
   factory $LoadedCopyWith(Loaded value, $Res Function(Loaded) _then) = _$LoadedCopyWithImpl;
 @useResult
 $Res call({
- AgentActionStatisticsResponse data
+ List<User> data
 });
 
 
@@ -307,12 +313,12 @@ class _$LoadedCopyWithImpl<$Res>
   final Loaded _self;
   final $Res Function(Loaded) _then;
 
-/// Create a copy of StatisticsState
+/// Create a copy of UsersState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
   return _then(Loaded(
-null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as AgentActionStatisticsResponse,
+null == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
+as List<User>,
   ));
 }
 
@@ -322,23 +328,23 @@ as AgentActionStatisticsResponse,
 /// @nodoc
 
 
-class Error implements StatisticsState {
-  const Error(this.message);
+class _Error implements UsersState {
+  const _Error(this.message);
   
 
  final  String message;
 
-/// Create a copy of StatisticsState
+/// Create a copy of UsersState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ErrorCopyWith<Error> get copyWith => _$ErrorCopyWithImpl<Error>(this, _$identity);
+_$ErrorCopyWith<_Error> get copyWith => __$ErrorCopyWithImpl<_Error>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.message, message) || other.message == message));
 }
 
 
@@ -347,15 +353,15 @@ int get hashCode => Object.hash(runtimeType,message);
 
 @override
 String toString() {
-  return 'StatisticsState.error(message: $message)';
+  return 'UsersState.error(message: $message)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ErrorCopyWith<$Res> implements $StatisticsStateCopyWith<$Res> {
-  factory $ErrorCopyWith(Error value, $Res Function(Error) _then) = _$ErrorCopyWithImpl;
+abstract mixin class _$ErrorCopyWith<$Res> implements $UsersStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
 @useResult
 $Res call({
  String message
@@ -366,17 +372,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$ErrorCopyWithImpl<$Res>
-    implements $ErrorCopyWith<$Res> {
-  _$ErrorCopyWithImpl(this._self, this._then);
+class __$ErrorCopyWithImpl<$Res>
+    implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
 
-  final Error _self;
-  final $Res Function(Error) _then;
+  final _Error _self;
+  final $Res Function(_Error) _then;
 
-/// Create a copy of StatisticsState
+/// Create a copy of UsersState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(Error(
+  return _then(_Error(
 null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
   ));

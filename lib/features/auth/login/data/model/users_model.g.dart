@@ -6,7 +6,7 @@ part of 'users_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) => User(
+UsersModel _$UsersModelFromJson(Map<String, dynamic> json) => UsersModel(
   userId: json['user_id'] as String,
   leaderId: json['leader_id'] as String?,
   fullName: json['full_name'] as String,
@@ -22,18 +22,19 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
   permissions: Map<String, bool>.from(json['permissions'] as Map),
 );
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-  'user_id': instance.userId,
-  'leader_id': instance.leaderId,
-  'full_name': instance.fullName,
-  'username': instance.username,
-  'email': instance.email,
-  'user_type': instance.userType,
-  'is_active': instance.isActive,
-  'is_deleted': instance.isDeleted,
-  'created_at': instance.createdAt,
-  'company_id': instance.companyId,
-  'role': instance.role,
-  'leader_name': instance.leaderName,
-  'permissions': instance.permissions,
-};
+Map<String, dynamic> _$UsersModelToJson(UsersModel instance) =>
+    <String, dynamic>{
+      'user_id': instance.userId,
+      'leader_id': instance.leaderId,
+      'full_name': instance.fullName,
+      'username': instance.username,
+      'email': instance.email,
+      'user_type': instance.userType,
+      'is_active': instance.isActive,
+      'is_deleted': instance.isDeleted,
+      'created_at': instance.createdAt,
+      'company_id': instance.companyId,
+      'role': instance.role,
+      'leader_name': instance.leaderName,
+      'permissions': instance.permissions,
+    };

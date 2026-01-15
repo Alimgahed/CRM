@@ -7,7 +7,7 @@ part 'leads_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Lead {
   @JsonKey(name: 'lead_id')
-  final String leadId;
+  final String? leadId;
 
   @JsonKey(name: 'full_name')
   final String fullName;
@@ -47,7 +47,7 @@ class Lead {
   final String updatedAt;
 
   @JsonKey(name: 'company_id')
-  final String companyId;
+  final String? companyId;
 
   // NEW: lead source details
   @JsonKey(name: 'lead_source')
@@ -63,7 +63,7 @@ class Lead {
   final List<String>? projectIds;
 
   Lead({
-    required this.leadId,
+    this.leadId,
     required this.fullName,
     required this.fullNameEn,
     required this.email,
@@ -78,7 +78,7 @@ class Lead {
     required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
-    required this.companyId,
+    this.companyId,
     this.leadSource,
     this.attchments,
     this.contracts,

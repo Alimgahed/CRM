@@ -28,12 +28,12 @@ class AllDeveloperWidget extends StatelessWidget {
       padding: EdgeInsets.all(8.w),
       child: Container(
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.grey.shade900 : Colors.white,
+          color: isDarkMode ? darkFieldColor : Colors.white,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
               color: isDarkMode
-                  ? Colors.black.withOpacity(0.3)
+                  ? darkColor.withOpacity(0.3)
                   : Colors.grey.shade300.withOpacity(0.4),
               blurRadius: 6,
               offset: const Offset(0, 3),
@@ -56,24 +56,22 @@ class AllDeveloperWidget extends StatelessWidget {
                         fit: BoxFit.contain,
                         placeholder: (_, __) => Shimmer.fromColors(
                           baseColor: isDarkMode
-                              ? Colors.grey.shade800
+                              ? darkColor
                               : Colors.grey.shade300,
                           highlightColor: isDarkMode
-                              ? Colors.grey.shade700
+                              ? darkColor2
                               : Colors.grey.shade100,
                           child: Container(
                             height: 180.h,
                             color: isDarkMode
-                                ? Colors.grey.shade800
+                                ? darkColor
                                 : Colors.grey.shade300,
                           ),
                         ),
                         errorWidget: (_, __, ___) => Container(
                           height: 180.h,
                           width: screenWidth,
-                          color: isDarkMode
-                              ? Colors.grey.shade800
-                              : Colors.grey.shade300,
+                          color: isDarkMode ? darkColor : Colors.grey.shade300,
                           child: Icon(
                             Icons.business,
                             size: 60.sp,
@@ -86,9 +84,7 @@ class AllDeveloperWidget extends StatelessWidget {
                     : Container(
                         height: 180.h,
                         width: screenWidth,
-                        color: isDarkMode
-                            ? Colors.grey.shade800
-                            : Colors.grey.shade300,
+                        color: isDarkMode ? darkColor : Colors.grey.shade300,
                         child: Icon(
                           Icons.business,
                           size: 60.sp,
@@ -116,7 +112,7 @@ class AllDeveloperWidget extends StatelessWidget {
               infoChip(
                 Icons.person_outline,
                 developer.contactPerson ?? '',
-                isDarkMode ? Colors.grey.shade300 : secondaryTextColor,
+                isDarkMode ? Colors.white : secondaryTextColor,
               ),
 
               heightSpace(6),
@@ -124,7 +120,7 @@ class AllDeveloperWidget extends StatelessWidget {
               infoChip(
                 Icons.call_outlined,
                 developer.contactNumber ?? '',
-                isDarkMode ? Colors.grey.shade300 : secondaryTextColor,
+                isDarkMode ? Colors.white : secondaryTextColor,
               ),
 
               heightSpace(6),
@@ -134,7 +130,7 @@ class AllDeveloperWidget extends StatelessWidget {
                 infoChip(
                   Icons.apartment_outlined,
                   "${developer.projectCount} ${lang.projects}",
-                  isDarkMode ? Colors.grey.shade300 : appColor,
+                  isDarkMode ? Colors.white : appColor,
                 ),
 
               heightSpace(15),

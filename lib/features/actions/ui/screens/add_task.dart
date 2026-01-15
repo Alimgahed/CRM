@@ -1,3 +1,4 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/actions/logic/add_task.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
@@ -9,6 +10,7 @@ class AddTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final AddTaskController controller = Get.put(
       AddTaskController(),
       permanent: false, // ensures controller is removed when not used
@@ -21,9 +23,11 @@ class AddTask extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(top: 10),
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            decoration: BoxDecoration(
+              color: isDarkMode ? darkColor : Colors.white,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -36,9 +40,10 @@ class AddTask extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         'Create New Task'.tr,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: isDarkMode ? Colors.white : Colors.black,
                         ),
                       ),
                     ],
@@ -52,13 +57,20 @@ class AddTask extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         "Creation date".tr,
-                        style: const TextStyle(
+
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
+                          color: isDarkMode ? Colors.white : secondaryTextColor,
                         ),
                       ),
                       const Spacer(),
-                      Text(DateTime.now().toString().split(' ')[0]),
+                      Text(
+                        DateTime.now().toString().split(' ')[0],
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white : secondaryTextColor,
+                        ),
+                      ),
                     ],
                   ),
 

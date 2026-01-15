@@ -7,8 +7,8 @@ part of 'role.dart';
 // **************************************************************************
 
 Role _$RoleFromJson(Map<String, dynamic> json) => Role(
-  roleId: json['role_id'] as String,
-  roleName: json['role_name'] as String,
+  roleId: json['role_id'] as String?,
+  roleName: json['role_name'] as String?,
   permitions: json['permitions'],
 );
 

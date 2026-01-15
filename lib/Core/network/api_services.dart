@@ -6,6 +6,7 @@ import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/data/model/leads_response.dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
+import 'package:crm/features/users/data/model/user_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 part 'api_services.g.dart';
@@ -39,4 +40,9 @@ abstract class ApiService {
   );
   @POST(ApiConstants.getAllLeads)
   Future<String> addLead(@Body() Lead body);
+  @GET(ApiConstants.getAllUsers)
+  Future<UsersResponse> getAllUsers(
+    @Query('page') int? page,
+    @Query('page_size') int? pageSize,
+  );
 }

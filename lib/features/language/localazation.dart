@@ -9,6 +9,18 @@ class AppLocalizations {
   String get minutesAgo => isArabic ? 'دقائق مضت' : 'Minutes ago';
   String get hoursAgo => isArabic ? 'ساعات مضت' : 'Hours ago';
   String get selectCountry => isArabic ? 'اختر الدولة' : 'Select Country';
+  String get facebook => isArabic ? 'فيس بوك' : 'Facebook';
+  String get direct => isArabic ? ' مباشر' : 'Direct';
+  String get salesName => isArabic ? 'اسم المندوب  ' : 'Sales Name';
+  String get selectSalesName =>
+      isArabic ? 'اختر اسم المندوب  ' : 'Select Sales Name';
+  String get google => isArabic ? 'غوغل' : 'Google';
+  String get tikTok => isArabic ? 'تيكتوك' : 'TikTok';
+  String get snapchat => isArabic ? 'سناب شات' : 'Snapchat';
+  String get instagram => isArabic ? 'انستغرام' : 'Instagram';
+  String get youtube => isArabic ? 'يوتيوب' : 'Youtube';
+  String get whatsapp => isArabic ? 'واتساب' : 'WhatsApp';
+  String get sms => isArabic ? 'س ا ام' : 'SMS';
   String get daysAgo => isArabic ? 'أيام مضت' : 'Days ago';
   String get justNow => isArabic ? 'الآن' : 'Just now';
   String get clientNameen =>

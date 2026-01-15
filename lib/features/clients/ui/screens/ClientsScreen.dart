@@ -6,6 +6,7 @@ import 'package:crm/features/clients/logic/cubit/leads_states.dart';
 import 'package:crm/features/clients/ui/widgets/ClientCard.dart';
 import 'package:crm/features/clients/ui/widgets/ClientsFiliter.dart';
 import 'package:crm/features/clients/ui/widgets/Header.dart';
+import 'package:crm/features/clients/ui/widgets/clients_loading.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class ClientsScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.black87),
                   ),
                 ),
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const ClientsListShimmer(),
                 loaded: (leads) => Column(
                   children: [
                     ClientsHeader(),

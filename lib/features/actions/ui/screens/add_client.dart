@@ -3,11 +3,19 @@ import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/Colors.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
+import 'package:crm/features/Projects/data/repo/projects_repo.dart';
+import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
+import 'package:crm/features/Projects/logic/cubit/project_states.dart';
 import 'package:crm/features/actions/logic/add_client.dart';
 import 'package:crm/features/actions/logic/add_client_state.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
+import 'package:crm/features/users/data/model/users_model.dart';
+import 'package:crm/features/users/data/repo/user_repo.dart';
+import 'package:crm/features/users/logic/cubit/users_cubit.dart';
+import 'package:crm/features/users/logic/states/users_states.dart';
 import 'package:crm/logic/Features/Country_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +30,22 @@ class AddClient extends StatelessWidget {
       (cubit) => AppLocalizations(cubit.currentLocale),
     );
 
-    return BlocProvider(
-      create: (context) =>
-          AddClientCubit(addClientRepo: getIt.get<AddClientRepo>()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              AddClientCubit(addClientRepo: getIt.get<AddClientRepo>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              ProjectCubit(projectsRepo: getIt.get<ProjectsRepo>())
+                ..fetchAllProjects(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              UsersCubit(userRepo: getIt.get<UserRepo>())..getAllUsers(1, 20),
+        ),
+      ],
       child: BlocConsumer<AddClientCubit, AddClientState>(
         listener: (context, state) {
           state.whenOrNull(
@@ -41,10 +62,7 @@ class AddClient extends StatelessWidget {
               );
             },
             error: (message) {
-              // Dismiss loading dialog first
               Navigator.of(context).pop();
-
-              // Show error dialog
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -167,35 +185,106 @@ class AddClient extends StatelessWidget {
 
                         // Client Name (English)
                         CustomTextFormField(
-                          text: 'Client Name (English)',
-                          labelText: 'Enter client name in English',
+                          text: appLocalizations.clientNameen,
+                          labelText: appLocalizations.enterClientNameHere,
                           controller: cubit.clientNameEnController,
                         ),
                         const SizedBox(height: 10),
 
                         // Project Priority
-                        CustomDropdownFormField<String>(
-                          text: appLocalizations.project,
-                          labelText: appLocalizations.selectProject,
-                          value: cubit.taskPriority.isEmpty
-                              ? null
-                              : cubit.taskPriority,
-                          items: const [
-                            DropdownMenuItem(value: 'low', child: Text('Low')),
-                            DropdownMenuItem(
-                              value: 'medium',
-                              child: Text('Medium'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'high',
-                              child: Text('High'),
-                            ),
-                          ],
-                          onChanged: isLoading
-                              ? null
-                              : (val) {
-                                  cubit.updateTaskPriority(val ?? '');
-                                },
+                        // Project Selection Dropdown
+                        BlocBuilder<ProjectCubit, ProjectsState>(
+                          builder: (context, projectState) {
+                            // Extract the list of projects from the state
+                            final List<Project> projectsList = projectState
+                                .maybeWhen(
+                                  loaded: (projects) => projects,
+                                  orElse: () => [],
+                                );
+
+                            return CustomDropdownFormField<String>(
+                              text: appLocalizations.project,
+                              labelText: projectState.maybeWhen(
+                                loading: () => appLocalizations.loading,
+                                orElse: () => appLocalizations.selectProject,
+                              ),
+                              value: cubit.projectId,
+                              // Disable dropdown while loading
+                              onChanged:
+                                  (projectState is ProjectsStateLoading) ||
+                                      isLoading
+                                  ? null
+                                  : (val) {
+                                      cubit.setProject(val ?? '');
+                                    },
+                              items: projectsList
+                                  .fold<List<Project>>([], (list, element) {
+                                    if (!list.any(
+                                      (p) => p.projectId == element.projectId,
+                                    )) {
+                                      list.add(element);
+                                    }
+                                    return list;
+                                  })
+                                  .map((project) {
+                                    return DropdownMenuItem<String>(
+                                      value: project.projectId.toString(),
+                                      child: Text(
+                                        context
+                                                    .read<LocaleCubit>()
+                                                    .currentLocale ==
+                                                'ar'
+                                            ? project.projectName
+                                            : project.projectNameEn,
+                                        style: TextStyle(
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    );
+                                  })
+                                  .toList(),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        BlocBuilder<UsersCubit, UsersState>(
+                          builder: (context, userState) {
+                            final List<User> usersList = userState.maybeWhen(
+                              loaded: (users) => users,
+                              orElse: () => [],
+                            );
+
+                            return CustomDropdownFormField<String>(
+                              text: appLocalizations.sales,
+                              labelText: userState.maybeWhen(
+                                loading: () => appLocalizations.loading,
+                                orElse: () => appLocalizations.selectSalesName,
+                              ),
+
+                              // Disable dropdown while loading
+                              onChanged: (userState is Loading) || isLoading
+                                  ? null
+                                  : (val) {
+                                      cubit.setSales(val ?? '');
+                                    },
+                              value: cubit.salesId,
+                              items: usersList.map((user) {
+                                return DropdownMenuItem<String>(
+                                  value: user.userId,
+                                  child: Text(
+                                    user.fullName!,
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          },
                         ),
                         const SizedBox(height: 10),
 
@@ -219,7 +308,7 @@ class AddClient extends StatelessWidget {
                         CustomTextFormField(
                           text: appLocalizations.jobTitle,
                           labelText: appLocalizations.writeJob,
-                          controller: cubit.taskDescriptionController,
+                          controller: cubit.jobController,
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
                               return 'Job title is required';
@@ -264,35 +353,22 @@ class AddClient extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
 
-                        // Channel
                         CustomDropdownFormField<String>(
                           text: appLocalizations.channel,
-                          labelText: appLocalizations.selectChannel,
-                          value: cubit.channel.isEmpty ? null : cubit.channel,
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'social',
-                              child: Text('Social Media'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'referral',
-                              child: Text('Referral'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'website',
-                              child: Text('Website'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'direct',
-                              child: Text('Direct'),
-                            ),
-                          ],
-                          onChanged: isLoading
-                              ? null
-                              : (val) {
-                                  cubit.updateChannel(val ?? '');
-                                },
+                          items: cubit.leadSourceMap.entries
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e.value, // ✅ GUID
+                                  child: Text(e.key), // user sees name
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (val) {
+                            cubit.setChannel(val ?? '');
+                          },
+                          labelText: '',
                         ),
+
                         const SizedBox(height: 10),
 
                         // Preferred Contact Method
@@ -300,52 +376,52 @@ class AddClient extends StatelessWidget {
                           text: appLocalizations.preferredMethodOfContact,
                           labelText:
                               appLocalizations.selectPreferredMethodOfContact,
-                          value: cubit.preferredMethod.isEmpty
-                              ? null
-                              : cubit.preferredMethod,
+                          value: cubit.preferredMethod,
                           items: [
                             DropdownMenuItem(
-                              value: 'email',
-                              child: Text(appLocalizations.email),
-                            ),
-                            DropdownMenuItem(
-                              value: 'phone',
+                              value: 'Phone',
                               child: Text(appLocalizations.phone),
                             ),
                             DropdownMenuItem(
+                              value: 'Email',
+                              child: Text(appLocalizations.email),
+                            ),
+                            DropdownMenuItem(
                               value: 'whatsapp',
-                              child: Text('WhatsApp'),
+                              child: Text(appLocalizations.whatsapp),
+                            ),
+                            DropdownMenuItem(
+                              value: 'sms',
+                              child: Text(appLocalizations.sms),
                             ),
                           ],
                           onChanged: isLoading
                               ? null
                               : (val) {
-                                  cubit.updatePreferredMethod(val ?? '');
+                                  cubit.setPreferredMethod(val ?? '');
                                 },
                         ),
                         const SizedBox(height: 10),
 
                         // Client Status
-                        CustomDropdownFormField<String>(
+                        CustomDropdownFormField<int>(
                           text: appLocalizations.clientStatus,
                           labelText: appLocalizations.selectClientStatus,
-                          value: cubit.clientStatus.isEmpty
-                              ? null
-                              : cubit.clientStatus,
+                          value: cubit.clientStatus ?? 1,
                           items: [
                             DropdownMenuItem(
-                              value: 'active',
+                              value: 1,
                               child: Text(appLocalizations.active),
                             ),
                             DropdownMenuItem(
-                              value: 'inactive',
+                              value: 2,
                               child: Text(appLocalizations.inactive),
                             ),
                           ],
                           onChanged: isLoading
                               ? null
                               : (val) {
-                                  cubit.updateClientStatus(val ?? '');
+                                  cubit.setClientStatus(val ?? 1);
                                 },
                         ),
 
@@ -356,7 +432,7 @@ class AddClient extends StatelessWidget {
                           text: appLocalizations.save,
                           onPressed: () {
                             if (cubit.formKey.currentState!.validate()) {
-                              cubit.addClient(context);
+                              cubit.addClient();
                             }
                           },
                         ),

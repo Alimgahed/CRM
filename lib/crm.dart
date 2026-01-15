@@ -4,6 +4,7 @@ import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/services/user_service.dart';
 import 'package:crm/Core/theming/dark_cubit.dart';
 import 'package:crm/Core/theming/theme.dart';
+import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/Core/helpers/number_format.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,9 @@ class Crm extends StatelessWidget {
           providers: [
             BlocProvider(create: (_) => LocaleCubit()),
             BlocProvider(create: (_) => ThemeCubit()),
+            // BlocProvider(
+            //   create: (context) => getIt<ProjectCubit>()..fetchAllProjects(),
+            // ),
           ],
           child: BlocBuilder<LocaleCubit, LocaleState>(
             builder: (context, localeState) {

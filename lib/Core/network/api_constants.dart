@@ -6,4 +6,5 @@ class ApiConstants {
   static const String getAllDevelopmentCompanies = "/api/v1/dev-companies";
   static const String getAllLeads = "/api/v1/leads";
   static const String getStatistics = "/api/v1/agent-actions/statistics";
+  static const String getAllUsers = "/api/v1/users";
 }

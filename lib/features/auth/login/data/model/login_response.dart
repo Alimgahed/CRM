@@ -1,5 +1,5 @@
-import 'package:crm/features/auth/login/data/model/role.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
+import 'package:crm/features/users/data/model/role.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'login_response.g.dart';
 
@@ -19,7 +19,7 @@ class LoginResponse {
   @JsonKey(name: 'token_type')
   final String tokenType;
 
-  final User user;
+  final UsersModel user;
   final Role role;
 
   LoginResponse({

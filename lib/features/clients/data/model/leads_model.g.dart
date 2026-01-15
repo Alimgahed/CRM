@@ -7,7 +7,7 @@ part of 'leads_model.dart';
 // **************************************************************************
 
 Lead _$LeadFromJson(Map<String, dynamic> json) => Lead(
-  leadId: json['lead_id'] as String,
+  leadId: json['lead_id'] as String?,
   fullName: json['full_name'] as String,
   fullNameEn: json['full_name_en'] as String,
   email: json['email'] as String,
@@ -22,7 +22,7 @@ Lead _$LeadFromJson(Map<String, dynamic> json) => Lead(
   isDeleted: json['is_deleted'] as bool,
   createdAt: json['created_at'] as String,
   updatedAt: json['updated_at'] as String,
-  companyId: json['company_id'] as String,
+  companyId: json['company_id'] as String?,
   leadSource: json['lead_source'] == null
       ? null
       : LeadSource.fromJson(json['lead_source'] as Map<String, dynamic>),

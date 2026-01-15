@@ -13,7 +13,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
       refreshToken: json['refresh_token'] as String,
       expiresIn: (json['expires_in'] as num).toInt(),
       tokenType: json['token_type'] as String,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      user: UsersModel.fromJson(json['user'] as Map<String, dynamic>),
       role: Role.fromJson(json['role'] as Map<String, dynamic>),
     );
 

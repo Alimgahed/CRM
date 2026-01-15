@@ -10,10 +10,10 @@ class UserService {
   UserService._internal();
 
   // Cached user - accessible throughout the app
-  User? _currentUser;
+  UsersModel? _currentUser;
 
   /// Get current user (from memory)
-  User? get currentUser => _currentUser;
+  UsersModel? get currentUser => _currentUser;
 
   /// Check if user is logged in
   bool get isLoggedIn => _currentUser != null;
@@ -37,14 +37,14 @@ class UserService {
   }
 
   /// Load user from storage
-  Future<User?> loadUser() async {
+  Future<UsersModel?> loadUser() async {
     try {
       final json = await SharedPreferencesHelper.getJson(
         SharedPreferenceKeys.user,
       );
 
       if (json != null) {
-        _currentUser = User.fromJson(json);
+        _currentUser = UsersModel.fromJson(json);
         debugPrint('✅ User loaded: ${_currentUser?.fullName}');
         return _currentUser;
       }
@@ -55,7 +55,7 @@ class UserService {
   }
 
   /// Save user to memory and storage
-  Future<void> saveUser(User user) async {
+  Future<void> saveUser(UsersModel user) async {
     _currentUser = user;
     await SharedPreferencesHelper.saveJson(
       SharedPreferenceKeys.user,
@@ -82,7 +82,7 @@ class UserService {
   }
 
   /// Update user data
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(UsersModel user) async {
     await saveUser(user);
   }
 

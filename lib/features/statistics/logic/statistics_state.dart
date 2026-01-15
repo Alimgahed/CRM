@@ -5,9 +5,9 @@ part 'statistics_state.freezed.dart';
 
 @freezed
 class StatisticsState with _$StatisticsState {
-  const factory StatisticsState.initial() = _Initial;
-  const factory StatisticsState.loading() = _Loading;
+  const factory StatisticsState.initial() = Initial;
+  const factory StatisticsState.loading() = Loading;
   const factory StatisticsState.loaded(AgentActionStatisticsResponse data) =
-      _Loaded;
-  const factory StatisticsState.error(String message) = _Error;
+      Loaded;
+  const factory StatisticsState.error(String message) = Error;
 }

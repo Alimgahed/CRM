@@ -9,93 +9,80 @@ class AddClientCubit extends Cubit<AddClientState> {
   final AddClientRepo addClientRepo;
 
   AddClientCubit({required this.addClientRepo})
-    : super(AddClientState.initial());
+    : super(const AddClientState.initial());
 
-  // Form Key for validation
+  // ===== Form =====
   final formKey = GlobalKey<FormState>();
 
-  // Text Controllers
+  // ===== Controllers =====
   final clientNameController = TextEditingController();
   final clientNameEnController = TextEditingController();
-  final assignedToController = TextEditingController();
-  final expirationDateController = TextEditingController();
   final phoneController = TextEditingController();
   final phoneController2 = TextEditingController();
-  final taskDescriptionController = TextEditingController();
+  final jobController = TextEditingController();
   final emailController = TextEditingController();
   final budgetController = TextEditingController();
 
-  // State fields
-  String projectName = '';
-  String channel = '';
-  String preferredMethod = '';
-  String clientStatus = '';
-  String taskPriority = '';
+  // ===== Selected Values =====
+  String? projectId;
+  String? salesId;
+  String? channel;
+  String? preferredMethod;
+  int? clientStatus;
 
-  /// Update project name and rebuild UI
-  void updateProjectName(String value) {
-    projectName = value;
+  // ===== Setters =====
+  void setProject(String value) {
+    projectId = value;
     emit(state);
   }
 
-  /// Update channel and rebuild UI
-  void updateChannel(String value) {
+  void setSales(String value) {
+    salesId = value;
+    emit(state);
+  }
+
+  void setChannel(String value) {
     channel = value;
     emit(state);
   }
 
-  /// Update preferred method and rebuild UI
-  void updatePreferredMethod(String value) {
+  void setPreferredMethod(String value) {
     preferredMethod = value;
     emit(state);
   }
 
-  /// Update client status and rebuild UI
-  void updateClientStatus(String value) {
+  void setClientStatus(int value) {
     clientStatus = value;
     emit(state);
   }
 
-  /// Update task priority and rebuild UI
-  void updateTaskPriority(String value) {
-    taskPriority = value;
-    emit(state);
-  }
-
-  /// Validate form fields
-  String? validateForm() {
-    // First validate using FormKey
-    if (formKey.currentState != null && !formKey.currentState!.validate()) {
-      return 'Please fill all required fields correctly';
+  // ===== Validation =====
+  String? validate() {
+    if (!formKey.currentState!.validate()) {
+      return 'Form validation failed';
     }
-
-    if (taskPriority.isEmpty) {
-      return 'Please select a project';
-    }
-    if (channel.isEmpty) {
-      return 'Please select a channel';
-    }
-    if (preferredMethod.isEmpty) {
-      return 'Please select preferred contact method';
-    }
-    if (clientStatus.isEmpty) {
-      return 'Please select client status';
-    }
-
+    if (projectId == null) return 'Please select project';
+    if (salesId == null) return 'Please select sales';
+    if (channel == null) return 'Please select channel';
+    if (preferredMethod == null) return 'Please select preferred contact';
+    if (clientStatus == null) return 'Please select client status';
     return null;
   }
 
-  /// Add a new client
-  Future<void> addClient(BuildContext context) async {
-    emit(AddClientState.loading());
-
-    int? budget;
-    if (budgetController.text.trim().isNotEmpty) {
-      budget = int.tryParse(budgetController.text.trim());
+  // ===== Submit =====
+  Future<void> addClient() async {
+    final validationError = validate();
+    if (validationError != null) {
+      emit(AddClientState.error(validationError));
+      return;
     }
 
-    final requestBody = Lead(
-      leadId: '',
+    emit(const AddClientState.loading());
+
+    final budget = int.tryParse(budgetController.text.trim()) ?? 0;
+
+    final lead = Lead(
+      leadId: null,
       fullName: clientNameController.text.trim(),
       fullNameEn: clientNameEnController.text.trim().isNotEmpty
           ? clientNameEnController.text.trim()
@@ -103,79 +90,69 @@ class AddClientCubit extends Cubit<AddClientState> {
       email: emailController.text.trim(),
       phone: phoneController.text.trim(),
       secondaryPhone: phoneController2.text.trim(),
-      jobTitle: taskDescriptionController.text.trim(),
-      budget: budget ?? 0,
-      preferredContactMethod: preferredMethod,
-      status: _mapStatusToInt(clientStatus),
-      leadSourceId: channel,
+      jobTitle: jobController.text.trim(),
+      budget: budget,
+      assignedToId: salesId,
+      preferredContactMethod: preferredMethod!,
+      status: clientStatus!,
+      leadSourceId: channel!,
       isDeleted: false,
+      projectIds: [projectId!],
       createdAt: DateTime.now().toIso8601String(),
       updatedAt: DateTime.now().toIso8601String(),
-      companyId: '',
+      companyId: null,
     );
 
-    final result = await addClientRepo.addClient(requestBody);
+    final result = await addClientRepo.addClient(lead);
 
     result.when(
       success: (data) {
         emit(AddClientState.loaded(data));
-        resetForm();
+        reset();
       },
-      error: (errorModel) {
-        emit(
-          AddClientState.error(errorModel.error ?? 'An unknown error occurred'),
-        );
+      error: (e) {
+        emit(AddClientState.error(e.error ?? 'Something went wrong'));
       },
     );
   }
 
-  /// Map status string to integer
-  int _mapStatusToInt(String status) {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 1;
-      case 'inactive':
-        return 0;
-      default:
-        return 1;
-    }
-  }
-
-  /// Reset all form fields
-  void resetForm() {
+  void reset() {
     formKey.currentState?.reset();
-
     clientNameController.clear();
     clientNameEnController.clear();
-    assignedToController.clear();
-    expirationDateController.clear();
-    taskDescriptionController.clear();
     phoneController.clear();
     phoneController2.clear();
+    jobController.clear();
     emailController.clear();
     budgetController.clear();
 
-    projectName = '';
-    channel = '';
-    preferredMethod = '';
-    clientStatus = '';
-    taskPriority = '';
-
-    emit(AddClientState.initial());
+    projectId = null;
+    salesId = null;
+    channel = null;
+    preferredMethod = null;
+    clientStatus = null;
+    emit(const AddClientState.initial());
   }
 
   @override
   Future<void> close() {
     clientNameController.dispose();
     clientNameEnController.dispose();
-    assignedToController.dispose();
-    expirationDateController.dispose();
-    taskDescriptionController.dispose();
     phoneController.dispose();
     phoneController2.dispose();
+    jobController.dispose();
     emailController.dispose();
     budgetController.dispose();
-
     return super.close();
   }
+
+  final Map<String, String> leadSourceMap = {
+    'Facebook': 'GUID_FACEBOOK',
+    'Direct': 'GUID_DIRECT',
+    'Google': 'GUID_GOOGLE',
+    'TikTok': 'GUID_TIKTOK',
+    'Snapchat': 'GUID_SNAPCHAT',
+    'Youtube': 'GUID_YOUTUBE',
+    'Instagram': 'GUID_INSTAGRAM',
+  };
 }

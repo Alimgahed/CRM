@@ -1,5 +1,6 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
+import 'package:crm/features/Projects/data/repo/projects_repo.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/statistics/logic/statistics_cubit.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => getIt<LayoutCubit>()),
+
               BlocProvider(
                 create: (_) => getIt<StatisticsCubit>()..getStatistics(),
               ),

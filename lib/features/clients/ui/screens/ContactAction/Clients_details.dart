@@ -223,7 +223,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 19) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientcomments(leadid: lead.leadId),
+                              child: Clientcomments(leadid: lead.leadId ?? ""),
                             );
                           }
                           return const SizedBox.shrink();
@@ -236,7 +236,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 21) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: ClientTimeline(leadid: lead.leadId),
+                              child: ClientTimeline(leadid: lead.leadId ?? ""),
                             );
                           }
                           return const SizedBox.shrink();
@@ -264,7 +264,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 22) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: ClientDeals(leadid: lead.leadId),
+                              child: ClientDeals(leadid: lead.leadId ?? ""),
                             );
                           }
                           return const SizedBox.shrink();
@@ -277,7 +277,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 23) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientchance(leadid: lead.leadId),
+                              child: Clientchance(leadid: lead.leadId ?? ""),
                             );
                           }
                           return const SizedBox.shrink();
@@ -290,7 +290,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 24) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientcli(leadid: lead.leadId),
+                              child: Clientcli(leadid: lead.leadId ?? ""),
                             );
                           }
                           return const SizedBox.shrink();

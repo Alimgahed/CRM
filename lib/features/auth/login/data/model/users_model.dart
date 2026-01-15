@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'users_model.g.dart';
 
 @JsonSerializable()
-class User {
+class UsersModel {
   @JsonKey(name: 'user_id')
   final String userId;
 
@@ -37,7 +37,7 @@ class User {
 
   final Map<String, bool> permissions;
 
-  User({
+  UsersModel({
     required this.userId,
     this.leaderId,
     required this.fullName,
@@ -53,9 +53,10 @@ class User {
     required this.permissions,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory UsersModel.fromJson(Map<String, dynamic> json) =>
+      _$UsersModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UsersModelToJson(this);
 
   // ⭐ Helper method to check specific permission
   bool hasPermission(String permission) {
