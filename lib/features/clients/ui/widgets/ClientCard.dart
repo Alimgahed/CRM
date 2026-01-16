@@ -88,9 +88,9 @@ class ClientCard extends StatelessWidget {
       return Icons.business_center_outlined;
     } else if (lowerSource.contains('website') || lowerSource.contains('web')) {
       return Icons.language_outlined;
-    } else if (lowerSource.contains('email')) {
+    } else if (lowerSource.contains('google')) {
       return Icons.email_outlined;
-    } else if (lowerSource.contains('phone') || lowerSource.contains('call')) {
+    } else if (lowerSource.contains('direct') || lowerSource.contains('call')) {
       return Icons.phone_outlined;
     } else {
       return Icons.source_outlined;
@@ -162,7 +162,7 @@ class ClientCard extends StatelessWidget {
           const SizedBox(height: 4),
           InfoRow(
             icon: Icons.calendar_month_outlined,
-            text: lead.createdAt.toFormattedDate(appLocalizations),
+            text: lead.createdAt!.toFormattedDate(appLocalizations),
             color: isDark ? Colors.white : secondaryTextColor,
           ),
 

@@ -1,4 +1,5 @@
 import 'package:crm/features/language/localazation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 /// Extension on String to handle date operations if the string is a valid date
@@ -39,5 +40,19 @@ extension DateTimeLocalization on String {
 
     // fallback: formatted date using the locale
     return DateFormat.yMMMd(loc.locale).format(date);
+  }
+}
+
+extension TextControllerParsing on TextEditingController {
+  double? get parseAsDouble {
+    final cleaned = text.trim().replaceAll(',', '');
+    if (cleaned.isEmpty) return null;
+    return double.tryParse(cleaned);
+  }
+
+  int? get parseAsInt {
+    final cleaned = text.trim().replaceAll(',', '');
+    if (cleaned.isEmpty) return null;
+    return int.tryParse(cleaned);
   }
 }

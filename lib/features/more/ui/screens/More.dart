@@ -65,7 +65,9 @@ class MoreScreen extends StatelessWidget {
             MoreWidget(
               icon: Icons.people_alt_outlined,
               text: l10n.usersPermissionsMenu,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(Routes.usersmanamgment);
+              },
             ),
 
             MoreWidget(

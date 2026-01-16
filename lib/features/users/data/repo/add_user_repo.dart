@@ -1,23 +1,22 @@
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_services.dart';
-import 'package:crm/features/users/data/model/user_response.dart';
+import 'package:crm/features/users/data/model/add_user_model.dart';
 import 'package:dio/dio.dart';
 
-class UserRepo {
+class AddUserRepo {
   final ApiService apiService;
 
-  UserRepo({required this.apiService});
+  AddUserRepo({required this.apiService});
 
-  Future<ApiResult<UsersResponse>> getAllUsers() async {
+  Future<ApiResult<String>> addUser(AddUserModel body) async {
     try {
-      final response = await apiService.getAllUsers();
+      final response = await apiService.addUser(body);
       return ApiResult.success(response);
     } on DioException catch (e) {
-      // Backend returned an error response
       if (e.response?.data != null) {
         try {
-          final errorModel = ApiErrorModel.fromJson(e.response!.data);
+          final errorModel = e.response!.data["Error"];
           return ApiResult.error(errorModel);
         } catch (_) {
           return ApiResult.error(

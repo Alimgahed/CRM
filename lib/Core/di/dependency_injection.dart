@@ -8,13 +8,18 @@ import 'package:crm/features/actions/logic/add_client.dart';
 import 'package:crm/features/auth/login/data/repos/login_repo.dart';
 import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/clients/data/repo/all_clients.dart';
+import 'package:crm/features/clients/data/repo/lead_soure.dart';
 import 'package:crm/features/clients/logic/cubit/leads_cubit.dart';
 import 'package:crm/features/developers/data/repo/developers_repo.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/statistics/data/repo/statistics_repo.dart';
 import 'package:crm/features/statistics/logic/statistics_cubit.dart';
+import 'package:crm/features/users/data/repo/add_user_repo.dart';
+import 'package:crm/features/users/data/repo/roles_repo.dart';
 import 'package:crm/features/users/data/repo/user_repo.dart';
+import 'package:crm/features/users/logic/cubit/add_user_cubit.dart';
+import 'package:crm/features/users/logic/cubit/roles_cubit.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -40,16 +45,22 @@ Future<void> setup() async {
   getIt.registerLazySingleton(() => LeadsRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => AddClientRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => UserRepo(apiService: getIt()));
+  getIt.registerLazySingleton(() => LeadSourceRepo(apiService: getIt()));
+  getIt.registerLazySingleton(() => RolesRepo(apiService: getIt()));
+  getIt.registerLazySingleton(() => AddUserRepo(apiService: getIt()));
 
   getIt.registerFactory(() => StatisticsCubit(getIt()));
 
   // ⭐⭐⭐ Cubits - Register LoginCubit as Factory
   getIt.registerFactory(() => LoginCubit(loginRepo: getIt()));
   getIt.registerFactory(() => AddClientCubit(addClientRepo: getIt()));
+
   getIt.registerFactory(() => ProjectCubit(projectsRepo: getIt()));
   getIt.registerFactory(() => UsersCubit(userRepo: getIt()));
   getIt.registerFactory(() => DeveloperCubit(developersRepo: getIt()));
   getIt.registerFactory(() => LeadsCubit(projectsRepo: getIt()));
+  getIt.registerFactory(() => RolesCubit(rolesRepo: getIt()));
+  getIt.registerFactory(() => AddUserCubit(addUserRepo: getIt()));
 
   getIt.registerFactory(() => LayoutCubit());
 }

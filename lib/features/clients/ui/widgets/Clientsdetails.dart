@@ -42,7 +42,7 @@ class DetailsWidget extends StatelessWidget {
       ),
       _DetailItem(
         appLocalizations.creationDate,
-        lead.createdAt.toFormattedDate(appLocalizations),
+        lead.createdAt!.toFormattedDate(appLocalizations),
       ),
       _DetailItem(appLocalizations.budget, lead.budget.toCompactPrice()),
     ];

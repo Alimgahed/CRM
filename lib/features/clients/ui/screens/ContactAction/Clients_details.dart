@@ -11,7 +11,7 @@ import 'package:crm/features/clients/ui/widgets/Clientattachment.dart';
 import 'package:crm/features/clients/ui/widgets/Clientmore.dart';
 import 'package:crm/features/clients/ui/widgets/ClientsFiliter.dart';
 import 'package:crm/features/clients/ui/widgets/Clientsdetails.dart';
-import 'package:crm/features/actions/ui/screens/add_client.dart';
+import 'package:crm/features/actions/ui/screens/actions/add_client.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -374,7 +374,6 @@ class _ActionIconButton extends StatelessWidget {
   final int index;
 
   const _ActionIconButton({
-    super.key, // Added super.key for best practice
     required this.icon,
     required this.onTap,
     required this.index,
@@ -406,7 +405,7 @@ class _ActionIconButton extends StatelessWidget {
         final Color iconColor = isSelected
             ? Colors
                   .white // High contrast for selection
-            : (isDark ? Colors.white70 : Colors.black87);
+            : (isDark ? Colors.white70 : appColor);
 
         return AnimatedContainer(
           // Smooth transition between colors

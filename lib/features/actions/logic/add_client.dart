@@ -1,3 +1,4 @@
+import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
 import 'package:crm/features/actions/logic/add_client_state.dart';
@@ -57,29 +58,12 @@ class AddClientCubit extends Cubit<AddClientState> {
   }
 
   // ===== Validation =====
-  String? validate() {
-    if (!formKey.currentState!.validate()) {
-      return 'Form validation failed';
-    }
-    if (projectId == null) return 'Please select project';
-    if (salesId == null) return 'Please select sales';
-    if (channel == null) return 'Please select channel';
-    if (preferredMethod == null) return 'Please select preferred contact';
-    if (clientStatus == null) return 'Please select client status';
-    return null;
-  }
 
   // ===== Submit =====
   Future<void> addClient() async {
-    final validationError = validate();
-    if (validationError != null) {
-      emit(AddClientState.error(validationError));
-      return;
-    }
+    emit(AddClientState.loading());
 
-    emit(const AddClientState.loading());
-
-    final budget = int.tryParse(budgetController.text.trim()) ?? 0;
+    final budget = budgetController.parseAsDouble;
 
     final lead = Lead(
       leadId: null,
@@ -94,12 +78,10 @@ class AddClientCubit extends Cubit<AddClientState> {
       budget: budget,
       assignedToId: salesId,
       preferredContactMethod: preferredMethod!,
-      status: clientStatus!,
+      status: 1,
       leadSourceId: channel!,
       isDeleted: false,
       projectIds: [projectId!],
-      createdAt: DateTime.now().toIso8601String(),
-      updatedAt: DateTime.now().toIso8601String(),
       companyId: null,
     );
 
@@ -145,14 +127,4 @@ class AddClientCubit extends Cubit<AddClientState> {
     budgetController.dispose();
     return super.close();
   }
-
-  final Map<String, String> leadSourceMap = {
-    'Facebook': 'GUID_FACEBOOK',
-    'Direct': 'GUID_DIRECT',
-    'Google': 'GUID_GOOGLE',
-    'TikTok': 'GUID_TIKTOK',
-    'Snapchat': 'GUID_SNAPCHAT',
-    'Youtube': 'GUID_YOUTUBE',
-    'Instagram': 'GUID_INSTAGRAM',
-  };
 }

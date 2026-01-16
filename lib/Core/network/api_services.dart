@@ -2,10 +2,13 @@ import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/auth/login/data/model/login_request_body.dart';
 import 'package:crm/features/auth/login/data/model/login_response.dart';
+import 'package:crm/features/clients/data/model/lead_sorce_response.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/data/model/leads_response.dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
+import 'package:crm/features/users/data/model/add_user_model.dart';
+import 'package:crm/features/users/data/model/roles_response.dart';
 import 'package:crm/features/users/data/model/user_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -19,30 +22,24 @@ abstract class ApiService {
   Future<LoginResponse> login(@Body() LoginRequestBody body);
 
   @GET(ApiConstants.allprojects)
-  Future<ProjectsResponse> getAllProjects(
-    @Query('page') int? page,
-    @Query('page_size') int? pageSize,
-  );
+  Future<ProjectsResponse> getAllProjects();
 
   @GET(ApiConstants.getAllDevelopmentCompanies)
-  Future<DevCompanyListResponse> getAllDevelopmentCompanies(
-    @Query('page') int? page,
-    @Query('page_size') int? pageSize,
-  );
+  Future<DevCompanyListResponse> getAllDevelopmentCompanies();
 
   @GET(ApiConstants.getStatistics)
   Future<AgentActionStatisticsResponse> getAgentActionStatistics();
 
   @GET(ApiConstants.getAllLeads)
-  Future<LeadsResponse> getAllLeads(
-    @Query('page') int? page,
-    @Query('page_size') int? pageSize,
-  );
+  Future<LeadsResponse> getAllLeads();
   @POST(ApiConstants.getAllLeads)
   Future<String> addLead(@Body() Lead body);
   @GET(ApiConstants.getAllUsers)
-  Future<UsersResponse> getAllUsers(
-    @Query('page') int? page,
-    @Query('page_size') int? pageSize,
-  );
+  Future<UsersResponse> getAllUsers();
+  @GET(ApiConstants.getAllLeadsSource)
+  Future<LeadSourceResponse> getAllLeadsSource();
+  @POST(ApiConstants.getAllUsers)
+  Future<String> addUser(@Body() AddUserModel body);
+  @GET(ApiConstants.getAllRoles)
+  Future<RolesResponse> getAllRoles();
 }

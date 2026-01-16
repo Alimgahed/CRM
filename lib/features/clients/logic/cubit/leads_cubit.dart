@@ -1,6 +1,6 @@
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/features/clients/data/repo/all_clients.dart';
-import 'package:crm/features/clients/logic/cubit/leads_states.dart';
+import 'package:crm/features/clients/logic/states/leads_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LeadsCubit extends Cubit<LeadsState> {

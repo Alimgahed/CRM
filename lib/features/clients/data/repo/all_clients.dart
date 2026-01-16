@@ -11,7 +11,7 @@ class LeadsRepo {
 
   Future<ApiResult<LeadsResponse>> getAllLeads() async {
     try {
-      final response = await apiService.getAllLeads(1, 10);
+      final response = await apiService.getAllLeads();
       return ApiResult.success(response);
     } on DioException catch (e) {
       final errorMsg = e.response?.data?['Error'] ?? e.message;

@@ -3,7 +3,7 @@ import 'package:crm/features/clients/logic/all_clients/Clients_search.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/Core/widgets/gloable.dart';
-import 'package:crm/features/actions/ui/screens/add_client.dart';
+import 'package:crm/features/actions/ui/screens/actions/add_client.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';

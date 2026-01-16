@@ -1,8 +1,9 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
-import 'package:crm/features/Projects/data/repo/projects_repo.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/statistics/logic/statistics_cubit.dart';
+import 'package:crm/features/users/logic/cubit/users_cubit.dart';
+import 'package:crm/features/users/ui/screens/User_managment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm/Core/routing/routes.dart';
@@ -67,6 +68,13 @@ class AppRouter {
             create: (context) =>
                 getIt<DeveloperCubit>()..fetchAllDevelopmentCompanies(),
             child: const AllDevelopers(),
+          ),
+        );
+      case Routes.usersmanamgment:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<UsersCubit>()..getAllUsers(),
+            child: const UserManagement(),
           ),
         );
 

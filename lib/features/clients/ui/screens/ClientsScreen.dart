@@ -2,7 +2,7 @@ import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/features/clients/logic/all_clients/Clients_controller.dart';
 import 'package:crm/features/clients/logic/cubit/filiter_cubit.dart';
 import 'package:crm/features/clients/logic/cubit/leads_cubit.dart';
-import 'package:crm/features/clients/logic/cubit/leads_states.dart';
+import 'package:crm/features/clients/logic/states/leads_states.dart';
 import 'package:crm/features/clients/ui/widgets/ClientCard.dart';
 import 'package:crm/features/clients/ui/widgets/ClientsFiliter.dart';
 import 'package:crm/features/clients/ui/widgets/Header.dart';

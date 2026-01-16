@@ -24,7 +24,7 @@ class Lead {
   @JsonKey(name: 'job_title')
   final String jobTitle;
 
-  final int budget;
+  final num? budget;
 
   @JsonKey(name: 'preferred_contact_method')
   final String preferredContactMethod;
@@ -41,10 +41,10 @@ class Lead {
   final bool isDeleted;
 
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final String? createdAt;
 
   @JsonKey(name: 'updated_at')
-  final String updatedAt;
+  final String? updatedAt;
 
   @JsonKey(name: 'company_id')
   final String? companyId;
@@ -70,14 +70,14 @@ class Lead {
     required this.phone,
     this.secondaryPhone,
     required this.jobTitle,
-    required this.budget,
+    this.budget,
     required this.preferredContactMethod,
     required this.status,
     required this.leadSourceId,
     this.assignedToId,
     required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
     this.companyId,
     this.leadSource,
     this.attchments,

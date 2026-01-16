@@ -14,14 +14,14 @@ Lead _$LeadFromJson(Map<String, dynamic> json) => Lead(
   phone: json['phone'] as String,
   secondaryPhone: json['secondary_phone'] as String?,
   jobTitle: json['job_title'] as String,
-  budget: (json['budget'] as num).toInt(),
+  budget: json['budget'] as num?,
   preferredContactMethod: json['preferred_contact_method'] as String,
   status: (json['status'] as num).toInt(),
   leadSourceId: json['lead_source_id'] as String,
   assignedToId: json['assigned_to_id'] as String?,
   isDeleted: json['is_deleted'] as bool,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
   companyId: json['company_id'] as String?,
   leadSource: json['lead_source'] == null
       ? null

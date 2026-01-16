@@ -10,6 +10,9 @@ class AppLocalizations {
   String get hoursAgo => isArabic ? 'ساعات مضت' : 'Hours ago';
   String get selectCountry => isArabic ? 'اختر الدولة' : 'Select Country';
   String get facebook => isArabic ? 'فيس بوك' : 'Facebook';
+  String get addNewUser => isArabic ? 'إضافة مستخدم جديد' : 'Add New User';
+  String get writeName => isArabic ? 'اكتب الاسم' : 'Write Name';
+
   String get direct => isArabic ? ' مباشر' : 'Direct';
   String get salesName => isArabic ? 'اسم المندوب  ' : 'Sales Name';
   String get selectSalesName =>

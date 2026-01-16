@@ -8,10 +8,10 @@ class UsersCubit extends Cubit<UsersState> {
 
   UsersCubit({required this.userRepo}) : super(const UsersState.initial());
 
-  Future<void> getAllUsers(int? page, int? pageSize) async {
+  Future<void> getAllUsers() async {
     emit(const UsersState.loading());
 
-    final result = await userRepo.getAllUsers(1, 10);
+    final result = await userRepo.getAllUsers();
 
     result.when(
       success: (data) => emit(UsersState.loaded(data.data)),

@@ -1,88 +1,190 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
 
 /// ============================
 /// CUSTOM TEXT FORM FIELD
 /// ============================
+
+import 'package:intl/intl.dart';
+
+// ============= Number Formatter for Thousands Separator =============
+class ThousandsSeparatorInputFormatter extends TextInputFormatter {
+  final NumberFormat _formatter = NumberFormat('#,###');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    // Remove all commas to get the raw number
+    final String cleanedText = newValue.text.replaceAll(',', '');
+
+    // Validate it's a number
+    if (int.tryParse(cleanedText) == null) {
+      return oldValue;
+    }
+
+    // Format with commas
+    final String formattedText = _formatter.format(int.parse(cleanedText));
+
+    // Calculate new cursor position
+    final int originalCursorPosition = newValue.selection.baseOffset;
+    final int commasBefore = ','
+        .allMatches(newValue.text.substring(0, originalCursorPosition))
+        .length;
+    final int commasAfter = ','.allMatches(formattedText).length;
+    final int cursorOffset = commasAfter - commasBefore;
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(
+        offset: (originalCursorPosition + cursorOffset).clamp(
+          0,
+          formattedText.length,
+        ),
+      ),
+    );
+  }
+}
+
+// ============= Decimal Formatter (for prices with decimals) =============
+class DecimalFormatter extends TextInputFormatter {
+  final int decimalPlaces;
+  final NumberFormat _formatter;
+
+  DecimalFormatter({this.decimalPlaces = 2})
+    : _formatter = NumberFormat('#,##0.${'0' * decimalPlaces}');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    final String cleanedText = newValue.text.replaceAll(',', '');
+
+    if (double.tryParse(cleanedText) == null) {
+      return oldValue;
+    }
+
+    final double value = double.parse(cleanedText);
+    final String formattedText = _formatter.format(value);
+
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
+    );
+  }
+}
+
+// ============= Optimized CustomTextFormField =============
 class CustomTextFormField extends StatefulWidget {
+  // Controllers and callbacks
   final TextEditingController? controller;
-  final String? hintText;
-  final String? labelText;
+  final FocusNode? focusNode;
   final VoidCallback? onTap;
-  final Function(String)? onChanged;
-  final Function(String)? onFieldSubmitted;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onFieldSubmitted;
   final VoidCallback? onEditingComplete;
-  final bool readOnly;
-  final IconData? iconData;
-  final String? Function(String?)? validator;
+  final FormFieldValidator<String>? validator;
+
+  // Text properties
+  final String? text; // Label above field
+  final String? labelText; // Floating label inside field
+  final String? hintText;
+  final String? initialValue;
+
+  // Input properties
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
-  final bool useValidator;
-  final bool obscureText;
-  final String? text; // label above field
-  final Widget? prefixWidget;
-  final Widget? suffixWidget;
   final int? maxLines;
   final int? maxLength;
+  final bool enabled;
+  final bool readOnly;
+  final bool obscureText;
+  final bool useValidator;
+
+  // Icons and widgets
+  final IconData? iconData;
+  final Widget? prefixWidget;
+  final Widget? suffixWidget;
+
+  // Special features
   final bool enableTogglePassword;
   final bool isPhoneField;
+  final bool isNumberField;
+  final bool useThousandsSeparator; // NEW: Format numbers like 1,000,000
+  final bool allowDecimals; // NEW: Allow decimal numbers
+  final int decimalPlaces; // NEW: Number of decimal places (default: 2)
   final VoidCallback? onSelectCountry;
-  final FocusNode? focusNode;
 
   const CustomTextFormField({
     super.key,
     this.controller,
-    this.hintText,
-
-    this.labelText,
+    this.focusNode,
     this.onTap,
     this.onChanged,
     this.onFieldSubmitted,
     this.onEditingComplete,
-    this.readOnly = false,
-    this.iconData,
     this.validator,
+    this.text,
+    this.labelText,
+    this.hintText,
+    this.initialValue,
     this.keyboardType,
     this.textInputAction,
     this.inputFormatters,
-    this.useValidator = true,
-    this.obscureText = false,
-    this.text,
-    this.prefixWidget,
-    this.suffixWidget,
     this.maxLines = 1,
     this.maxLength,
+    this.enabled = true,
+    this.readOnly = false,
+    this.obscureText = false,
+    this.useValidator = true,
+    this.iconData,
+    this.prefixWidget,
+    this.suffixWidget,
     this.enableTogglePassword = false,
     this.isPhoneField = false,
+    this.isNumberField = false,
+    this.useThousandsSeparator = false,
+    this.allowDecimals = false,
+    this.decimalPlaces = 2,
     this.onSelectCountry,
-    this.focusNode,
   });
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
 
-  /// -----------------------------
-  /// Factory methods
-  /// -----------------------------
+  // ============= Factory Methods =============
+
+  /// Password field with toggle visibility
   static CustomTextFormField password({
     Key? key,
     TextEditingController? controller,
+    FocusNode? focusNode,
     String? labelText,
     String? hintText,
     String? labelAboveField,
-    String? Function(String?)? validator,
-    Function(String)? onChanged,
-    Function(String)? onFieldSubmitted,
+    FormFieldValidator<String>? validator,
+    ValueChanged<String>? onChanged,
+    ValueChanged<String>? onFieldSubmitted,
     TextInputAction? textInputAction,
-    FocusNode? focusNode,
+    bool enabled = true,
   }) => CustomTextFormField(
     key: key,
     controller: controller,
+    focusNode: focusNode,
     labelText: labelText,
     hintText: hintText,
     text: labelAboveField,
@@ -93,23 +195,26 @@ class CustomTextFormField extends StatefulWidget {
     onChanged: onChanged,
     onFieldSubmitted: onFieldSubmitted,
     textInputAction: textInputAction ?? TextInputAction.done,
-    focusNode: focusNode,
+    enabled: enabled,
   );
 
+  /// Phone number field
   static CustomTextFormField phone({
     Key? key,
     TextEditingController? controller,
+    FocusNode? focusNode,
     String? labelText,
     String? hintText,
     String? labelAboveField,
     required VoidCallback onSelectCountry,
-    String? Function(String?)? validator,
-    Function(String)? onChanged,
+    FormFieldValidator<String>? validator,
+    ValueChanged<String>? onChanged,
     TextInputAction? textInputAction,
-    FocusNode? focusNode,
+    bool enabled = true,
   }) => CustomTextFormField(
     key: key,
     controller: controller,
+    focusNode: focusNode,
     labelText: labelText,
     hintText: hintText,
     text: labelAboveField,
@@ -120,22 +225,25 @@ class CustomTextFormField extends StatefulWidget {
     validator: validator,
     onChanged: onChanged,
     textInputAction: textInputAction ?? TextInputAction.next,
-    focusNode: focusNode,
+    enabled: enabled,
   );
 
+  /// Email field
   static CustomTextFormField email({
     Key? key,
     TextEditingController? controller,
+    FocusNode? focusNode,
     String? labelText,
     String? hintText,
     String? labelAboveField,
-    String? Function(String?)? validator,
-    Function(String)? onChanged,
+    FormFieldValidator<String>? validator,
+    ValueChanged<String>? onChanged,
     TextInputAction? textInputAction,
-    FocusNode? focusNode,
+    bool enabled = true,
   }) => CustomTextFormField(
     key: key,
     controller: controller,
+    focusNode: focusNode,
     labelText: labelText,
     hintText: hintText,
     text: labelAboveField,
@@ -144,7 +252,71 @@ class CustomTextFormField extends StatefulWidget {
     validator: validator,
     onChanged: onChanged,
     textInputAction: textInputAction ?? TextInputAction.next,
+    enabled: enabled,
+  );
+
+  /// Number field with thousands separator (1,000,000)
+  static CustomTextFormField number({
+    Key? key,
+    TextEditingController? controller,
+    FocusNode? focusNode,
+    String? labelText,
+    String? hintText,
+    String? labelAboveField,
+    FormFieldValidator<String>? validator,
+    ValueChanged<String>? onChanged,
+    TextInputAction? textInputAction,
+    bool enabled = true,
+    bool useThousandsSeparator = true,
+    bool allowDecimals = false,
+    int decimalPlaces = 2,
+  }) => CustomTextFormField(
+    key: key,
+    controller: controller,
     focusNode: focusNode,
+    labelText: labelText,
+    hintText: hintText,
+    text: labelAboveField,
+    isNumberField: true,
+    useThousandsSeparator: useThousandsSeparator,
+    allowDecimals: allowDecimals,
+    decimalPlaces: decimalPlaces,
+    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+    validator: validator,
+    onChanged: onChanged,
+    textInputAction: textInputAction ?? TextInputAction.done,
+    enabled: enabled,
+  );
+
+  /// Currency/Price field with decimals (1,000,000.00)
+  static CustomTextFormField currency({
+    Key? key,
+    TextEditingController? controller,
+    FocusNode? focusNode,
+    String? labelText,
+    String? hintText,
+    String? labelAboveField,
+    FormFieldValidator<String>? validator,
+    ValueChanged<String>? onChanged,
+    TextInputAction? textInputAction,
+    bool enabled = true,
+    int decimalPlaces = 2,
+  }) => CustomTextFormField(
+    key: key,
+    controller: controller,
+    focusNode: focusNode,
+    labelText: labelText,
+    hintText: hintText,
+    text: labelAboveField,
+    isNumberField: true,
+    useThousandsSeparator: true,
+    allowDecimals: true,
+    decimalPlaces: decimalPlaces,
+    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+    validator: validator,
+    onChanged: onChanged,
+    textInputAction: textInputAction ?? TextInputAction.done,
+    enabled: enabled,
   );
 }
 
@@ -165,32 +337,33 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (widget.text != null && widget.text!.isNotEmpty)
+        if (widget.text != null && widget.text!.isNotEmpty) ...[
           _FieldLabel(text: widget.text!, isDark: isDark),
-        if (widget.text != null && widget.text!.isNotEmpty)
           SizedBox(height: 10.h),
+        ],
         _FieldContainer(
           isDark: isDark,
           child: TextFormField(
             controller: widget.controller,
             focusNode: widget.focusNode,
-            onTap: widget.onTap,
+
+            initialValue: widget.initialValue,
+            enabled: widget.enabled,
             readOnly: widget.readOnly,
-            cursorColor: isDark ? darkColor : Colors.black,
+            onTap: widget.onTap,
             obscureText: _isObscured,
-            keyboardType:
-                widget.keyboardType ??
-                (widget.isPhoneField
-                    ? TextInputType.phone
-                    : TextInputType.text),
-            textInputAction: widget.textInputAction,
-            inputFormatters: widget.inputFormatters,
-            maxLines: widget.obscureText ? 1 : widget.maxLines,
+            maxLines: _isObscured ? 1 : widget.maxLines,
             maxLength: widget.maxLength,
+            keyboardType: _getKeyboardType(),
+            textInputAction: widget.textInputAction,
+            inputFormatters: _getInputFormatters(),
             style: TextStyle(
-              color: isDark ? darkText : Colors.black,
+              color: widget.enabled
+                  ? (isDark ? darkText : Colors.black)
+                  : (isDark ? darkText.withOpacity(0.5) : Colors.grey),
               fontSize: 16,
             ),
+            cursorColor: isDark ? darkColor : Colors.black,
             decoration: InputDecoration(
               fillColor: isDark ? darkFieldColor : fieldColor,
               labelText: widget.labelText,
@@ -201,6 +374,22 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               hintStyle: TextStyles.size12(
                 color: isDark ? darkText.withOpacity(0.7) : Colors.grey,
               ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: appColor, width: 2),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red, width: 1),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red, width: 2),
+              ),
               border: InputBorder.none,
               counterText: widget.maxLength != null ? null : '',
               counterStyle: TextStyle(
@@ -208,7 +397,10 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               ),
               prefixIcon: _buildPrefixWidget(isDark),
               suffixIcon: _buildSuffixWidget(isDark),
-              contentPadding: const EdgeInsets.symmetric(vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 16,
+              ),
             ),
             validator: widget.useValidator ? _getValidator() : null,
             onChanged: widget.onChanged,
@@ -220,9 +412,48 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     );
   }
 
+  // ============= Helper Methods =============
+
+  TextInputType _getKeyboardType() {
+    if (widget.keyboardType != null) return widget.keyboardType!;
+    if (widget.isPhoneField) return TextInputType.phone;
+    if (widget.isNumberField) {
+      return TextInputType.numberWithOptions(decimal: widget.allowDecimals);
+    }
+    return TextInputType.text;
+  }
+
+  List<TextInputFormatter>? _getInputFormatters() {
+    if (widget.inputFormatters != null) return widget.inputFormatters;
+
+    final List<TextInputFormatter> formatters = [];
+
+    if (widget.isNumberField) {
+      if (widget.useThousandsSeparator) {
+        if (widget.allowDecimals) {
+          // For currency/price: allow decimals with thousands separator
+          formatters.add(FilteringTextInputFormatter.allow(RegExp(r'[\d,.]')));
+          formatters.add(DecimalFormatter(decimalPlaces: widget.decimalPlaces));
+        } else {
+          // For whole numbers: only digits with thousands separator
+          formatters.add(FilteringTextInputFormatter.digitsOnly);
+          formatters.add(ThousandsSeparatorInputFormatter());
+        }
+      } else {
+        // Simple number without formatting
+        if (widget.allowDecimals) {
+          formatters.add(FilteringTextInputFormatter.allow(RegExp(r'[\d.]')));
+        } else {
+          formatters.add(FilteringTextInputFormatter.digitsOnly);
+        }
+      }
+    }
+
+    return formatters.isEmpty ? null : formatters;
+  }
+
   Widget? _buildPrefixWidget(bool isDark) {
     if (widget.prefixWidget != null) return widget.prefixWidget;
-    if (widget.isPhoneField && widget.onSelectCountry != null) {}
     if (widget.iconData != null) {
       return _IconPrefix(iconData: widget.iconData!, isDark: isDark);
     }
@@ -237,26 +468,60 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           _isObscured ? Icons.visibility_off : Icons.visibility,
           color: isDark ? darkText : Colors.grey,
         ),
-        onPressed: () {
-          setState(() {
-            _isObscured = !_isObscured;
-          });
-        },
+        onPressed: widget.enabled
+            ? () => setState(() => _isObscured = !_isObscured)
+            : null,
       );
     }
     return null;
   }
 
-  String? Function(String?)? _getValidator() =>
-      widget.validator ??
-      (value) => (value == null || value.isEmpty)
-          ? "This field cannot be empty".tr
-          : null;
+  FormFieldValidator<String>? _getValidator() {
+    return widget.validator ??
+        (value) {
+          if (value == null || value.trim().isEmpty) {
+            return "This field cannot be empty";
+          }
+          return null;
+        };
+  }
 }
 
-/// ============================
-/// FIELD LABEL & CONTAINER
-/// ============================
+// ============= Helper Widgets =============
+
+// ============= Utility Extension =============
+extension TextEditingControllerExtension on TextEditingController {
+  /// Get the numeric value without commas
+  int? get numericValue {
+    final cleaned = text.replaceAll(',', '');
+    return int.tryParse(cleaned);
+  }
+
+  /// Get the decimal value without commas
+  double? get decimalValue {
+    final cleaned = text.replaceAll(',', '');
+    return double.tryParse(cleaned);
+  }
+
+  /// Set numeric value with formatting
+  set numericValue(int? value) {
+    if (value == null) {
+      text = '';
+    } else {
+      text = NumberFormat('#,###').format(value);
+    }
+  }
+
+  /// Set decimal value with formatting
+  void setDecimalValue(double? value, {int decimalPlaces = 2}) {
+    if (value == null) {
+      text = '';
+    } else {
+      text = NumberFormat('#,##0.${'0' * decimalPlaces}').format(value);
+    }
+  }
+}
+
 class _FieldLabel extends StatelessWidget {
   final String text;
   final bool isDark;
@@ -362,8 +627,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
             onChanged: readOnly ? null : onChanged,
             validator: useValidator
                 ? validator ??
-                      (val) =>
-                          val == null ? "This field cannot be empty".tr : null
+                      (val) => val == null ? "This field cannot be empty" : null
                 : null,
             decoration: InputDecoration(
               labelText: labelText,

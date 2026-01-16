@@ -10,6 +10,10 @@ import 'package:crm/features/Projects/logic/cubit/project_states.dart';
 import 'package:crm/features/actions/logic/add_client.dart';
 import 'package:crm/features/actions/logic/add_client_state.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
+import 'package:crm/features/clients/data/model/lead_source.dart';
+import 'package:crm/features/clients/data/repo/lead_soure.dart';
+import 'package:crm/features/clients/logic/cubit/leads_source_cubit.dart';
+import 'package:crm/features/clients/logic/states/leads_source_state.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/users/data/model/users_model.dart';
@@ -43,26 +47,19 @@ class AddClient extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              UsersCubit(userRepo: getIt.get<UserRepo>())..getAllUsers(1, 20),
+              UsersCubit(userRepo: getIt.get<UserRepo>())..getAllUsers(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              LeadsSourceCubit(leadSourceRepo: getIt.get<LeadSourceRepo>())
+                ..fetchAllLeads(),
         ),
       ],
       child: BlocConsumer<AddClientCubit, AddClientState>(
         listener: (context, state) {
           state.whenOrNull(
-            loading: () {
-              // Show loading dialog
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => Center(
-                  child: CircularProgressIndicator(
-                    color: isDark ? Colors.white : Colors.blue,
-                  ),
-                ),
-              );
-            },
+            loading: () {},
             error: (message) {
-              Navigator.of(context).pop();
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -118,7 +115,6 @@ class AddClient extends StatelessWidget {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop(); // Close success dialog
                         Navigator.of(context).pop(); // Close add client sheet
                       },
                       child: Text(appLocalizations.ok),
@@ -174,12 +170,6 @@ class AddClient extends StatelessWidget {
                           text: appLocalizations.clientName,
                           labelText: appLocalizations.enterClientNameHere,
                           controller: cubit.clientNameController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Client name is required';
-                            }
-                            return null;
-                          },
                         ),
                         const SizedBox(height: 10),
 
@@ -204,6 +194,7 @@ class AddClient extends StatelessWidget {
 
                             return CustomDropdownFormField<String>(
                               text: appLocalizations.project,
+                              useValidator: false,
                               labelText: projectState.maybeWhen(
                                 loading: () => appLocalizations.loading,
                                 orElse: () => appLocalizations.selectProject,
@@ -309,12 +300,6 @@ class AddClient extends StatelessWidget {
                           text: appLocalizations.jobTitle,
                           labelText: appLocalizations.writeJob,
                           controller: cubit.jobController,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Job title is required';
-                            }
-                            return null;
-                          },
                         ),
                         const SizedBox(height: 10),
 
@@ -324,49 +309,63 @@ class AddClient extends StatelessWidget {
                           labelText: appLocalizations.writeEmail,
                           controller: cubit.emailController,
                           keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Email is required';
-                            }
-                            if (!value.contains('@')) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          },
                         ),
                         const SizedBox(height: 10),
 
                         // Budget
-                        CustomTextFormField(
-                          text: appLocalizations.budget,
+                        CustomTextFormField.number(
+                          labelAboveField: appLocalizations.budget,
                           labelText: appLocalizations.budget,
+
                           controller: cubit.budgetController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value != null && value.trim().isNotEmpty) {
-                              if (int.tryParse(value.trim()) == null) {
-                                return 'Please enter a valid number';
-                              }
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value != null && value.trim().isNotEmpty) {
+                          //     if (int.tryParse(value.trim()) == null) {
+                          //       return 'Please enter a valid number';
+                          //     }
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         const SizedBox(height: 10),
 
-                        CustomDropdownFormField<String>(
-                          text: appLocalizations.channel,
-                          items: cubit.leadSourceMap.entries
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  value: e.value, // ✅ GUID
-                                  child: Text(e.key), // user sees name
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (val) {
-                            cubit.setChannel(val ?? '');
+                        BlocBuilder<LeadsSourceCubit, LeadsSourceState>(
+                          builder: (context, userState) {
+                            final List<LeadSource> sourcesList = userState
+                                .maybeWhen(
+                                  loaded: (source) => source,
+                                  orElse: () => [],
+                                );
+
+                            return CustomDropdownFormField<String>(
+                              text: appLocalizations.sales,
+                              labelText: userState.maybeWhen(
+                                loading: () => appLocalizations.loading,
+                                orElse: () => appLocalizations.channel,
+                              ),
+
+                              // Disable dropdown while loading
+                              onChanged: (userState is Loading) || isLoading
+                                  ? null
+                                  : (val) {
+                                      cubit.setChannel(val ?? '');
+                                    },
+                              value: cubit.channel,
+                              items: sourcesList.map((source) {
+                                return DropdownMenuItem<String>(
+                                  value: source.leadSourceId,
+                                  child: Text(
+                                    source.sourceName,
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
                           },
-                          labelText: '',
                         ),
 
                         const SizedBox(height: 10),
@@ -401,41 +400,21 @@ class AddClient extends StatelessWidget {
                                   cubit.setPreferredMethod(val ?? '');
                                 },
                         ),
-                        const SizedBox(height: 10),
 
                         // Client Status
-                        CustomDropdownFormField<int>(
-                          text: appLocalizations.clientStatus,
-                          labelText: appLocalizations.selectClientStatus,
-                          value: cubit.clientStatus ?? 1,
-                          items: [
-                            DropdownMenuItem(
-                              value: 1,
-                              child: Text(appLocalizations.active),
-                            ),
-                            DropdownMenuItem(
-                              value: 2,
-                              child: Text(appLocalizations.inactive),
-                            ),
-                          ],
-                          onChanged: isLoading
-                              ? null
-                              : (val) {
-                                  cubit.setClientStatus(val ?? 1);
-                                },
-                        ),
-
                         const SizedBox(height: 20),
 
                         // Save Button
-                        CustomButton(
-                          text: appLocalizations.save,
-                          onPressed: () {
-                            if (cubit.formKey.currentState!.validate()) {
-                              cubit.addClient();
-                            }
-                          },
-                        ),
+                        isLoading
+                            ? Center(child: CircularProgressIndicator())
+                            : CustomButton(
+                                text: appLocalizations.save,
+                                onPressed: () {
+                                  if (cubit.formKey.currentState!.validate()) {
+                                    cubit.addClient();
+                                  }
+                                },
+                              ),
                       ],
                     ),
                   ),
