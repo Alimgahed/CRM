@@ -4,10 +4,10 @@ import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:crm/features/users/logic/states/users_states.dart';
+import 'package:crm/features/users/ui/screens/edit_user.dart';
 import 'package:crm/features/users/ui/widgets/UserMannagment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class UserManagement extends StatelessWidget {
   const UserManagement({super.key});
@@ -21,7 +21,7 @@ class UserManagement extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          ReusableHeader(title: 'Users and permissions'.tr),
+          ReusableHeader(title: appLocalizations.userManagements),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SearchBarWidget(
@@ -56,7 +56,48 @@ class UserManagement extends StatelessWidget {
                       : ListView.builder(
                           itemCount: users.length,
                           itemBuilder: (_, index) {
-                            return UserManagementWidget(user: users[index]);
+                            final user = users[index];
+                            return UserManagementWidget(
+                              user: user,
+                              onEdit: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (_) => FractionallySizedBox(
+                                    heightFactor: 0.8,
+                                    child: EditUser(user: user),
+                                  ),
+                                );
+                              },
+                              onDelete: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Delete ${user.fullName}'),
+                                  ),
+                                );
+                              },
+                              onViewPermissions: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Column(
+                                      children: [
+                                        Text(user.permissions.toString()),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              onToggleStatus: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Toggle status: ${user.fullName}',
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
                           },
                         ),
                   error: (message) => Center(

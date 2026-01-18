@@ -137,7 +137,7 @@ class AllprojectWidget extends StatelessWidget {
             Center(
               child: CustomButton(
                 height: 40.h,
-                text: appLocalizations.view,
+                text: appLocalizations.viewdetails,
                 onPressed: () {
                   Navigator.pushNamed(
                     context,
@@ -169,7 +169,7 @@ Widget infoChip(IconData icon, String text, Color textColor, bool isDark) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
     decoration: BoxDecoration(
-      color: isDark ? const Color(0xFF2C2C2C) : Colors.grey.shade100,
+      color: isDark ? darkFieldColor : Colors.grey.shade100,
       borderRadius: BorderRadius.circular(8.r),
     ),
     child: Row(

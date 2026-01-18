@@ -1,33 +1,46 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'owners_model.g.dart';
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class Owner {
-  final String ownerId;
-  final String fullName;
+  @JsonKey(name: 'owner_id')
+  final String? ownerId;
+
+  @JsonKey(name: 'full_name')
+  final String? fullName;
+
   final String? fullNameEn;
   final String? email;
   final String? phone;
-  final String? scoundPhone;
-  final bool isDeleted;
-  final String createdAt;
+
+  @JsonKey(name: 'scound_phone')
+  final String? secondPhone;
+
+  @JsonKey(defaultValue: false)
+  final bool? isDeleted;
+
+  final String? createdAt;
+
   final String? updatedAt;
-  final String companyId;
+
+  @JsonKey(name: 'company_id')
+  final String? companyId;
 
   Owner({
-    required this.ownerId,
-    required this.fullName,
+    this.ownerId,
+    this.fullName,
     this.fullNameEn,
     this.email,
     this.phone,
-    this.scoundPhone,
-    required this.isDeleted,
-    required this.createdAt,
+    this.secondPhone,
+    this.isDeleted,
+    this.createdAt,
     this.updatedAt,
-    required this.companyId,
+    this.companyId,
   });
 
-  factory Owner.fromJson(Map<String, dynamic> json) =>
-      _$OwnerFromJson(json);
+  factory Owner.fromJson(Map<String, dynamic> json) => _$OwnerFromJson(json);
+
   Map<String, dynamic> toJson() => _$OwnerToJson(this);
 }

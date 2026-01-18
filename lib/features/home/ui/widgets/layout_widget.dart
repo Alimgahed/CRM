@@ -3,8 +3,8 @@ import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/actions/ui/screens/actions/add_client.dart';
 import 'package:crm/features/actions/ui/screens/actions/add_project.dart';
-import 'package:crm/features/actions/ui/screens/actions/add_task.dart';
-import 'package:crm/features/actions/ui/screens/actions/add_user.dart';
+import 'package:crm/features/tasks/ui/screens/add_task.dart';
+import 'package:crm/features/users/ui/screens/add_user.dart';
 import 'package:crm/features/home/data/model/model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
@@ -126,7 +126,10 @@ class CenterFAB extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
-                  builder: (_) => const AddTask(),
+                  builder: (_) => FractionallySizedBox(
+                    heightFactor: 0.8,
+                    child: const AddTask(),
+                  ),
                 ),
               ),
               DialogItem(

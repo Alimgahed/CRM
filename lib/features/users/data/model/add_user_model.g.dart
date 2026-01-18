@@ -11,7 +11,7 @@ AddUserModel _$AddUserModelFromJson(Map<String, dynamic> json) => AddUserModel(
   fullName: json['full_name'] as String,
   email: json['email'] as String,
   password: json['password'] as String,
-  phone: json['phone'] as String,
+  phone: json['phone'] as String?,
   roleIds: json['role_id'] as String,
   isActive: json['is_active'] as bool,
 );

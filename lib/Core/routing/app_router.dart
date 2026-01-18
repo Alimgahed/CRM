@@ -1,7 +1,15 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
+import 'package:crm/features/Units/data/models/unit_model.dart';
+import 'package:crm/features/Units/logic/cubit/unit_cubit.dart';
+import 'package:crm/features/Units/ui/screens/AllUnit.dart';
+import 'package:crm/features/Units/ui/screens/UnitDetails.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
+import 'package:crm/features/owners/logic/cubit/owner_cubit.dart';
+import 'package:crm/features/owners/ui/screens/allOwner.dart';
 import 'package:crm/features/statistics/logic/statistics_cubit.dart';
+import 'package:crm/features/tasks/logic/cubit/task_cubit.dart';
+import 'package:crm/features/tasks/ui/screens/alltasks_screen.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:crm/features/users/ui/screens/User_managment.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +69,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => ProjectDetailsScreen(project: project),
         );
+      case Routes.unitDetails:
+        final unit = settings!.arguments as Unit;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<OwnerCubit>()..getAllOwners(),
+            child: UnitDetailsScreen(unit: unit),
+          ),
+        );
 
       case Routes.allDevelopers:
         return MaterialPageRoute(
@@ -75,6 +91,27 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => getIt<UsersCubit>()..getAllUsers(),
             child: const UserManagement(),
+          ),
+        );
+      case Routes.units:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<UnitCubit>()..getUnits(),
+            child: const Allunit(),
+          ),
+        );
+      case Routes.allOwners:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<OwnerCubit>()..getAllOwners(),
+            child: const AllOwners(),
+          ),
+        );
+      case Routes.allTasks:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<TaskCubit>()..getAllTasks(),
+            child: const AllTasksScreen(),
           ),
         );
 

@@ -25,9 +25,9 @@ class UserRepo {
           );
         }
       } else {
-        // No response from server (network issue)
+        // No response from server (network issue)a
         return ApiResult.error(
-          ApiErrorModel(error: 'Network error. Please check your connection'),
+          ApiErrorModel(error: 'Network error. Pleasae check your connection'),
         );
       }
     } catch (e) {

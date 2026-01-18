@@ -10,4 +10,10 @@ class ApiConstants {
   static const String getAllLeadsSource = "/api/v1/leads/leadsorce";
   static const String getAllLeadsComments = "/api/v1/leads/comments/";
   static const String getAllRoles = "/api/v1/roles";
+  static const String getAllUnit = "/api/v1/units";
+  static const String getAllOwners = "/api/v1/owners";
+  static const String editUser = "/api/v1/users/{id}";
+  static const String getAllTasks = "/api/v1/tasks";
+  static const String getLeadAgentActions =
+      "/api/v1/leads/agent-actions/{leadId}";
 }

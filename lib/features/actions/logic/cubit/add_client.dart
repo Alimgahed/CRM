@@ -1,7 +1,7 @@
 import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
-import 'package:crm/features/actions/logic/add_client_state.dart';
+import 'package:crm/features/actions/logic/state/add_client_state.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,6 +61,14 @@ class AddClientCubit extends Cubit<AddClientState> {
 
   // ===== Submit =====
   Future<void> addClient() async {
+    if (salesId == null ||
+        preferredMethod == null ||
+        channel == null ||
+        projectId == null) {
+      emit(const AddClientState.error('Please fill all required fields'));
+      return;
+    }
+
     emit(AddClientState.loading());
 
     final budget = budgetController.parseAsDouble;
@@ -76,7 +84,7 @@ class AddClientCubit extends Cubit<AddClientState> {
       secondaryPhone: phoneController2.text.trim(),
       jobTitle: jobController.text.trim(),
       budget: budget,
-      assignedToId: salesId,
+      assignedToId: salesId!,
       preferredContactMethod: preferredMethod!,
       status: 1,
       leadSourceId: channel!,

@@ -13,7 +13,7 @@ class AppTheme {
 
       // Color scheme
       colorScheme: const ColorScheme.light(
-        primary: Colors.white,
+        primary: appColor,
         surface: Colors.white,
         onPrimary: Colors.black,
       ),

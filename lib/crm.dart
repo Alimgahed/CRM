@@ -4,7 +4,6 @@ import 'package:crm/Core/routing/routes.dart';
 import 'package:crm/Core/services/user_service.dart';
 import 'package:crm/Core/theming/dark_cubit.dart';
 import 'package:crm/Core/theming/theme.dart';
-import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/Core/helpers/number_format.dart';
 import 'package:flutter/material.dart';

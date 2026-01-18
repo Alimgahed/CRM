@@ -128,13 +128,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String dsata)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String dsata)?  loaded,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddUserInitial() when initial != null:
 return initial();case AddUserLoading() when loading != null:
 return loading();case AddUserLoaded() when loaded != null:
 return loaded(_that.dsata);case AddUserError() when error != null:
-return error(_that.message);case _:
+return error(_that.error);case _:
   return orElse();
 
 }
@@ -152,13 +152,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String dsata)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String dsata)  loaded,required TResult Function( String error)  error,}) {final _that = this;
 switch (_that) {
 case AddUserInitial():
 return initial();case AddUserLoading():
 return loading();case AddUserLoaded():
 return loaded(_that.dsata);case AddUserError():
-return error(_that.message);case _:
+return error(_that.error);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +175,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String dsata)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String dsata)?  loaded,TResult? Function( String error)?  error,}) {final _that = this;
 switch (_that) {
 case AddUserInitial() when initial != null:
 return initial();case AddUserLoading() when loading != null:
 return loading();case AddUserLoaded() when loaded != null:
 return loaded(_that.dsata);case AddUserError() when error != null:
-return error(_that.message);case _:
+return error(_that.error);case _:
   return null;
 
 }
@@ -323,10 +323,10 @@ as String,
 
 
 class AddUserError implements AddUserState {
-  const AddUserError(this.message);
+  const AddUserError(this.error);
   
 
- final  String message;
+ final  String error;
 
 /// Create a copy of AddUserState
 /// with the given fields replaced by the non-null parameter values.
@@ -338,16 +338,16 @@ $AddUserErrorCopyWith<AddUserError> get copyWith => _$AddUserErrorCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddUserError&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddUserError&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,error);
 
 @override
 String toString() {
-  return 'AddUserState.error(message: $message)';
+  return 'AddUserState.error(error: $error)';
 }
 
 
@@ -358,7 +358,7 @@ abstract mixin class $AddUserErrorCopyWith<$Res> implements $AddUserStateCopyWit
   factory $AddUserErrorCopyWith(AddUserError value, $Res Function(AddUserError) _then) = _$AddUserErrorCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String error
 });
 
 
@@ -375,9 +375,9 @@ class _$AddUserErrorCopyWithImpl<$Res>
 
 /// Create a copy of AddUserState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
   return _then(AddUserError(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

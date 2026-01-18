@@ -3,16 +3,68 @@ class AppLocalizations {
 
   AppLocalizations(this.locale);
 
-  // Assuming you have this somewhere
+  // Assuming you have this somewhereص
   bool get isArabic => locale == 'ar';
+  String get apartment => isArabic ? 'شقة' : 'Apartment';
+  String get call => isArabic ? 'اتصال' : 'Call';
+  String get cancelled => isArabic ? 'ملغي' : 'Cancelled';
+  String get interested => isArabic ? 'مهتم' : 'Interested';
+  String get deal => isArabic ? 'صفقة' : 'Deal';
+  String get booked => isArabic ? 'محجوز' : 'Booked';
+  String get meeting => isArabic ? 'اجتماع' : 'Meeting';
+  String get rental => isArabic ? 'إيجار' : 'Rental';
+  String get company => isArabic ? 'شركة' : 'Company';
+  String get owner => isArabic ? 'مالك' : 'Owner';
+  String get m => isArabic ? 'م2' : 'M2';
+  String get unitDetails => isArabic ? 'تفاصيل الوحدة' : 'Unit Details';
+  String get projectArea => isArabic ? 'مساحة المشروع' : 'Project Area';
+  String get tasksMenu => isArabic ? 'المهام' : 'Tasks';
+  String get villa => isArabic ? 'فيلا' : 'Villa';
+  String get townhouse => isArabic ? 'تاون هاوس' : 'Townhouse';
+  String get bedrooms => isArabic ? 'غرف النوم' : 'Bedrooms';
+  String get bathrooms => isArabic ? 'الحمامات' : 'Bathrooms';
+  String get unitComponents => isArabic ? 'مكونات الوحدة' : 'Unit Components';
+  String get floor => isArabic ? 'الطابق' : 'Floor';
+  String get land => isArabic ? 'أرض' : 'Land';
+  String get undefined => isArabic ? 'غير محدد' : 'Undefined';
+  String get viewOnMap => isArabic ? 'عرض على الخريطة' : 'View on map';
+  String get view => isArabic ? 'إطلالة' : 'View';
+  String get finshing => isArabic ? 'تشطيب' : 'Finshing';
+
+  String get yes => isArabic ? 'نعم' : 'Yes';
+  String get no => isArabic ? 'لا' : 'No';
+  String get country => isArabic ? 'الدولة' : 'Country';
+  String get governorate => isArabic ? "المحافظة" : 'Governorate';
+  String get city => isArabic ? 'المدينة' : 'City';
+  String get street => isArabic ? 'الشارع' : 'Street';
+  String get district => isArabic ? 'الحي' : 'District';
 
   String get minutesAgo => isArabic ? 'دقائق مضت' : 'Minutes ago';
+  String get unitBasicDetails =>
+      isArabic ? 'تفاصيل الوحدة' : 'Unit Basic Details';
+  String get unitType => isArabic ? 'نوع الوحدة' : 'Unit Type';
+  String get hasElevator => isArabic ? 'المصعد' : 'Has Elevator';
+  String get sellPurpose => isArabic ? 'الغرض من البيع' : 'Sell Purpose';
+  String get isStandalone => isArabic ? 'وحدة مستقلة' : 'Is Standalone';
+  String get floors => isArabic ? 'عدد الطوابق' : 'Floors';
+  String get noOfTempeletes => isArabic ? 'عدد القوالب' : 'No Of Tempeletes';
+  String get createdAt => isArabic ? 'تاريخ الإنشاء' : 'Created At';
+  String get updatedAt => isArabic ? 'آخر تحديث' : 'Updated At';
   String get hoursAgo => isArabic ? 'ساعات مضت' : 'Hours ago';
   String get selectCountry => isArabic ? 'اختر الدولة' : 'Select Country';
   String get facebook => isArabic ? 'فيس بوك' : 'Facebook';
+  String get leader => isArabic ? 'قائد' : 'Leader';
+  String get selectLeaderName =>
+      isArabic ? 'اختر اسم القائد  ' : 'Select Leader Name';
+
+  String get unitPriceAndArea =>
+      isArabic ? 'سعر الوحدة و المساحة' : 'Unit Price And Area';
+  String get unitCode => isArabic ? 'كود الوحدة' : 'Unit Code';
+
   String get addNewUser => isArabic ? 'إضافة مستخدم جديد' : 'Add New User';
   String get writeName => isArabic ? 'اكتب الاسم' : 'Write Name';
-
+  String get userManagements =>
+      isArabic ? 'إدارة المستخدمين' : 'Users Management';
   String get direct => isArabic ? ' مباشر' : 'Direct';
   String get salesName => isArabic ? 'اسم المندوب  ' : 'Sales Name';
   String get selectSalesName =>
@@ -159,8 +211,7 @@ class AppLocalizations {
   String get previous => isArabic ? 'السابق' : 'Previous';
   String get submit => isArabic ? 'إرسال' : 'Submit';
   String get confirm => isArabic ? 'تأكيد' : 'Confirm';
-  String get yes => isArabic ? 'نعم' : 'Yes';
-  String get no => isArabic ? 'لا' : 'No';
+
   String get ok => isArabic ? 'حسناً' : 'OK';
   String get salesperformancestages =>
       isArabic ? ' أداء المبيعات' : 'Sales Performance';
@@ -168,7 +219,7 @@ class AppLocalizations {
   String get close => isArabic ? 'إغلاق' : 'Close';
   String get viewall => isArabic ? 'عرض الكل' : 'View All';
 
-  String get view => isArabic ? 'عرض التفاصيل' : 'View Details';
+  String get viewdetails => isArabic ? 'عرض التفاصيل' : 'View Details';
   String get download => isArabic ? 'تحميل' : 'Download';
   String get open => isArabic ? 'فتح' : 'Open';
   String get share => isArabic ? 'مشاركة' : 'Share';
@@ -302,7 +353,6 @@ class AppLocalizations {
   String get units => isArabic ? 'الوحدات' : 'Units';
   String get unit => isArabic ? 'وحدة' : 'Unit';
   String get unitNumber => isArabic ? 'رقم الوحدة' : 'Unit Number';
-  String get unitType => isArabic ? 'نوع الوحدة' : 'Unit Type';
   String get unitArea => isArabic ? 'مساحة الوحدة' : 'Unit Area';
   String get unitPrice => isArabic ? 'سعر الوحدة' : 'Unit Price';
   String get available => isArabic ? 'متاح' : 'Available';

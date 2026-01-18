@@ -13,7 +13,7 @@ extension DateTimeLocalization on String {
     if (date == null) return this;
 
     final locale = loc.locale;
-    String formatted = DateFormat(pattern ?? 'dd-mm-yyyy', locale).format(date);
+    String formatted = DateFormat(pattern ?? 'dd-MM-yyyy', locale).format(date);
 
     // If locale is Arabic, add RTL marker \u200F
     return locale.startsWith('ar') ? '\u200F$formatted' : formatted;

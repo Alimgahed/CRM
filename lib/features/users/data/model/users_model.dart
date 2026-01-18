@@ -10,6 +10,7 @@ class User {
 
   @JsonKey(name: 'leader_id')
   final String? leaderId;
+  final String? phone;
 
   @JsonKey(name: 'full_name')
   final String? fullName;
@@ -52,14 +53,16 @@ class User {
   final List<Role>? roles;
 
   User({
-    required this.userId,
-    required this.leaderId,
-    required this.fullName,
-    required this.username,
+    this.userId,
+    this.leaderId,
+    this.fullName,
+    this.username,
     this.email,
+
     this.userType,
+    this.phone,
     this.isActive,
-    required this.isDeleted,
+    this.isDeleted,
     this.createdAt,
     this.updatedAt,
     this.companyId,

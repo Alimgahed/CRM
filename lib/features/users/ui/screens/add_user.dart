@@ -44,10 +44,8 @@ class AddUser extends StatelessWidget {
       child: BlocConsumer<AddUserCubit, AddUserState>(
         listener: (context, state) {
           state.whenOrNull(
-            error: (msg) => showAboutDialog(
-              context: context,
-              children: [Text(msg.toString())],
-            ),
+            error: (msg) =>
+                showAboutDialog(context: context, children: [Text(msg)]),
 
             loaded: (_) {
               showAboutDialog(context: context, children: [Text(l10n.success)]);

@@ -36,3 +36,29 @@ Color getStatusColor(int status) {
       return secondaryTextColor; // fallback color
   }
 }
+
+String getStatusLabel(int status) {
+  switch (status) {
+    case 1:
+      return 'متاح';
+    case 2:
+      return 'محجوز';
+    case 3:
+      return 'مباع';
+    default:
+      return 'غير محدد';
+  }
+}
+
+Color getStatusLabelColor(int status) {
+  switch (status) {
+    case 1:
+      return Colors.green;
+    case 2:
+      return Colors.orange;
+    case 3:
+      return Colors.red;
+    default:
+      return Colors.grey;
+  }
+}

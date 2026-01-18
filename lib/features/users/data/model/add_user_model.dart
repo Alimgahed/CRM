@@ -7,7 +7,7 @@ class AddUserModel {
   final String fullName;
   final String email;
   final String password;
-  final String phone;
+  final String? phone;
   @JsonKey(name: 'role_id')
   final String roleIds;
   @JsonKey(name: 'is_active')
@@ -19,7 +19,7 @@ class AddUserModel {
     required this.fullName,
     required this.email,
     required this.password,
-    required this.phone,
+    this.phone,
     required this.roleIds,
     required this.isActive,
   });

@@ -33,7 +33,9 @@ class MoreScreen extends StatelessWidget {
             MoreWidget(
               icon: Icons.apartment,
               text: l10n.unitsMenu,
-              onTap: () {},
+              onTap: () {
+                context.pushNamed(Routes.units);
+              },
             ),
 
             MoreWidget(
@@ -47,7 +49,12 @@ class MoreScreen extends StatelessWidget {
             MoreWidget(
               icon: Icons.people_outline_outlined,
               text: l10n.ownersMenu,
-              onTap: () => context.pushNamed(Routes.allDevelopers),
+              onTap: () => context.pushNamed(Routes.allOwners),
+            ),
+            MoreWidget(
+              icon: Icons.task_outlined,
+              text: l10n.tasksMenu,
+              onTap: () => {context.pushNamed(Routes.allTasks)},
             ),
 
             MoreWidget(

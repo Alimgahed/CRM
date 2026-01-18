@@ -1,5 +1,8 @@
+import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/buttons.dart';
+import 'package:crm/features/actions/data/repo/lead_action.dart';
+import 'package:crm/features/actions/logic/cubit/action_cubit.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/logic/cubit/filiter_cubit.dart';
 import 'package:crm/features/clients/ui/widgets/ClienTtimeLine.dart';
@@ -236,7 +239,14 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 21) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: ClientTimeline(leadid: lead.leadId ?? ""),
+                              child: BlocProvider(
+                                create: (context) => ActionCubit(
+                                  leadActionRepo: getIt.get<LeadActionRepo>(),
+                                )..getLeadActions(leadId: lead.leadId ?? ""),
+                                child: ClientTimeline(
+                                  leadid: lead.leadId ?? "",
+                                ),
+                              ),
                             );
                           }
                           return const SizedBox.shrink();

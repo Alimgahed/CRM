@@ -15,20 +15,25 @@ class AddUserRepo {
       return ApiResult.success(response);
     } on DioException catch (e) {
       if (e.response?.data != null) {
-        try {
-          final errorModel = e.response!.data["Error"];
-          return ApiResult.error(errorModel);
-        } catch (_) {
-          return ApiResult.error(
-            ApiErrorModel(error: 'Failed to parse error response'),
-          );
+        final data = e.response!.data;
+
+        // ✅ Case 1: backend returned Map
+        if (data is Map<String, dynamic>) {
+          return ApiResult.error(ApiErrorModel.fromJson(data));
         }
-      } else {
-        // No response from server (network issue)
-        return ApiResult.error(
-          ApiErrorModel(error: 'Network error. Please check your connection'),
-        );
+
+        // ✅ Case 2: backend returned String
+        if (data is String) {
+          return ApiResult.error(ApiErrorModel(error: data));
+        }
+
+        // ✅ Fallback
+        return ApiResult.error(ApiErrorModel(error: 'Unexpected error format'));
       }
+
+      return ApiResult.error(
+        ApiErrorModel(error: 'Network error. Please check your connection'),
+      );
     } catch (e) {
       return ApiResult.error(
         ApiErrorModel(error: 'An unexpected error occurred'),

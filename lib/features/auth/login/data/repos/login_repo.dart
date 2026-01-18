@@ -15,15 +15,12 @@ class LoginRepo {
       final response = await apiService.login(requestBody);
       return ApiResult.success(response);
     } on DioException catch (e) {
-      // Backend returned an error response
       if (e.response?.data != null) {
         try {
           final errorModel = ApiErrorModel.fromJson(e.response!.data);
           return ApiResult.error(errorModel);
-        } catch (_) {
-          return ApiResult.error(
-            ApiErrorModel(error: 'Failed to parse error response'),
-          );
+        } catch (e) {
+          return ApiResult.error(ApiErrorModel(error: e.toString()));
         }
       } else {
         // No response from server (network issue)
