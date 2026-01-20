@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class ProjectsRepo {
   final ApiService apiService;
   ProjectsRepo({required this.apiService});
-  Future<ApiResult<ProjectsResponse>> getAllProjects() async {
+  Future<ApiResult<List<Project>>> getAllProjects() async {
     try {
       final response = await apiService.getAllProjects();
       return ApiResult.success(response);

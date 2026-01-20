@@ -1,7 +1,7 @@
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_services.dart';
-import 'package:crm/features/users/data/model/role.dart';
+import 'package:crm/features/auth/login/data/model/roles_model.dart';
 
 class RolesRepo {
   final ApiService apiService;

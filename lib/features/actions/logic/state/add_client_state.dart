@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'add_client_state.freezed.dart';
+part '../add_client_state.freezed.dart';
 
 @freezed
 class AddClientState<T> with _$AddClientState<T> {

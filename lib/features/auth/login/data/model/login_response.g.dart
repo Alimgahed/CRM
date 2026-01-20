@@ -11,10 +11,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
       success: json['success'] as bool,
       accessToken: json['access_token'] as String,
       refreshToken: json['refresh_token'] as String,
-      expiresIn: (json['expires_in'] as num).toInt(),
-      tokenType: json['token_type'] as String,
       user: UsersModel.fromJson(json['user'] as Map<String, dynamic>),
-      role: Role.fromJson(json['role'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
@@ -22,8 +19,5 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'success': instance.success,
       'access_token': instance.accessToken,
       'refresh_token': instance.refreshToken,
-      'expires_in': instance.expiresIn,
-      'token_type': instance.tokenType,
       'user': instance.user,
-      'role': instance.role,
     };

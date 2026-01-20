@@ -128,12 +128,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String message)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddTaskInitial() when initial != null:
 return initial();case AddTaskLoading() when loading != null:
 return loading();case AddTaskLoaded() when loaded != null:
-return loaded(_that.message);case AddTaskError() when error != null:
+return loaded();case AddTaskError() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String message)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case AddTaskInitial():
 return initial();case AddTaskLoading():
 return loading();case AddTaskLoaded():
-return loaded(_that.message);case AddTaskError():
+return loaded();case AddTaskError():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String message)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case AddTaskInitial() when initial != null:
 return initial();case AddTaskLoading() when loading != null:
 return loading();case AddTaskLoaded() when loaded != null:
-return loaded(_that.message);case AddTaskError() when error != null:
+return loaded();case AddTaskError() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -257,67 +257,33 @@ String toString() {
 
 
 class AddTaskLoaded implements AddTaskState {
-  const AddTaskLoaded(this.message);
+  const AddTaskLoaded();
   
 
- final  String message;
 
-/// Create a copy of AddTaskState
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$AddTaskLoadedCopyWith<AddTaskLoaded> get copyWith => _$AddTaskLoadedCopyWithImpl<AddTaskLoaded>(this, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddTaskLoaded&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddTaskLoaded);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AddTaskState.loaded(message: $message)';
+  return 'AddTaskState.loaded()';
 }
 
 
 }
 
-/// @nodoc
-abstract mixin class $AddTaskLoadedCopyWith<$Res> implements $AddTaskStateCopyWith<$Res> {
-  factory $AddTaskLoadedCopyWith(AddTaskLoaded value, $Res Function(AddTaskLoaded) _then) = _$AddTaskLoadedCopyWithImpl;
-@useResult
-$Res call({
- String message
-});
 
 
-
-
-}
-/// @nodoc
-class _$AddTaskLoadedCopyWithImpl<$Res>
-    implements $AddTaskLoadedCopyWith<$Res> {
-  _$AddTaskLoadedCopyWithImpl(this._self, this._then);
-
-  final AddTaskLoaded _self;
-  final $Res Function(AddTaskLoaded) _then;
-
-/// Create a copy of AddTaskState
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
-  return _then(AddTaskLoaded(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
-}
 
 /// @nodoc
 

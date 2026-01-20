@@ -128,7 +128,7 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<User> data)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<UsersModel> data)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
@@ -152,7 +152,7 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<User> data)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<UsersModel> data)  loaded,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case Initial():
 return initial();case Loading():
@@ -175,7 +175,7 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<User> data)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<UsersModel> data)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case Initial() when initial != null:
 return initial();case Loading() when loading != null:
@@ -257,11 +257,11 @@ String toString() {
 
 
 class Loaded implements UsersState {
-  const Loaded(final  List<User> data): _data = data;
+  const Loaded(final  List<UsersModel> data): _data = data;
   
 
- final  List<User> _data;
- List<User> get data {
+ final  List<UsersModel> _data;
+ List<UsersModel> get data {
   if (_data is EqualUnmodifiableListView) return _data;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_data);
@@ -298,7 +298,7 @@ abstract mixin class $LoadedCopyWith<$Res> implements $UsersStateCopyWith<$Res> 
   factory $LoadedCopyWith(Loaded value, $Res Function(Loaded) _then) = _$LoadedCopyWithImpl;
 @useResult
 $Res call({
- List<User> data
+ List<UsersModel> data
 });
 
 
@@ -318,7 +318,7 @@ class _$LoadedCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
   return _then(Loaded(
 null == data ? _self._data : data // ignore: cast_nullable_to_non_nullable
-as List<User>,
+as List<UsersModel>,
   ));
 }
 

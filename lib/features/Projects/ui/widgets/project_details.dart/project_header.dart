@@ -38,44 +38,44 @@ class ProjectHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  project.projectName,
+                  project.projectName!,
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.white : Colors.black87,
                   ),
                 ),
-                if (project.projectNameEn.isNotEmpty) ...[
+                if (project.projectNameEn!.isNotEmpty) ...[
                   heightSpace(4),
                   Text(
-                    project.projectNameEn,
+                    project.projectNameEn!,
                     style: TextStyle(
                       fontSize: 13.sp,
                       color: isDark ? Colors.white60 : secondaryTextColor,
                     ),
                   ),
                 ],
-                if (project.projectPrefix != null) ...[
-                  heightSpace(4),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 4.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Text(
-                      '${l10n.prefix}: ${project.projectPrefix}',
-                      style: TextStyle(
-                        fontSize: 11.sp,
-                        color: isDark ? Colors.white70 : secondaryTextColor,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
+
+                // if (project. != null) ...[
+                //   heightSpace(4),
+                // Container(
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: 8.w,
+                //     vertical: 4.h,
+                //   ),
+                //   decoration: BoxDecoration(
+                //     color: isDark ? const Color(0xFF2C2C2C) : fieldColor,
+                //     borderRadius: BorderRadius.circular(6.r),
+                //   ),
+                //   child: Text(
+                //     '${l10n.prefix}: ${project.projectPrefix}',
+                //     style: TextStyle(
+                //       fontSize: 11.sp,
+                //       color: isDark ? Colors.white70 : secondaryTextColor,
+                //       fontWeight: FontWeight.w500,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

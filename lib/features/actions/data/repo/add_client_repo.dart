@@ -12,9 +12,8 @@ class AddClientRepo {
   Future<ApiResult<String>> addClient(Lead requestBody) async {
     try {
       final response = await apiService.addLead(requestBody);
-      return ApiResult.success(response);
+      return ApiResult.success(response.toString());
     } on DioException catch (e) {
-      // Backend returned an error response
       if (e.response?.data != null) {
         try {
           final errorModel = ApiErrorModel.fromJson(e.response!.data);

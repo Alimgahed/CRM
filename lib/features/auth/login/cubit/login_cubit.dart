@@ -23,6 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginState.loading());
 
     final requestBody = LoginRequestBody(
+      rememberMe: false,
       username: emailController.text.trim(),
       password: passwordController.text.trim(),
     );
@@ -31,8 +32,11 @@ class LoginCubit extends Cubit<LoginState> {
 
     result.when(
       success: (data) async {
-        await _userService.saveToken(data.accessToken, data.refreshToken);
-        await _userService.saveUser(data.user);
+        await _userService.saveToken(
+          data.data.accessToken,
+          data.data.refreshToken,
+        );
+        await _userService.saveUser(data.data.user);
 
         emit(LoginState.loaded(data));
       },

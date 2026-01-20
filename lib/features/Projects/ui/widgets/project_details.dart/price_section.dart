@@ -30,7 +30,7 @@ class ProjectPriceSection extends StatelessWidget {
             icon: Icons.payments_outlined,
             label: l10n.meterPrice,
             value:
-                "${project.priceMmeterFrom.toPrice()} - ${project.priceMmeterTo.toPrice()}",
+                "${project.pricePerMeterFrom.toPrice()} - ${project.pricePerMeterTo.toPrice()}",
           ),
           heightSpace(12),
           PriceCard(

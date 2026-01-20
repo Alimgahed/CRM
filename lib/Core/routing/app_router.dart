@@ -4,6 +4,7 @@ import 'package:crm/features/Units/data/models/unit_model.dart';
 import 'package:crm/features/Units/logic/cubit/unit_cubit.dart';
 import 'package:crm/features/Units/ui/screens/AllUnit.dart';
 import 'package:crm/features/Units/ui/screens/UnitDetails.dart';
+import 'package:crm/features/developers/ui/widgets/AllDeveloper.dart';
 import 'package:crm/features/home/logic/cubit/layout_cubit.dart';
 import 'package:crm/features/owners/logic/cubit/owner_cubit.dart';
 import 'package:crm/features/owners/ui/screens/allOwner.dart';

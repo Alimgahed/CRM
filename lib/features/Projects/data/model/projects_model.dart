@@ -1,172 +1,55 @@
-import 'package:crm/features/developers/data/models/developers_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'projects_model.g.dart';
 
-/* -------------------------------------------------------------------------- */
-/*                             PROJECTS RESPONSE                              */
-/* -------------------------------------------------------------------------- */
-
-@JsonSerializable()
-class ProjectsResponse {
-  final List<Project> data;
-  final int total;
-  final int page;
-
-  @JsonKey(name: 'page_size')
-  final int pageSize;
-
-  @JsonKey(name: 'total_pages')
-  final int totalPages;
-
-  ProjectsResponse({
-    required this.data,
-    required this.total,
-    required this.page,
-    required this.pageSize,
-    required this.totalPages,
-  });
-
-  factory ProjectsResponse.fromJson(Map<String, dynamic> json) =>
-      _$ProjectsResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProjectsResponseToJson(this);
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                PROJECT PLAN                                */
-/* -------------------------------------------------------------------------- */
-
-@JsonSerializable()
-class ProjectPlan {
-  @JsonKey(name: 'project_plan_id')
-  final String projectPlanId;
-
-  @JsonKey(name: 'project_id')
-  final String projectId;
-
-  @JsonKey(name: 'no_of_years')
-  final int? noOfYears;
-
-  @JsonKey(name: 'down_payment')
-  final double? downPayment;
-
-  @JsonKey(name: 'yearly_installment')
-  final double? yearlyInstallment;
-
-  @JsonKey(name: 'discount_percent')
-  final double? discountPercent;
-
-  final Attachment? attachment;
-
-  ProjectPlan({
-    required this.projectPlanId,
-    required this.projectId,
-    this.noOfYears,
-    this.downPayment,
-    this.yearlyInstallment,
-    this.discountPercent,
-    this.attachment,
-  });
-
-  factory ProjectPlan.fromJson(Map<String, dynamic> json) =>
-      _$ProjectPlanFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProjectPlanToJson(this);
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                STAGE GROUP                                 */
-/* -------------------------------------------------------------------------- */
-
-@JsonSerializable()
-class StageGroup {
-  @JsonKey(name: 'stage_group_id')
-  final String stageGroupId;
-
-  @JsonKey(name: 'project_stage_id')
-  final String projectStageId;
-
-  @JsonKey(name: 'stage_code')
-  final String stageCode;
-
-  StageGroup({
-    required this.stageGroupId,
-    required this.projectStageId,
-    required this.stageCode,
-  });
-
-  factory StageGroup.fromJson(Map<String, dynamic> json) =>
-      _$StageGroupFromJson(json);
-
-  Map<String, dynamic> toJson() => _$StageGroupToJson(this);
-}
-
-/* -------------------------------------------------------------------------- */
-/*                               PROJECT STAGE                                */
-/* -------------------------------------------------------------------------- */
-
-@JsonSerializable()
-class ProjectStage {
-  @JsonKey(name: 'project_stage_id')
-  final String projectStageId;
-
-  @JsonKey(name: 'project_id')
-  final String projectId;
-
-  @JsonKey(name: 'stage_name')
-  final String stageName;
-
-  final List<StageGroup>? groups;
-
-  ProjectStage({
-    required this.projectStageId,
-    required this.projectId,
-    required this.stageName,
-    this.groups,
-  });
-
-  factory ProjectStage.fromJson(Map<String, dynamic> json) =>
-      _$ProjectStageFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProjectStageToJson(this);
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                   PROJECT                                  */
-/* -------------------------------------------------------------------------- */
-
-@JsonSerializable()
+/// ===============================
+/// PROJECT
+/// ===============================
+@JsonSerializable(explicitToJson: true)
 class Project {
-  @JsonKey(name: 'project_id')
-  final String projectId;
+  final int? id;
+
+  @JsonKey(name: 'company_id')
+  final int? companyId;
+
+  @JsonKey(name: 'dev_company_id')
+  final int? devCompanyId;
 
   @JsonKey(name: 'project_name')
-  final String projectName;
+  final String? projectName;
 
   @JsonKey(name: 'project_name_en')
-  final String projectNameEn;
+  final String? projectNameEn;
 
   @JsonKey(name: 'project_prefix')
   final String? projectPrefix;
 
-  @JsonKey(name: 'contact_person')
-  final String? contactPerson;
+  final String? description;
+  final String? location;
 
   @JsonKey(name: 'contact_number')
   final String? contactNumber;
 
-  final String? location;
-  final String? description;
+  @JsonKey(name: 'contact_person')
+  final String? contactPerson;
+
+  @JsonKey(name: 'project_logo')
+  final String? projectLogo;
+
+  @JsonKey(name: 'logo_url')
+  final String? logoUrl;
+
+  @JsonKey(name: 'project_map_url')
+  final String? projectMapUrl;
+
+  @JsonKey(name: 'project_url')
+  final String? projectUrl;
+
+  @JsonKey(name: 'youtube_link')
+  final String? youtubeLink;
 
   @JsonKey(name: 'project_type')
   final int? projectType;
-
-  @JsonKey(name: 'price_mmeter_from')
-  final String? priceMmeterFrom;
-
-  @JsonKey(name: 'price_mmeter_to')
-  final String? priceMmeterTo;
 
   @JsonKey(name: 'area_from')
   final String? areaFrom;
@@ -174,59 +57,68 @@ class Project {
   @JsonKey(name: 'area_to')
   final String? areaTo;
 
+  @JsonKey(name: 'price_mmeter_from')
+  final String? pricePerMeterFrom;
+
+  @JsonKey(name: 'price_mmeter_to')
+  final String? pricePerMeterTo;
+
   @JsonKey(name: 'plan_description')
   final String? planDescription;
 
-  @JsonKey(name: 'is_deleted')
-  final bool isDeleted;
+  @JsonKey(name: 'start_date')
+  final String? startDate;
+
+  @JsonKey(name: 'end_date')
+  final String? endDate;
 
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final String? createdAt;
 
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
 
-  @JsonKey(name: 'company_id')
-  final String companyId;
+  @JsonKey(name: 'is_deleted')
+  final bool? isDeleted;
 
-  @JsonKey(name: 'dev_company_id')
-  final String? devCompanyId;
+  final List<Attachment>? attachments;
 
   @JsonKey(name: 'plan_details')
-  final List<ProjectPlan>? planDetails;
+  final List<PlanDetail>? planDetails;
 
   @JsonKey(name: 'project_stages')
   final List<ProjectStage>? projectStages;
 
-  @JsonKey(name: 'dev_company')
-  final DevCompany? devCompany;
-
-  final List<Attachment>? attachments;
-
   Project({
-    required this.projectId,
-    required this.projectName,
-    required this.projectNameEn,
+    this.id,
+    this.companyId,
+    this.devCompanyId,
+    this.projectName,
+    this.projectNameEn,
     this.projectPrefix,
-    this.contactPerson,
-    this.contactNumber,
-    this.location,
     this.description,
+    this.location,
+    this.contactNumber,
+    this.contactPerson,
+    this.projectLogo,
+    this.logoUrl,
+    this.projectMapUrl,
+    this.projectUrl,
+    this.youtubeLink,
     this.projectType,
-    this.priceMmeterFrom,
-    this.priceMmeterTo,
     this.areaFrom,
     this.areaTo,
+    this.pricePerMeterFrom,
+    this.pricePerMeterTo,
     this.planDescription,
-    required this.isDeleted,
-    required this.createdAt,
+    this.startDate,
+    this.endDate,
+    this.createdAt,
     this.updatedAt,
-    required this.companyId,
-    this.devCompanyId,
+    this.isDeleted,
+    this.attachments,
     this.planDetails,
     this.projectStages,
-    this.devCompany,
-    this.attachments,
   });
 
   factory Project.fromJson(Map<String, dynamic> json) =>
@@ -235,65 +127,161 @@ class Project {
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                 ATTACHMENT                                 */
-/* -------------------------------------------------------------------------- */
-
+/// ===============================
+/// ATTACHMENT
+/// ===============================
 @JsonSerializable()
 class Attachment {
-  @JsonKey(name: 'attachment_id')
-  final String attachmentId;
+  final int? id;
 
-  @JsonKey(name: 'entity_type')
-  final int entityType;
+  final int? category;
+
+  @JsonKey(name: 'company_id')
+  final int? companyId;
 
   @JsonKey(name: 'entity_id')
-  final String entityId;
+  final int? entityId;
+
+  @JsonKey(name: 'entity_type')
+  final int? entityType;
+
+  @JsonKey(name: 'file_data')
+  final String? fileData;
 
   @JsonKey(name: 'file_name')
-  final String fileName;
+  final String? fileName;
 
   @JsonKey(name: 'file_path')
-  final String filePath;
-
-  @JsonKey(name: 'file_type')
-  final String? fileType;
+  final String? filePath;
 
   @JsonKey(name: 'file_size')
   final int? fileSize;
 
+  @JsonKey(name: 'file_type')
+  final String? fileType;
+
+  final String? notes;
+
   @JsonKey(name: 'uploaded_by')
-  final String? uploadedBy;
+  final int? uploadedBy;
 
   @JsonKey(name: 'is_deleted')
-  final bool isDeleted;
+  final bool? isDeleted;
 
   @JsonKey(name: 'created_at')
-  final String createdAt;
+  final String? createdAt;
 
   @JsonKey(name: 'updated_at')
   final String? updatedAt;
 
-  @JsonKey(name: 'company_id')
-  final String companyId;
-
   Attachment({
-    required this.attachmentId,
-    required this.entityType,
-    required this.entityId,
-    required this.fileName,
-    required this.filePath,
-    this.fileType,
+    this.id,
+    this.category,
+    this.companyId,
+    this.entityId,
+    this.entityType,
+    this.fileData,
+    this.fileName,
+    this.filePath,
     this.fileSize,
+    this.fileType,
+    this.notes,
     this.uploadedBy,
-    required this.isDeleted,
-    required this.createdAt,
+    this.isDeleted,
+    this.createdAt,
     this.updatedAt,
-    required this.companyId,
   });
 
   factory Attachment.fromJson(Map<String, dynamic> json) =>
       _$AttachmentFromJson(json);
 
   Map<String, dynamic> toJson() => _$AttachmentToJson(this);
+}
+
+/// ===============================
+/// PLAN DETAILS
+/// ===============================
+@JsonSerializable(explicitToJson: true)
+class PlanDetail {
+  final int? id;
+
+  @JsonKey(name: 'project_id')
+  final int? projectId;
+
+  @JsonKey(name: 'discount_percent')
+  final int? discountPercent;
+
+  @JsonKey(name: 'down_payment')
+  final int? downPayment;
+
+  @JsonKey(name: 'no_of_years')
+  final int? noOfYears;
+
+  @JsonKey(name: 'yearly_installment')
+  final int? yearlyInstallment;
+
+  @JsonKey(name: 'plan_description')
+  final String? planDescription;
+
+  final Attachment? attachment;
+
+  PlanDetail({
+    this.id,
+    this.projectId,
+    this.discountPercent,
+    this.downPayment,
+    this.noOfYears,
+    this.yearlyInstallment,
+    this.planDescription,
+    this.attachment,
+  });
+
+  factory PlanDetail.fromJson(Map<String, dynamic> json) =>
+      _$PlanDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlanDetailToJson(this);
+}
+
+/// ===============================
+/// PROJECT STAGES
+/// ===============================
+@JsonSerializable(explicitToJson: true)
+class ProjectStage {
+  final int? id;
+
+  @JsonKey(name: 'project_id')
+  final int? projectId;
+
+  @JsonKey(name: 'stage_name')
+  final String? stageName;
+
+  final List<ProjectStageGroup>? groups;
+
+  ProjectStage({this.id, this.projectId, this.stageName, this.groups});
+
+  factory ProjectStage.fromJson(Map<String, dynamic> json) =>
+      _$ProjectStageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProjectStageToJson(this);
+}
+
+/// ===============================
+/// PROJECT STAGE GROUPS
+/// ===============================
+@JsonSerializable()
+class ProjectStageGroup {
+  final int? id;
+
+  @JsonKey(name: 'project_stage_id')
+  final int? projectStageId;
+
+  @JsonKey(name: 'stage_code')
+  final String? stageCode;
+
+  ProjectStageGroup({this.id, this.projectStageId, this.stageCode});
+
+  factory ProjectStageGroup.fromJson(Map<String, dynamic> json) =>
+      _$ProjectStageGroupFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProjectStageGroupToJson(this);
 }

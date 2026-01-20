@@ -25,14 +25,14 @@ class ProjectDetailsCard extends StatelessWidget {
           heightSpace(12),
           ModernInfoRow(label: l10n.description, value: project.description),
           ModernInfoRow(label: l10n.location, value: project.location),
-          ModernInfoRow(
-            label: l10n.contactPerson,
-            value: project.contactPerson,
-          ),
-          ModernInfoRow(
-            label: l10n.contactNumber,
-            value: project.contactNumber,
-          ),
+          // ModernInfoRow(
+          //   label: l10n.contactPerson,
+          //   value: project.,
+          // ),
+          // ModernInfoRow(
+          //   label: l10n.contactNumber,
+          //   value: project.contactNumber,
+          // ),
           ModernInfoRow(
             label: l10n.projectType,
             value: project.projectType != null
@@ -41,7 +41,7 @@ class ProjectDetailsCard extends StatelessWidget {
           ),
           ModernInfoRow(
             label: l10n.planDescription,
-            value: project.planDescription,
+            value: project.projectLogo,
           ),
         ],
       ),

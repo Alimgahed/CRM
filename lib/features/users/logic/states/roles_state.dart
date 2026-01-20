@@ -1,4 +1,4 @@
-import 'package:crm/features/users/data/model/role.dart';
+import 'package:crm/features/auth/login/data/model/roles_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'roles_state.freezed.dart';

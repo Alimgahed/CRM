@@ -5,10 +5,30 @@ class AppLocalizations {
 
   // Assuming you have this somewhereص
   bool get isArabic => locale == 'ar';
+
+  String get userAddedSuccessfully =>
+      isArabic ? 'تم إضافة المستخدم بنجاح' : 'User added successfully';
+  String get newUser => isArabic ? 'مستخدم جديد' : 'New User';
+  String get clientAddedSuccessfully =>
+      isArabic ? 'تم إضافة العميل بنجاح' : 'Client added successfully';
+
+  String get online => isArabic ? 'اونلاين' : 'Online';
+  String get offline => isArabic ? 'اونلاين' : 'Offline';
+  String get indoor => isArabic ? 'في المكتب' : 'Indoor';
+  String get outdoor => isArabic ? 'في الخارج' : 'Outdoor';
+
   String get apartment => isArabic ? 'شقة' : 'Apartment';
   String get call => isArabic ? 'اتصال' : 'Call';
   String get cancelled => isArabic ? 'ملغي' : 'Cancelled';
   String get interested => isArabic ? 'مهتم' : 'Interested';
+  String get executor => isArabic ? 'المنفذ' : 'Executor';
+  String get date => isArabic ? 'التاريخ' : 'Date';
+  String get actionType => isArabic ? 'نوع الإجراء' : 'Action Type';
+  String get vieew => isArabic ? 'عرض' : 'View';
+  String get hours => isArabic ? ' ساعة' : 'Hours';
+  String get twoHours => isArabic ? 'ساعتين' : 'Two Hours';
+  String get nextDay => isArabic ? 'اليوم التالي' : 'Next Day';
+  String get nextWeek => isArabic ? 'الأسبوع التالي' : 'Next Week';
   String get deal => isArabic ? 'صفقة' : 'Deal';
   String get booked => isArabic ? 'محجوز' : 'Booked';
   String get meeting => isArabic ? 'اجتماع' : 'Meeting';
@@ -87,6 +107,8 @@ class AppLocalizations {
   String get clientStatus => isArabic ? 'الحالة' : 'Client Status';
   String get addProject => isArabic ? 'إضافة مشروع' : 'Add Project';
   String get addTask => isArabic ? 'إضافة مهمة' : 'Add Task';
+  String get taskAddedSuccessfully =>
+      isArabic ? 'تم إضافة المهمة بنجاح' : 'Task Added Successfully';
   String get addClient => isArabic ? 'إضافة عميل' : 'Add Client';
 
   String get selectClientStatus =>
@@ -119,7 +141,6 @@ class AppLocalizations {
   String get reservation => isArabic ? 'حجز' : 'Reservation';
   String get interest => isArabic ? 'اهتمام' : 'Interest';
   String get archive => isArabic ? 'الأرشيف' : 'Archive';
-  String get meeting => isArabic ? 'اجتماع' : 'Meeting';
   String get followAfterMeeting =>
       isArabic ? 'متابعة بعد الاجتماع' : 'Follow after Meeting';
   String get meetingSchedule => isArabic ? 'جدول المواعيد' : 'Meeting Schedule';
@@ -425,7 +446,6 @@ class AppLocalizations {
   String get today => isArabic ? 'اليوم' : 'Today';
   String get yesterday => isArabic ? 'أمس' : 'Yesterday';
   String get tomorrow => isArabic ? 'غداً' : 'Tomorrow';
-  String get date => isArabic ? 'التاريخ' : 'Date';
   String get time => isArabic ? 'الوقت' : 'Time';
   String get startDate => isArabic ? 'تاريخ البداية' : 'Start Date';
   String get endDate => isArabic ? 'تاريخ النهاية' : 'End Date';

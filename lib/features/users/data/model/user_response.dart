@@ -1,3 +1,4 @@
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,7 +6,7 @@ part 'user_response.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class UsersResponse {
-  final List<User> data;
+  final List<UsersModel> data;
   final int? total;
   final int? page;
   final int? pageSize;

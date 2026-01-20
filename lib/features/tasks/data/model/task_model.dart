@@ -1,3 +1,4 @@
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -34,10 +35,10 @@ class TaskModel {
   final String? companyId;
 
   @JsonKey(name: 'created_by')
-  final User? createdBy;
+  final UsersModel? createdBy;
 
   @JsonKey(name: 'assigned_to')
-  final User? assignedTo;
+  final UsersModel? assignedTo;
 
   TaskModel({
     this.taskId,

@@ -26,10 +26,10 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
   companyId: json['company_id'] as String?,
   createdBy: json['created_by'] == null
       ? null
-      : User.fromJson(json['created_by'] as Map<String, dynamic>),
+      : UsersModel.fromJson(json['created_by'] as Map<String, dynamic>),
   assignedTo: json['assigned_to'] == null
       ? null
-      : User.fromJson(json['assigned_to'] as Map<String, dynamic>),
+      : UsersModel.fromJson(json['assigned_to'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{

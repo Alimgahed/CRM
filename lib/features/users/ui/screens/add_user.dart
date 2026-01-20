@@ -1,7 +1,10 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/theming/Colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/Core/widgets/fields.dart';
+import 'package:crm/features/auth/login/data/model/roles_model.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/users/data/model/role.dart';
@@ -44,11 +47,27 @@ class AddUser extends StatelessWidget {
       child: BlocConsumer<AddUserCubit, AddUserState>(
         listener: (context, state) {
           state.whenOrNull(
-            error: (msg) =>
-                showAboutDialog(context: context, children: [Text(msg)]),
-
+            error: (msg) => showModalBottomSheet(
+              context: context,
+              isScrollControlled: false,
+              backgroundColor: Colors.transparent,
+              builder: (_) => SuccessBottomSheet(
+                success: false,
+                text: l10n.newUser,
+                text2: msg,
+              ),
+            ),
             loaded: (_) {
-              showAboutDialog(context: context, children: [Text(l10n.success)]);
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: false,
+                backgroundColor: Colors.transparent,
+                builder: (_) => SuccessBottomSheet(
+                  success: true,
+                  text: l10n.newUser,
+                  text2: l10n.userAddedSuccessfully,
+                ),
+              );
             },
           );
         },
@@ -136,65 +155,82 @@ class AddUser extends StatelessWidget {
                         /// ===== Roles =====
                         BlocBuilder<RolesCubit, RolesState>(
                           builder: (_, rolesState) {
-                            final List<Role> roles = rolesState.maybeWhen(
-                              loaded: (r) => r,
-                              orElse: () => [],
+                            final roles = rolesState.maybeWhen(
+                              loaded: (roles) => roles,
+                              orElse: () => <Role>[],
                             );
 
-                            final isRolesLoading = rolesState is Loading;
+                            final isRolesLoading = rolesState.maybeWhen(
+                              loading: () => true,
+                              orElse: () => false,
+                            );
 
-                            return CustomDropdownFormField<String>(
+                            return CustomDropdownFormField<Role>(
                               text: l10n.jobTitle,
                               labelText: l10n.writeJob,
-                              items: roles
-                                  .map(
-                                    (Role role) => DropdownMenuItem(
-                                      value: role.roleId,
-                                      child: Text(
-                                        isRolesLoading
-                                            ? l10n.loading
-                                            : role.roleName ?? '',
+                              value: null,
+                              items: isRolesLoading
+                                  ? [
+                                      DropdownMenuItem<Role>(
+                                        value: null,
+                                        child: Text(l10n.loading),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: isLoading
+                                    ]
+                                  : roles
+                                        .map(
+                                          (role) => DropdownMenuItem<Role>(
+                                            value: role,
+                                            child: Text(role.roleName ?? '-'),
+                                          ),
+                                        )
+                                        .toList(),
+                              onChanged: isRolesLoading
                                   ? null
                                   : (val) {
                                       if (val != null) {
-                                        cubit.setUserRoleId(val);
+                                        cubit.addUserRole(
+                                          val,
+                                        ); // add to list instead of overwrite
                                       }
                                     },
                             );
                           },
                         ),
+
                         const SizedBox(height: 10),
 
-                        /// ===== Leader =====
                         BlocBuilder<UsersCubit, UsersState>(
                           builder: (_, usersState) {
-                            final List<User> users = usersState.maybeWhen(
-                              loaded: (user) => user,
-                              orElse: () => [],
+                            final users = usersState.maybeWhen(
+                              loaded: (users) => users,
+                              orElse: () => <UsersModel>[],
                             );
 
-                            final isUsersLoading = usersState is AddUserLoading;
+                            final isLoading = usersState.maybeWhen(
+                              loading: () => true,
+                              orElse: () => false,
+                            );
 
-                            return CustomDropdownFormField<String>(
+                            return CustomDropdownFormField<int>(
                               text: l10n.sales,
                               labelText: l10n.selectSalesName,
-                              items: users
-                                  .map(
-                                    (User u) => DropdownMenuItem(
-                                      value: u.userId,
-                                      child: Text(
-                                        isUsersLoading
-                                            ? l10n.loading
-                                            : u.fullName ?? '',
+                              items: isLoading
+                                  ? [
+                                      DropdownMenuItem<int>(
+                                        value: null,
+                                        child: Text(
+                                          l10n.loading,
+                                        ), // Show "Loading..." text
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
+                                    ]
+                                  : users
+                                        .map(
+                                          (u) => DropdownMenuItem<int>(
+                                            value: u.id,
+                                            child: Text(u.fullName),
+                                          ),
+                                        )
+                                        .toList(),
                               onChanged: isLoading
                                   ? null
                                   : (val) {
@@ -205,19 +241,20 @@ class AddUser extends StatelessWidget {
                             );
                           },
                         ),
+
                         const SizedBox(height: 10),
 
                         /// ===== User Type =====
-                        CustomDropdownFormField<bool>(
+                        CustomDropdownFormField<int>(
                           text: l10n.status,
                           labelText: l10n.status,
                           items: [
                             DropdownMenuItem(
-                              value: true,
+                              value: 1,
                               child: Text(l10n.active),
                             ),
                             DropdownMenuItem(
-                              value: false,
+                              value: 2,
                               child: Text(l10n.inactive),
                             ),
                           ],

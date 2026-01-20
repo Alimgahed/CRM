@@ -115,7 +115,7 @@ class ModernInfoRow extends StatelessWidget {
 }
 
 class PaymentPlanCard extends StatelessWidget {
-  final ProjectPlan plan;
+  final PlanDetail plan;
 
   const PaymentPlanCard({super.key, required this.plan});
 
@@ -184,7 +184,7 @@ class AttachmentTile extends StatelessWidget {
       builder: (context, state) {
         final isDownloading =
             state is AttachmentDownloading &&
-            state.attachmentId == attachment.attachmentId;
+            state.attachmentId == attachment.id;
 
         final progress = isDownloading ? (state).progress : 0.0;
 
@@ -227,8 +227,8 @@ class AttachmentTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            attachment.fileName.isNotEmpty
-                                ? attachment.fileName
+                            attachment.fileName!.isNotEmpty
+                                ? attachment.fileName!
                                 : l10n.attachment,
                             style: TextStyle(
                               fontSize: 13.sp,
@@ -240,7 +240,7 @@ class AttachmentTile extends StatelessWidget {
                           ),
                           heightSpace(4),
                           Text(
-                            _formatFileSize(attachment.fileSize!),
+                            _formatFileSize(attachment!.fileSize!),
                             style: TextStyle(
                               fontSize: 11.sp,
                               color: isDark
@@ -298,13 +298,13 @@ class AttachmentTile extends StatelessWidget {
               ),
 
               /// ===== Image Preview =====
-              if (isImage && attachment.filePath.isNotEmpty)
+              if (isImage && attachment.filePath!.isNotEmpty)
                 ClipRRect(
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(12.r),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: ApiConstants.baseUrl + attachment.filePath,
+                    imageUrl: ApiConstants.baseUrl + attachment.filePath!,
                     width: double.infinity,
                     height: 180.h,
                     memCacheHeight: 400,

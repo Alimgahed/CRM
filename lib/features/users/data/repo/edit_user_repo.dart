@@ -1,7 +1,7 @@
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_services.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:dio/dio.dart';
 
 class EditUserRepo {
@@ -9,7 +9,7 @@ class EditUserRepo {
 
   EditUserRepo({required this.apiService});
 
-  Future<ApiResult<String>> editUser(String id, User body) async {
+  Future<ApiResult<String>> editUser(int id, UsersModel body) async {
     try {
       final response = await apiService.editUser(id, body);
       return ApiResult.success(response);

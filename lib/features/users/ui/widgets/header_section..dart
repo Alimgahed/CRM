@@ -1,13 +1,13 @@
 import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:crm/features/users/ui/widgets/widget_build_actions.dart';
 import 'package:flutter/material.dart';
 
 Widget buildHeaderSection(
   VoidCallback onedit,
-  User user,
+  UsersModel user,
   BuildContext context,
   bool isDark,
   AppLocalizations loc,
@@ -33,7 +33,7 @@ Widget buildHeaderSection(
               ),
               const SizedBox(height: 2),
               Text(
-                "@${user.username ?? 'user'}",
+                "@${user.fullName}",
                 style: const TextStyle(color: secondaryTextColor, fontSize: 13),
               ),
               const SizedBox(height: 6),
@@ -53,7 +53,7 @@ Widget buildHeaderSection(
   );
 }
 
-Widget _buildUserAvatar(User user) {
+Widget _buildUserAvatar(UsersModel user) {
   return Container(
     decoration: BoxDecoration(
       shape: BoxShape.circle,

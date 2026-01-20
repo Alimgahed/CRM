@@ -2,6 +2,8 @@ import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/theming/Colors.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/Core/widgets/fields.dart';
+import 'package:crm/features/auth/login/data/model/roles_model.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/users/data/model/role.dart';
@@ -20,7 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditUser extends StatelessWidget {
-  final User user;
+  final UsersModel user;
 
   const EditUser({super.key, required this.user});
   @override
@@ -55,10 +57,10 @@ class EditUser extends StatelessWidget {
         },
         builder: (context, state) {
           final cubit = context.read<EditUserCubit>();
-          cubit.userNameController.text = user.fullName!;
-          cubit.userEmailController.text = user.email!;
-          cubit.userPhoneController.text = user.phone!;
-          cubit.setUserType(user.isActive!);
+          cubit.userNameController.text = user.fullName ?? "";
+          cubit.userEmailController.text = user.email ?? "";
+          cubit.userPhoneController.text = user.phone ?? "";
+          cubit.setUserType(user.isActive ?? false);
           final isLoading = state is EditUserLoading;
 
           return Form(
@@ -147,17 +149,17 @@ class EditUser extends StatelessWidget {
 
                             final isRolesLoading = rolesState is Loading;
 
-                            return CustomDropdownFormField<String>(
+                            return CustomDropdownFormField<int>(
                               text: l10n.jobTitle,
                               hintText: l10n.jobTitle,
                               labelText: rolesState.maybeWhen(
                                 loading: () => l10n.loading,
-                                orElse: () => cubit.userRolesId ?? "",
+                                orElse: () => "",
                               ),
                               items: roles
                                   .map(
                                     (Role role) => DropdownMenuItem(
-                                      value: role.roleId,
+                                      value: role.id,
                                       child: Text(
                                         isRolesLoading
                                             ? l10n.loading
@@ -181,7 +183,7 @@ class EditUser extends StatelessWidget {
                         /// ===== Leader =====
                         BlocBuilder<UsersCubit, UsersState>(
                           builder: (context, usersState) {
-                            final List<User> users = usersState.maybeWhen(
+                            final List<UsersModel> users = usersState.maybeWhen(
                               loaded: (user) => user,
                               orElse: () => [],
                             );
@@ -189,25 +191,25 @@ class EditUser extends StatelessWidget {
                             final isUsersLoading =
                                 usersState is EditUserLoading;
 
-                            return CustomDropdownFormField<String>(
+                            return CustomDropdownFormField<int>(
                               text: l10n.leader,
                               hintText: l10n.selectLeaderName,
                               labelText: usersState.maybeWhen(
                                 loading: () => l10n.loading,
-                                orElse: () => cubit.userLeadId ?? "",
+                                orElse: () => "",
                               ),
 
                               // Disable dropdown while loading
                               onChanged: (usersState is Loading) || isLoading
                                   ? null
                                   : (val) {
-                                      cubit.setUserLeadId(val ?? '');
+                                      cubit.setUserLeadId(val ?? 0);
                                     },
 
                               items: users
                                   .map(
-                                    (User u) => DropdownMenuItem(
-                                      value: u.userId,
+                                    (UsersModel u) => DropdownMenuItem(
+                                      value: u.id,
                                       child: Text(
                                         isUsersLoading
                                             ? l10n.loading
@@ -252,7 +254,7 @@ class EditUser extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: isLoading
                                 ? null
-                                : () => cubit.editUser(user.userId!),
+                                : () => cubit.editUser(user.id!),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: appColor,
                               disabledBackgroundColor: appColor.withOpacity(

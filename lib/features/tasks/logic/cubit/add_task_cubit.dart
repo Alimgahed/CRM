@@ -12,7 +12,7 @@ class AddTaskCubit extends Cubit<AddTaskState> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final expirationDateController = TextEditingController();
-  String? assignedToId;
+  int? assignedToId;
   int? status;
   final formKey = GlobalKey<FormState>();
 
@@ -27,14 +27,15 @@ class AddTaskCubit extends Cubit<AddTaskState> {
         title: titleController.text,
         description: descriptionController.text,
         dueDate: DateTime.tryParse(expirationDateController.text),
-        assignedToId: assignedToId, // Usually you'd use a user ID here
+        assignedToId: assignedToId
+            .toString(), // Usually you'd use a user ID here
         status: status, // Initial status
       );
 
       final result = await addTaskRepo.addTask(task);
 
       result.when(
-        success: (data) => emit(AddTaskState.loaded(data)),
+        success: (data) => emit(AddTaskState.loaded()),
         error: (e) => emit(AddTaskState.error(e.error ?? 'Unknown error')),
       );
     }

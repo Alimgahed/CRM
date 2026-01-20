@@ -1,15 +1,17 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/Colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/Projects/data/repo/projects_repo.dart';
 import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/Projects/logic/cubit/project_states.dart';
-import 'package:crm/features/actions/logic/cubit/add_client.dart';
+import 'package:crm/features/actions/logic/add_client.dart';
 import 'package:crm/features/actions/logic/state/add_client_state.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/clients/data/model/lead_source.dart';
 import 'package:crm/features/clients/data/repo/lead_soure.dart';
 import 'package:crm/features/clients/logic/cubit/leads_source_cubit.dart';
@@ -60,66 +62,27 @@ class AddClient extends StatelessWidget {
           state.whenOrNull(
             loading: () {},
             error: (message) {
-              showDialog(
+              showModalBottomSheet(
                 context: context,
-                builder: (context) => AlertDialog(
-                  backgroundColor: isDark
-                      ? const Color(0xFF1E1E1E)
-                      : Colors.white,
-                  title: Text(
-                    appLocalizations.error,
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  content: Text(
-                    message,
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.black87,
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      child: Text(appLocalizations.ok),
-                    ),
-                  ],
+                isScrollControlled: false,
+                backgroundColor: Colors.transparent,
+                builder: (_) => SuccessBottomSheet(
+                  success: false,
+                  text: appLocalizations.newClients,
+                  text2: message,
                 ),
               );
             },
-            loaded: (loginresponse) {
-              // Dismiss loading dialog first
+            loaded: (done) {
               context.pop();
-
-              // Show success dialog
-              showDialog(
+              showModalBottomSheet(
                 context: context,
-                builder: (context) => AlertDialog(
-                  backgroundColor: isDark
-                      ? const Color(0xFF1E1E1E)
-                      : Colors.white,
-                  title: Text(
-                    appLocalizations.success,
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  content: Text(
-                    appLocalizations.success,
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.black87,
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close add client sheet
-                      },
-                      child: Text(appLocalizations.ok),
-                    ),
-                  ],
+                isScrollControlled: false,
+                backgroundColor: Colors.transparent,
+                builder: (_) => SuccessBottomSheet(
+                  success: true,
+                  text: appLocalizations.newClients,
+                  text2: appLocalizations.clientAddedSuccessfully,
                 ),
               );
             },
@@ -183,71 +146,72 @@ class AddClient extends StatelessWidget {
 
                         // Project Priority
                         // Project Selection Dropdown
-                        BlocBuilder<ProjectCubit, ProjectsState>(
-                          builder: (context, projectState) {
-                            // Extract the list of projects from the state
-                            final List<Project> projectsList = projectState
-                                .maybeWhen(
-                                  loaded: (projects) => projects,
-                                  orElse: () => [],
-                                );
+                        // BlocBuilder<ProjectCubit, ProjectsState>(
+                        //   builder: (context, projectState) {
+                        //     // Extract the list of projects from the state
+                        //     final List<Project> projectsList = projectState
+                        //         .maybeWhen(
+                        //           loaded: (projects) => projects,
+                        //           orElse: () => [],
+                        //         );
 
-                            return CustomDropdownFormField<String>(
-                              text: appLocalizations.project,
-                              useValidator: false,
-                              labelText: projectState.maybeWhen(
-                                loading: () => appLocalizations.loading,
-                                orElse: () => appLocalizations.selectProject,
-                              ),
-                              value: cubit.projectId,
-                              // Disable dropdown while loading
-                              onChanged:
-                                  (projectState is ProjectsStateLoading) ||
-                                      isLoading
-                                  ? null
-                                  : (val) {
-                                      cubit.setProject(val ?? '');
-                                    },
-                              items: projectsList
-                                  .fold<List<Project>>([], (list, element) {
-                                    if (!list.any(
-                                      (p) => p.projectId == element.projectId,
-                                    )) {
-                                      list.add(element);
-                                    }
-                                    return list;
-                                  })
-                                  .map((project) {
-                                    return DropdownMenuItem<String>(
-                                      value: project.projectId.toString(),
-                                      child: Text(
-                                        context
-                                                    .read<LocaleCubit>()
-                                                    .currentLocale ==
-                                                'ar'
-                                            ? project.projectName
-                                            : project.projectNameEn,
-                                        style: TextStyle(
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                    );
-                                  })
-                                  .toList(),
-                            );
-                          },
-                        ),
+                        //     return CustomDropdownFormField<String>(
+                        //       text: appLocalizations.project,
+                        //       useValidator: false,
+                        //       labelText: projectState.maybeWhen(
+                        //         loading: () => appLocalizations.loading,
+                        //         orElse: () => appLocalizations.selectProject,
+                        //       ),
+                        //       value: cubit.projectId,
+                        //       // Disable dropdown while loading
+                        //       onChanged:
+                        //           (projectState is ProjectsStateLoading) ||
+                        //               isLoading
+                        //           ? null
+                        //           : (val) {
+                        //               cubit.setProject(val ?? '');
+                        //             },
+                        //       items: projectsList
+                        //           .fold<List<Project>>([], (list, element) {
+                        //             if (!list.any(
+                        //               (p) => p.id == element.id,
+                        //             )) {
+                        //               list.add(element);
+                        //             }
+                        //             return list;
+                        //           })
+                        //           .map((project) {
+                        //             return DropdownMenuItem<int>(
+                        //               value: project.id,
+                        //               child: Text(
+                        //                 context
+                        //                             .read<LocaleCubit>()
+                        //                             .currentLocale ==
+                        //                         'ar'
+                        //                     ? project.projectName
+                        //                     : project.projectNameEn,
+                        //                 style: TextStyle(
+                        //                   color: isDark
+                        //                       ? Colors.white
+                        //                       : Colors.black,
+                        //                 ),
+                        //               ),
+                        //             );
+                        //           })
+                        //           .toList(),
+                        //     );
+                        //   },
+                        // ),
                         const SizedBox(height: 10),
                         BlocBuilder<UsersCubit, UsersState>(
                           builder: (context, userState) {
-                            final List<User> usersList = userState.maybeWhen(
-                              loaded: (users) => users,
-                              orElse: () => [],
-                            );
+                            final List<UsersModel> usersList = userState
+                                .maybeWhen(
+                                  loaded: (users) => users,
+                                  orElse: () => [],
+                                );
 
-                            return CustomDropdownFormField<String>(
+                            return CustomDropdownFormField<int>(
                               text: appLocalizations.sales,
                               labelText: userState.maybeWhen(
                                 loading: () => appLocalizations.loading,
@@ -258,14 +222,14 @@ class AddClient extends StatelessWidget {
                               onChanged: (userState is Loading) || isLoading
                                   ? null
                                   : (val) {
-                                      cubit.setSales(val ?? '');
+                                      cubit.setSales(val ?? 0);
                                     },
                               value: cubit.salesId,
                               items: usersList.map((user) {
-                                return DropdownMenuItem<String>(
-                                  value: user.userId,
+                                return DropdownMenuItem<int>(
+                                  value: user.id,
                                   child: Text(
-                                    user.fullName!,
+                                    user.fullName,
                                     style: TextStyle(
                                       color: isDark
                                           ? Colors.white

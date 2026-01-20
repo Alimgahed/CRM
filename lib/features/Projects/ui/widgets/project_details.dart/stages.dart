@@ -59,7 +59,7 @@ class StageCard extends StatelessWidget {
               Icon(Icons.layers_outlined, color: appColor, size: 20.sp),
               widthSpace(8),
               Text(
-                stage.stageName,
+                stage.stageName!,
                 style: TextStyle(
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w600,
@@ -83,7 +83,7 @@ class StageCard extends StatelessWidget {
 }
 
 class GroupChip extends StatelessWidget {
-  final StageGroup group;
+  final ProjectStageGroup group;
 
   const GroupChip({super.key, required this.group});
 
@@ -101,7 +101,7 @@ class GroupChip extends StatelessWidget {
             : null,
       ),
       child: Text(
-        group.stageCode,
+        group.stageCode!,
         style: TextStyle(
           fontSize: 12.sp,
           color: isDark ? Colors.white70 : secondaryTextColor,

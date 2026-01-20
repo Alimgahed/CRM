@@ -26,7 +26,7 @@ class AddClientCubit extends Cubit<AddClientState> {
 
   // ===== Selected Values =====
   String? projectId;
-  String? salesId;
+  int? salesId;
   String? channel;
   String? preferredMethod;
   int? clientStatus;
@@ -37,7 +37,7 @@ class AddClientCubit extends Cubit<AddClientState> {
     emit(state);
   }
 
-  void setSales(String value) {
+  void setSales(int value) {
     salesId = value;
     emit(state);
   }
@@ -84,7 +84,7 @@ class AddClientCubit extends Cubit<AddClientState> {
       secondaryPhone: phoneController2.text.trim(),
       jobTitle: jobController.text.trim(),
       budget: budget,
-      assignedToId: salesId!,
+      assignedToId: salesId.toString(),
       preferredContactMethod: preferredMethod!,
       status: 1,
       leadSourceId: channel!,

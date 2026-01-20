@@ -1,6 +1,7 @@
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_services.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/users/data/model/add_user_model.dart';
 import 'package:dio/dio.dart';
 
@@ -9,26 +10,20 @@ class AddUserRepo {
 
   AddUserRepo({required this.apiService});
 
-  Future<ApiResult<String>> addUser(AddUserModel body) async {
+  Future<ApiResult<String>> addUser(UsersModel body) async {
     try {
       final response = await apiService.addUser(body);
-      return ApiResult.success(response);
+      return ApiResult.success(response.toString());
     } on DioException catch (e) {
       if (e.response?.data != null) {
-        final data = e.response!.data;
-
-        // ✅ Case 1: backend returned Map
-        if (data is Map<String, dynamic>) {
-          return ApiResult.error(ApiErrorModel.fromJson(data));
+        try {
+          final errorModel = ApiErrorModel.fromJson(e.response!.data);
+          return ApiResult.error(errorModel);
+        } catch (_) {
+          return ApiResult.error(
+            ApiErrorModel(error: 'Failed to parse error response'),
+          );
         }
-
-        // ✅ Case 2: backend returned String
-        if (data is String) {
-          return ApiResult.error(ApiErrorModel(error: data));
-        }
-
-        // ✅ Fallback
-        return ApiResult.error(ApiErrorModel(error: 'Unexpected error format'));
       }
 
       return ApiResult.error(

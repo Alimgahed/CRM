@@ -1,3 +1,4 @@
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'lead_action_model.g.dart';
@@ -51,7 +52,7 @@ class LeadActionModel {
   @JsonKey(name: 'meeting_location')
   final int? meetingLocation;
 
-  final User? user;
+  final UsersModel? user;
 
   @JsonKey(name: 'is_deleted')
   final bool? isDeleted;

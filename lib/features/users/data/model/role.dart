@@ -1,20 +1,20 @@
-import 'package:json_annotation/json_annotation.dart';
+// import 'package:json_annotation/json_annotation.dart';
 
-part 'role.g.dart';
+// part 'role.g.dart';
 
-@JsonSerializable()
-class Role {
-  @JsonKey(name: 'role_id')
-  final String? roleId;
+// @JsonSerializable()
+// class Role {
+//   @JsonKey(name: 'role_id')
+//   final String? roleId;
 
-  @JsonKey(name: 'role_name')
-  final String? roleName;
+//   @JsonKey(name: 'role_name')
+//   final String? roleName;
 
-  final dynamic permitions;
+//   final dynamic permitions;
 
-  Role({this.roleId, this.roleName, this.permitions});
+//   Role({this.roleId, this.roleName, this.permitions});
 
-  factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
+//   factory Role.fromJson(Map<String, dynamic> json) => _$RoleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RoleToJson(this);
-}
+//   Map<String, dynamic> toJson() => _$RoleToJson(this);
+// }

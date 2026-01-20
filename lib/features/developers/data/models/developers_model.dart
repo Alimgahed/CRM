@@ -3,88 +3,67 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'developers_model.g.dart';
 
-@JsonSerializable()
-class DevCompany {
-  @JsonKey(name: "dev_company_id")
-  final String? devCompanyId;
+@JsonSerializable(explicitToJson: true)
+class DeveloperCompany {
+  @JsonKey(name: 'Logo')
+  final String? logo;
 
-  @JsonKey(name: "company_name_ar")
+  @JsonKey(name: 'company_id')
+  final int? companyId;
+
+  @JsonKey(name: 'company_name_ar')
   final String? companyNameAr;
 
-  @JsonKey(name: "company_name_en")
+  @JsonKey(name: 'company_name_en')
   final String? companyNameEn;
 
-  @JsonKey(name: "contact_person")
-  final String? contactPerson;
-
-  @JsonKey(name: "contact_number")
+  @JsonKey(name: 'contact_number')
   final String? contactNumber;
 
-  @JsonKey(name: "Logo_url")
-  final String? logoUrl;
+  @JsonKey(name: 'contact_person')
+  final String? contactPerson;
 
-  @JsonKey(name: "is_active")
-  final bool? isActive;
-
-  @JsonKey(name: "is_deleted")
-  final bool? isDeleted;
-
-  @JsonKey(name: "created_at")
+  @JsonKey(name: 'created_at')
   final String? createdAt;
 
-  @JsonKey(name: "updated_at")
-  final String? updatedAt;
+  final int? id;
 
-  @JsonKey(name: "company_id")
-  final String? companyId;
+  @JsonKey(name: 'is_active')
+  final bool? isActive;
 
-  @JsonKey(name: "project_count")
+  @JsonKey(name: 'is_deleted')
+  final bool? isDeleted;
+
+  @JsonKey(name: 'logo_url')
+  final String? logoUrl;
+
+  @JsonKey(name: 'project_count')
   final int? projectCount;
 
   final List<Project>? projects;
 
-  DevCompany({
-    this.devCompanyId,
+  @JsonKey(name: 'updated_at')
+  final String? updatedAt;
+
+  DeveloperCompany({
+    this.logo,
+    this.companyId,
     this.companyNameAr,
     this.companyNameEn,
-    this.contactPerson,
     this.contactNumber,
-    this.logoUrl,
+    this.contactPerson,
+    this.createdAt,
+    this.id,
     this.isActive,
     this.isDeleted,
-    this.createdAt,
-    this.updatedAt,
-    this.companyId,
+    this.logoUrl,
     this.projectCount,
     this.projects,
+    this.updatedAt,
   });
 
-  factory DevCompany.fromJson(Map<String, dynamic> json) =>
-      _$DevCompanyFromJson(json);
+  factory DeveloperCompany.fromJson(Map<String, dynamic> json) =>
+      _$DeveloperCompanyFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DevCompanyToJson(this);
-}
-
-@JsonSerializable()
-class DevCompanyListResponse {
-  final List<DevCompany>? data;
-  final int? total;
-  final int? page;
-  @JsonKey(name: "page_size")
-  final int? pageSize;
-  @JsonKey(name: "total_pages")
-  final int? totalPages;
-
-  DevCompanyListResponse({
-    this.data,
-    this.total,
-    this.page,
-    this.pageSize,
-    this.totalPages,
-  });
-
-  factory DevCompanyListResponse.fromJson(Map<String, dynamic> json) =>
-      _$DevCompanyListResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$DevCompanyListResponseToJson(this);
+  Map<String, dynamic> toJson() => _$DeveloperCompanyToJson(this);
 }

@@ -19,7 +19,7 @@ class UserService {
   bool get isLoggedIn => _currentUser != null;
 
   /// Get user ID
-  String? get userId => _currentUser?.userId;
+  int? get userId => _currentUser?.id;
 
   /// Get user name
   String? get userName => _currentUser?.fullName;
@@ -28,7 +28,7 @@ class UserService {
   String? get userEmail => _currentUser?.email;
 
   /// Get company ID
-  String? get companyId => _currentUser?.companyId;
+  int? get companyId => _currentUser?.companyId;
 
   /// Initialize - Load user from storage on app start
   Future<void> init() async {

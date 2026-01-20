@@ -28,7 +28,7 @@ LeadActionModel _$LeadActionModelFromJson(Map<String, dynamic> json) =>
       meetingLocation: (json['meeting_location'] as num?)?.toInt(),
       user: json['user'] == null
           ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+          : UsersModel.fromJson(json['user'] as Map<String, dynamic>),
       isDeleted: json['is_deleted'] as bool?,
       createdAt: json['created_at'] == null
           ? null

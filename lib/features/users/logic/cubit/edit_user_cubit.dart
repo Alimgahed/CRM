@@ -1,5 +1,5 @@
 import 'package:crm/Core/network/api_result.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/users/data/repo/edit_user_repo.dart';
 import 'package:crm/features/users/logic/states/edit_user_states.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +17,14 @@ class EditUserCubit extends Cubit<EditUserState> {
   final userPasswordController = TextEditingController();
   final userEmailController = TextEditingController();
   final userPhoneController = TextEditingController();
-  String? userLeadId;
+  int? userLeadId;
   bool? isActive;
-  String? userRolesId;
-  void setUserRoleId(String value) {
+  int? userRolesId;
+  void setUserRoleId(int value) {
     userRolesId = value;
   }
 
-  void setUserLeadId(String value) {
+  void setUserLeadId(int value) {
     userLeadId = value;
   }
 
@@ -58,19 +58,24 @@ class EditUserCubit extends Cubit<EditUserState> {
   }
 
   // ===== Submit =====
-  Future<void> editUser(String id) async {
+  Future<void> editUser(int id) async {
     if (!formKey.currentState!.validate()) return;
 
     emit(const EditUserState.loading());
 
-    final user = User(
-      fullName: userNameController.text.trim(),
-      username: userNameController.text.trim(),
-      email: userEmailController.text.trim(),
-      role: userRolesId!,
-      leaderId: userLeadId,
-      phone: userPhoneController.text.trim(),
+    final user = UsersModel(
+      roles: [],
+
       isActive: isActive!,
+      id: 0,
+      fullName: userNameController.text.trim(),
+      email: '',
+      userType: 0,
+      isDeleted: false,
+      createdAt: '',
+      updatedAt: '',
+      companyId: 0,
+      permissions: {},
     );
 
     final result = await editUserRepo.editUser(id, user);

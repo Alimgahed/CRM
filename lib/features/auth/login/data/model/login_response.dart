@@ -1,6 +1,5 @@
-import 'package:crm/features/auth/login/data/model/users_model.dart';
-import 'package:crm/features/users/data/model/role.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'users_model.dart';
 part 'login_response.g.dart';
 
 @JsonSerializable()
@@ -13,27 +12,35 @@ class LoginResponse {
   @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
-  @JsonKey(name: 'expires_in')
-  final int expiresIn;
-
-  @JsonKey(name: 'token_type')
-  final String tokenType;
-
   final UsersModel user;
-  final Role role;
 
   LoginResponse({
     required this.success,
     required this.accessToken,
     required this.refreshToken,
-    required this.expiresIn,
-    required this.tokenType,
     required this.user,
-    required this.role,
   });
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
+      success: json['success'] ?? false,
+      accessToken: json['access_token'] ?? '',
+      refreshToken: json['refresh_token'] ?? '',
+      user: json['user'] != null
+          ? UsersModel.fromJson(json['user'])
+          : UsersModel(
+              roles: [],
+              id: 0,
+              fullName: '',
+              email: '',
+              userType: 0,
+              isActive: false,
+              isDeleted: false,
+              createdAt: '',
+              updatedAt: '',
+              companyId: 0,
+              permissions: {},
+            ),
+    );
+  }
 }

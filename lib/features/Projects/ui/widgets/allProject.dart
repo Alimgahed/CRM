@@ -51,7 +51,7 @@ class AllprojectWidget extends StatelessWidget {
                 memCacheHeight: 600,
                 memCacheWidth: 600,
                 imageUrl:
-                    ApiConstants.baseUrl + (project.attachments![0].filePath),
+                    ApiConstants.baseUrl + (project.attachments![0].filePath!),
                 width: double.infinity,
                 height: 190.h,
                 fit: BoxFit.cover,

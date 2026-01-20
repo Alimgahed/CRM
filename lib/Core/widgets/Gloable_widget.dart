@@ -1,5 +1,6 @@
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
+import 'package:crm/Core/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -355,6 +356,111 @@ class InfoRow extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class SuccessBottomSheet extends StatelessWidget {
+  const SuccessBottomSheet({
+    super.key,
+    required this.text,
+    required this.text2,
+    required this.success,
+  });
+
+  final String text;
+  final String text2;
+  final bool success;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const FloatingCloseButton(),
+        const SizedBox(height: 16),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.r),
+              topRight: Radius.circular(20.r),
+            ),
+            color: isDarkMode ? darkColor : Colors.white,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 20,
+                    width: 20,
+                    decoration: BoxDecoration(
+                      color: success ? successColor : warningColor,
+                      shape: BoxShape
+                          .circle, // Remove borderRadius when using circle
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    text,
+                    style: TextStyles.size20().copyWith(
+                      color: isDarkMode ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 40),
+
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(
+                        255,
+                        222,
+                        217,
+                        217,
+                      ).withOpacity(0.2),
+                      shape: BoxShape.circle, // Remove borderRadius
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: success ? successColor : warningColor,
+                      shape: BoxShape.circle, // Remove borderRadius
+                    ),
+                    child: Icon(
+                      success ? Icons.check : Icons.error,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              Text(
+                text2,
+                textAlign: TextAlign.center,
+                style: TextStyles.size16().copyWith(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                ),
+              ),
+            ],
           ),
         ),
       ],

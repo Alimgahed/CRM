@@ -16,7 +16,7 @@ class DeveloperCubit extends Cubit<DeveloperStates> {
 
     try {
       final companies = await developersRepo.getAllDevelopmentCompanies();
-      emit(DeveloperStates.loaded(companies.data ?? []));
+      emit(DeveloperStates.loaded(companies.data));
     } catch (e) {
       emit(DeveloperStates.error(e.toString()));
     }

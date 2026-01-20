@@ -2,12 +2,14 @@ import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/Units/data/models/unit_response.dart';
 import 'package:crm/features/actions/data/model/lead_actions_response.dart';
+import 'package:crm/features/auth/login/data/model/login_ipa_response.dart';
 import 'package:crm/features/auth/login/data/model/login_request_body.dart';
-import 'package:crm/features/auth/login/data/model/login_response.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/clients/data/model/lead_sorce_response.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/data/model/leads_response.dart';
 import 'package:crm/features/developers/data/models/developers_model.dart';
+import 'package:crm/features/developers/data/models/developers_response.dart';
 import 'package:crm/features/owners/data/models/owner_respone.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
 import 'package:crm/features/tasks/data/model/task_model.dart';
@@ -25,13 +27,13 @@ abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @POST(ApiConstants.login)
-  Future<LoginResponse> login(@Body() LoginRequestBody body);
+  Future<LoginApiResponse> login(@Body() LoginRequestBody body);
 
   @GET(ApiConstants.allprojects)
-  Future<ProjectsResponse> getAllProjects();
+  Future<List<Project>> getAllProjects();
 
   @GET(ApiConstants.getAllDevelopmentCompanies)
-  Future<DevCompanyListResponse> getAllDevelopmentCompanies();
+  Future<CompaniesResponse> getAllDevelopmentCompanies();
 
   @GET(ApiConstants.getStatistics)
   Future<AgentActionStatisticsResponse> getAgentActionStatistics();
@@ -39,17 +41,17 @@ abstract class ApiService {
   @GET(ApiConstants.getAllLeads)
   Future<LeadsResponse> getAllLeads();
   @POST(ApiConstants.getAllLeads)
-  Future<String> addLead(@Body() Lead body);
+  Future<dynamic> addLead(@Body() Lead body);
   @GET(ApiConstants.getAllUsers)
   Future<UsersResponse> getAllUsers();
   @GET(ApiConstants.getAllLeadsSource)
   Future<LeadSourceResponse> getAllLeadsSource();
-  @POST(ApiConstants.getAllUsers)
-  Future<String> addUser(@Body() AddUserModel body);
+  @POST(ApiConstants.saveUser)
+  Future<dynamic> addUser(@Body() UsersModel body);
   @GET(ApiConstants.getAllRoles)
   Future<RolesResponse> getAllRoles();
   @PUT(ApiConstants.editUser)
-  Future<String> editUser(@Path("id") String id, @Body() User body);
+  Future<dynamic> editUser(@Path("id") int id, @Body() UsersModel body);
   @GET(ApiConstants.getAllUnit)
   Future<UnitResponse> getAllUnit();
   @GET(ApiConstants.getAllOwners)
@@ -57,7 +59,7 @@ abstract class ApiService {
   @GET(ApiConstants.getAllTasks)
   Future<TaskRespone> getAllTasks();
   @POST(ApiConstants.getAllTasks)
-  Future<String> addTask(@Body() TaskModel body);
+  Future<dynamic> addTask(@Body() TaskModel body);
   @GET(ApiConstants.getLeadAgentActions)
   Future<LeadActionsResponse> getLeadAgentActions(
     @Path("leadId") String leadId,

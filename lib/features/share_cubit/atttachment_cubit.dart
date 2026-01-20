@@ -26,7 +26,7 @@ class AttachmentError extends AttachmentState {
 
 // Attachment download states
 class AttachmentDownloading extends AttachmentState {
-  final String attachmentId;
+  final int attachmentId;
   final double progress;
   AttachmentDownloading(this.attachmentId, this.progress);
 }
@@ -59,8 +59,8 @@ class AttachmentCubit extends Cubit<AttachmentState> {
   Future<void> downloadAttachment(Attachment attachment) async {
     try {
       // Generate file name
-      String fileName = attachment.fileName.isNotEmpty
-          ? attachment.fileName
+      String fileName = attachment.fileName!.isNotEmpty
+          ? attachment.fileName!
           : 'attachment_${DateTime.now().millisecondsSinceEpoch}';
 
       String filePath;
@@ -75,12 +75,12 @@ class AttachmentCubit extends Cubit<AttachmentState> {
 
       // Start download with progress
       await _dio.download(
-        baseUrl + attachment.filePath,
+        baseUrl + attachment.filePath!,
         filePath,
         onReceiveProgress: (received, total) {
           if (total != -1) {
             final progress = received / total;
-            emit(AttachmentDownloading(attachment.attachmentId, progress));
+            emit(AttachmentDownloading(attachment.id!, progress));
           }
         },
       );

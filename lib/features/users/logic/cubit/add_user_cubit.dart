@@ -1,5 +1,6 @@
 import 'package:crm/Core/network/api_result.dart';
-import 'package:crm/features/users/data/model/add_user_model.dart';
+import 'package:crm/features/auth/login/data/model/roles_model.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/users/data/repo/add_user_repo.dart';
 import 'package:crm/features/users/logic/states/add_user_states.dart';
 import 'package:flutter/material.dart';
@@ -21,20 +22,23 @@ class AddUserCubit extends Cubit<AddUserState> {
   final userPhoneController = TextEditingController();
 
   // ===== Selected Values =====
-  String? userLeadId;
-  bool? isActive;
-  String? userRolesId;
+  int? userLeadId;
+  int? isActive;
+  List<Role> userRoles = [];
 
   // ===== Setters =====
-  void setUserRoleId(String value) {
-    userRolesId = value;
+  void addUserRole(Role value) {
+    if (!userRoles.any((r) => r.id == value.id)) {
+      userRoles.add(value);
+      print(userRoles);
+    }
   }
 
-  void setUserLeadId(String value) {
+  void setUserLeadId(int value) {
     userLeadId = value;
   }
 
-  void setUserType(bool value) {
+  void setUserType(int value) {
     isActive = value;
   }
 
@@ -75,14 +79,14 @@ class AddUserCubit extends Cubit<AddUserState> {
 
     emit(const AddUserState.loading());
 
-    final user = AddUserModel(
-      fullName: userNameController.text.trim(),
-      email: userEmailController.text.trim(),
-      roleIds: userRolesId!,
+    final user = UsersModel(
+      fullName: userNameController.text,
+      email: userEmailController.text,
+      phone: userPhoneController.text,
+      passwordHash: userPasswordController.text,
       leaderId: userLeadId,
-      password: userPasswordController.text.trim(),
-      phone: userPhoneController.text.trim(),
-      isActive: isActive!,
+      roles: userRoles,
+      userType: isActive!,
     );
 
     final result = await addUserRepo.addUser(user);
@@ -104,7 +108,7 @@ class AddUserCubit extends Cubit<AddUserState> {
     userPasswordController.clear();
     userEmailController.clear();
     userPhoneController.clear();
-    userRolesId = null;
+    userRoles = [];
     userLeadId = null;
     isActive = null;
 

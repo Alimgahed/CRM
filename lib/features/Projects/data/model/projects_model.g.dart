@@ -6,166 +6,165 @@ part of 'projects_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProjectsResponse _$ProjectsResponseFromJson(Map<String, dynamic> json) =>
-    ProjectsResponse(
-      data: (json['data'] as List<dynamic>)
-          .map((e) => Project.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      total: (json['total'] as num).toInt(),
-      page: (json['page'] as num).toInt(),
-      pageSize: (json['page_size'] as num).toInt(),
-      totalPages: (json['total_pages'] as num).toInt(),
-    );
+Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
+  id: (json['id'] as num?)?.toInt(),
+  companyId: (json['company_id'] as num?)?.toInt(),
+  devCompanyId: (json['dev_company_id'] as num?)?.toInt(),
+  projectName: json['project_name'] as String?,
+  projectNameEn: json['project_name_en'] as String?,
+  projectPrefix: json['project_prefix'] as String?,
+  description: json['description'] as String?,
+  location: json['location'] as String?,
+  contactNumber: json['contact_number'] as String?,
+  contactPerson: json['contact_person'] as String?,
+  projectLogo: json['project_logo'] as String?,
+  logoUrl: json['logo_url'] as String?,
+  projectMapUrl: json['project_map_url'] as String?,
+  projectUrl: json['project_url'] as String?,
+  youtubeLink: json['youtube_link'] as String?,
+  projectType: (json['project_type'] as num?)?.toInt(),
+  areaFrom: json['area_from'] as String?,
+  areaTo: json['area_to'] as String?,
+  pricePerMeterFrom: json['price_mmeter_from'] as String?,
+  pricePerMeterTo: json['price_mmeter_to'] as String?,
+  planDescription: json['plan_description'] as String?,
+  startDate: json['start_date'] as String?,
+  endDate: json['end_date'] as String?,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
+  isDeleted: json['is_deleted'] as bool?,
+  attachments: (json['attachments'] as List<dynamic>?)
+      ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  planDetails: (json['plan_details'] as List<dynamic>?)
+      ?.map((e) => PlanDetail.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  projectStages: (json['project_stages'] as List<dynamic>?)
+      ?.map((e) => ProjectStage.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
-Map<String, dynamic> _$ProjectsResponseToJson(ProjectsResponse instance) =>
+Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
+  'id': instance.id,
+  'company_id': instance.companyId,
+  'dev_company_id': instance.devCompanyId,
+  'project_name': instance.projectName,
+  'project_name_en': instance.projectNameEn,
+  'project_prefix': instance.projectPrefix,
+  'description': instance.description,
+  'location': instance.location,
+  'contact_number': instance.contactNumber,
+  'contact_person': instance.contactPerson,
+  'project_logo': instance.projectLogo,
+  'logo_url': instance.logoUrl,
+  'project_map_url': instance.projectMapUrl,
+  'project_url': instance.projectUrl,
+  'youtube_link': instance.youtubeLink,
+  'project_type': instance.projectType,
+  'area_from': instance.areaFrom,
+  'area_to': instance.areaTo,
+  'price_mmeter_from': instance.pricePerMeterFrom,
+  'price_mmeter_to': instance.pricePerMeterTo,
+  'plan_description': instance.planDescription,
+  'start_date': instance.startDate,
+  'end_date': instance.endDate,
+  'created_at': instance.createdAt,
+  'updated_at': instance.updatedAt,
+  'is_deleted': instance.isDeleted,
+  'attachments': instance.attachments?.map((e) => e.toJson()).toList(),
+  'plan_details': instance.planDetails?.map((e) => e.toJson()).toList(),
+  'project_stages': instance.projectStages?.map((e) => e.toJson()).toList(),
+};
+
+Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(
+  id: (json['id'] as num?)?.toInt(),
+  category: (json['category'] as num?)?.toInt(),
+  companyId: (json['company_id'] as num?)?.toInt(),
+  entityId: (json['entity_id'] as num?)?.toInt(),
+  entityType: (json['entity_type'] as num?)?.toInt(),
+  fileData: json['file_data'] as String?,
+  fileName: json['file_name'] as String?,
+  filePath: json['file_path'] as String?,
+  fileSize: (json['file_size'] as num?)?.toInt(),
+  fileType: json['file_type'] as String?,
+  notes: json['notes'] as String?,
+  uploadedBy: (json['uploaded_by'] as num?)?.toInt(),
+  isDeleted: json['is_deleted'] as bool?,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
+);
+
+Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>
     <String, dynamic>{
-      'data': instance.data,
-      'total': instance.total,
-      'page': instance.page,
-      'page_size': instance.pageSize,
-      'total_pages': instance.totalPages,
+      'id': instance.id,
+      'category': instance.category,
+      'company_id': instance.companyId,
+      'entity_id': instance.entityId,
+      'entity_type': instance.entityType,
+      'file_data': instance.fileData,
+      'file_name': instance.fileName,
+      'file_path': instance.filePath,
+      'file_size': instance.fileSize,
+      'file_type': instance.fileType,
+      'notes': instance.notes,
+      'uploaded_by': instance.uploadedBy,
+      'is_deleted': instance.isDeleted,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };
 
-ProjectPlan _$ProjectPlanFromJson(Map<String, dynamic> json) => ProjectPlan(
-  projectPlanId: json['project_plan_id'] as String,
-  projectId: json['project_id'] as String,
+PlanDetail _$PlanDetailFromJson(Map<String, dynamic> json) => PlanDetail(
+  id: (json['id'] as num?)?.toInt(),
+  projectId: (json['project_id'] as num?)?.toInt(),
+  discountPercent: (json['discount_percent'] as num?)?.toInt(),
+  downPayment: (json['down_payment'] as num?)?.toInt(),
   noOfYears: (json['no_of_years'] as num?)?.toInt(),
-  downPayment: (json['down_payment'] as num?)?.toDouble(),
-  yearlyInstallment: (json['yearly_installment'] as num?)?.toDouble(),
-  discountPercent: (json['discount_percent'] as num?)?.toDouble(),
+  yearlyInstallment: (json['yearly_installment'] as num?)?.toInt(),
+  planDescription: json['plan_description'] as String?,
   attachment: json['attachment'] == null
       ? null
       : Attachment.fromJson(json['attachment'] as Map<String, dynamic>),
 );
 
-Map<String, dynamic> _$ProjectPlanToJson(ProjectPlan instance) =>
+Map<String, dynamic> _$PlanDetailToJson(PlanDetail instance) =>
     <String, dynamic>{
-      'project_plan_id': instance.projectPlanId,
+      'id': instance.id,
       'project_id': instance.projectId,
-      'no_of_years': instance.noOfYears,
-      'down_payment': instance.downPayment,
-      'yearly_installment': instance.yearlyInstallment,
       'discount_percent': instance.discountPercent,
-      'attachment': instance.attachment,
-    };
-
-StageGroup _$StageGroupFromJson(Map<String, dynamic> json) => StageGroup(
-  stageGroupId: json['stage_group_id'] as String,
-  projectStageId: json['project_stage_id'] as String,
-  stageCode: json['stage_code'] as String,
-);
-
-Map<String, dynamic> _$StageGroupToJson(StageGroup instance) =>
-    <String, dynamic>{
-      'stage_group_id': instance.stageGroupId,
-      'project_stage_id': instance.projectStageId,
-      'stage_code': instance.stageCode,
+      'down_payment': instance.downPayment,
+      'no_of_years': instance.noOfYears,
+      'yearly_installment': instance.yearlyInstallment,
+      'plan_description': instance.planDescription,
+      'attachment': instance.attachment?.toJson(),
     };
 
 ProjectStage _$ProjectStageFromJson(Map<String, dynamic> json) => ProjectStage(
-  projectStageId: json['project_stage_id'] as String,
-  projectId: json['project_id'] as String,
-  stageName: json['stage_name'] as String,
+  id: (json['id'] as num?)?.toInt(),
+  projectId: (json['project_id'] as num?)?.toInt(),
+  stageName: json['stage_name'] as String?,
   groups: (json['groups'] as List<dynamic>?)
-      ?.map((e) => StageGroup.fromJson(e as Map<String, dynamic>))
+      ?.map((e) => ProjectStageGroup.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
 Map<String, dynamic> _$ProjectStageToJson(ProjectStage instance) =>
     <String, dynamic>{
-      'project_stage_id': instance.projectStageId,
+      'id': instance.id,
       'project_id': instance.projectId,
       'stage_name': instance.stageName,
-      'groups': instance.groups,
+      'groups': instance.groups?.map((e) => e.toJson()).toList(),
     };
 
-Project _$ProjectFromJson(Map<String, dynamic> json) => Project(
-  projectId: json['project_id'] as String,
-  projectName: json['project_name'] as String,
-  projectNameEn: json['project_name_en'] as String,
-  projectPrefix: json['project_prefix'] as String?,
-  contactPerson: json['contact_person'] as String?,
-  contactNumber: json['contact_number'] as String?,
-  location: json['location'] as String?,
-  description: json['description'] as String?,
-  projectType: (json['project_type'] as num?)?.toInt(),
-  priceMmeterFrom: json['price_mmeter_from'] as String?,
-  priceMmeterTo: json['price_mmeter_to'] as String?,
-  areaFrom: json['area_from'] as String?,
-  areaTo: json['area_to'] as String?,
-  planDescription: json['plan_description'] as String?,
-  isDeleted: json['is_deleted'] as bool,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String?,
-  companyId: json['company_id'] as String,
-  devCompanyId: json['dev_company_id'] as String?,
-  planDetails: (json['plan_details'] as List<dynamic>?)
-      ?.map((e) => ProjectPlan.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  projectStages: (json['project_stages'] as List<dynamic>?)
-      ?.map((e) => ProjectStage.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  devCompany: json['dev_company'] == null
-      ? null
-      : DevCompany.fromJson(json['dev_company'] as Map<String, dynamic>),
-  attachments: (json['attachments'] as List<dynamic>?)
-      ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
-      .toList(),
-);
+ProjectStageGroup _$ProjectStageGroupFromJson(Map<String, dynamic> json) =>
+    ProjectStageGroup(
+      id: (json['id'] as num?)?.toInt(),
+      projectStageId: (json['project_stage_id'] as num?)?.toInt(),
+      stageCode: json['stage_code'] as String?,
+    );
 
-Map<String, dynamic> _$ProjectToJson(Project instance) => <String, dynamic>{
-  'project_id': instance.projectId,
-  'project_name': instance.projectName,
-  'project_name_en': instance.projectNameEn,
-  'project_prefix': instance.projectPrefix,
-  'contact_person': instance.contactPerson,
-  'contact_number': instance.contactNumber,
-  'location': instance.location,
-  'description': instance.description,
-  'project_type': instance.projectType,
-  'price_mmeter_from': instance.priceMmeterFrom,
-  'price_mmeter_to': instance.priceMmeterTo,
-  'area_from': instance.areaFrom,
-  'area_to': instance.areaTo,
-  'plan_description': instance.planDescription,
-  'is_deleted': instance.isDeleted,
-  'created_at': instance.createdAt,
-  'updated_at': instance.updatedAt,
-  'company_id': instance.companyId,
-  'dev_company_id': instance.devCompanyId,
-  'plan_details': instance.planDetails,
-  'project_stages': instance.projectStages,
-  'dev_company': instance.devCompany,
-  'attachments': instance.attachments,
-};
-
-Attachment _$AttachmentFromJson(Map<String, dynamic> json) => Attachment(
-  attachmentId: json['attachment_id'] as String,
-  entityType: (json['entity_type'] as num).toInt(),
-  entityId: json['entity_id'] as String,
-  fileName: json['file_name'] as String,
-  filePath: json['file_path'] as String,
-  fileType: json['file_type'] as String?,
-  fileSize: (json['file_size'] as num?)?.toInt(),
-  uploadedBy: json['uploaded_by'] as String?,
-  isDeleted: json['is_deleted'] as bool,
-  createdAt: json['created_at'] as String,
-  updatedAt: json['updated_at'] as String?,
-  companyId: json['company_id'] as String,
-);
-
-Map<String, dynamic> _$AttachmentToJson(Attachment instance) =>
+Map<String, dynamic> _$ProjectStageGroupToJson(ProjectStageGroup instance) =>
     <String, dynamic>{
-      'attachment_id': instance.attachmentId,
-      'entity_type': instance.entityType,
-      'entity_id': instance.entityId,
-      'file_name': instance.fileName,
-      'file_path': instance.filePath,
-      'file_type': instance.fileType,
-      'file_size': instance.fileSize,
-      'uploaded_by': instance.uploadedBy,
-      'is_deleted': instance.isDeleted,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'company_id': instance.companyId,
+      'id': instance.id,
+      'project_stage_id': instance.projectStageId,
+      'stage_code': instance.stageCode,
     };

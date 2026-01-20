@@ -7,7 +7,7 @@ part 'developer_states.freezed.dart';
 class DeveloperStates<T> with _$DeveloperStates<T> {
   const factory DeveloperStates.initial() = DeveloperStatesInitial<T>;
   const factory DeveloperStates.loading() = DeveloperStatesLoading<T>;
-  const factory DeveloperStates.loaded(List<DevCompany> companies) =
+  const factory DeveloperStates.loaded(List<DeveloperCompany> companies) =
       DeveloperStatesLoaded<T>;
   const factory DeveloperStates.error(String message) = DeveloperStatesError<T>;
 }

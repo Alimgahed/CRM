@@ -1,7 +1,10 @@
 import 'package:crm/Core/di/dependency_injection.dart';
+import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/tasks/data/repo/add_task_repo.dart';
@@ -38,11 +41,31 @@ class AddTask extends StatelessWidget {
       child: BlocListener<AddTaskCubit, AddTaskState>(
         listener: (context, state) {
           state.whenOrNull(
-            loaded: (task) {
-              showAboutDialog(context: context, children: [Text("done")]);
+            loaded: () {
+              context.pop();
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: false,
+                backgroundColor: Colors.transparent,
+                builder: (_) => SuccessBottomSheet(
+                  success: true,
+                  text: appLocalizations.addTask,
+                  text2: appLocalizations.taskAddedSuccessfully,
+                ),
+              );
             },
             error: (error) {
-              showAboutDialog(context: context, children: [Text(error)]);
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => SuccessBottomSheet(
+                  success: false,
+
+                  text: appLocalizations.addTask,
+                  text2: error,
+                ),
+              );
             },
           );
         },
@@ -103,13 +126,13 @@ class AddTask extends StatelessWidget {
 
                             BlocBuilder<UsersCubit, UsersState>(
                               builder: (context, userState) {
-                                final List<User> usersList = userState
+                                final List<UsersModel> usersList = userState
                                     .maybeWhen(
                                       loaded: (users) => users,
                                       orElse: () => [],
                                     );
 
-                                return CustomDropdownFormField<String>(
+                                return CustomDropdownFormField<int>(
                                   text: appLocalizations.sales,
                                   labelText: userState.maybeWhen(
                                     loading: () => appLocalizations.loading,
@@ -121,12 +144,12 @@ class AddTask extends StatelessWidget {
                                   onChanged: (userState is Loading)
                                       ? null
                                       : (val) {
-                                          cubit.assignedToId = val ?? '';
+                                          cubit.assignedToId = val ?? 0;
                                         },
                                   value: cubit.assignedToId,
                                   items: usersList.map((user) {
-                                    return DropdownMenuItem<String>(
-                                      value: user.userId,
+                                    return DropdownMenuItem<int>(
+                                      value: user.id,
                                       child: Text(
                                         user.fullName!,
                                         style: TextStyle(

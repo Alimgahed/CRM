@@ -1,4 +1,5 @@
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/users/data/model/users_model.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserManagementWidget extends StatelessWidget {
-  final User user;
+  final UsersModel user;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
   final VoidCallback? onViewPermissions;
@@ -52,7 +53,7 @@ class UserManagementWidget extends StatelessWidget {
             buildHeaderSection(onEdit!, user, context, isDark, loc),
             const Divider(height: 1),
             buildDetailsSection(isDark, loc, user),
-            buildRolePermissionsSection(user, context, isDark, loc, () {}),
+            // buildRolePermissionsSection(user, context, isDark, loc, () {}),
             const Divider(height: 1),
             buildMetadataSection(user, isDark, loc),
           ],

@@ -20,7 +20,7 @@ extension LeadUIExtension on Lead {
     final firstProject = locale == 'ar'
         ? projects.first.projectName
         : projects.first.projectNameEn;
-    if (projects.length == 1) return firstProject;
+    if (projects.length == 1) return firstProject!;
     return '$firstProject +${projects.length - 1}';
   }
 }

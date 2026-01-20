@@ -1,10 +1,14 @@
 import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:flutter/material.dart';
 
-Widget buildMetadataSection(User user, bool isDark, AppLocalizations loc) {
+Widget buildMetadataSection(
+  UsersModel user,
+  bool isDark,
+  AppLocalizations loc,
+) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     decoration: BoxDecoration(

@@ -42,7 +42,7 @@ class ProjectDetailsScreen extends StatelessWidget {
           elevation: 0,
           leading: BackButton(color: appColor, onPressed: () => context.pop()),
           title: Text(
-            l10n.locale == 'ar' ? project.projectName : project.projectNameEn,
+            l10n.locale == 'ar' ? project.projectName! : project.projectNameEn!,
             style: TextStyle(
               color: appColor,
               fontSize: 18.sp,
@@ -99,7 +99,7 @@ class ProjectDetailsScreen extends StatelessWidget {
                 heightSpace(16),
                 ProjectPriceSection(project: project),
                 heightSpace(16),
-                ProjectDeveloperSection(project: project),
+                // ProjectDeveloperSection(project: project),
                 heightSpace(16),
                 ProjectPlansSection(project: project),
                 heightSpace(16),

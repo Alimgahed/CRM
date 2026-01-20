@@ -1,8 +1,8 @@
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_services.dart';
+import 'package:crm/features/auth/login/data/model/login_ipa_response.dart';
 import 'package:crm/features/auth/login/data/model/login_request_body.dart';
-import 'package:crm/features/auth/login/data/model/login_response.dart';
 import 'package:dio/dio.dart';
 
 class LoginRepo {
@@ -10,7 +10,9 @@ class LoginRepo {
 
   LoginRepo({required this.apiService});
 
-  Future<ApiResult<LoginResponse>> login(LoginRequestBody requestBody) async {
+  Future<ApiResult<LoginApiResponse>> login(
+    LoginRequestBody requestBody,
+  ) async {
     try {
       final response = await apiService.login(requestBody);
       return ApiResult.success(response);

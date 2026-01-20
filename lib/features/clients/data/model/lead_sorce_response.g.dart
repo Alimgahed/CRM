@@ -16,3 +16,12 @@ LeadSourceResponse _$LeadSourceResponseFromJson(Map<String, dynamic> json) =>
       pageSize: (json['page_size'] as num).toInt(),
       totalPages: (json['total_pages'] as num).toInt(),
     );
+
+Map<String, dynamic> _$LeadSourceResponseToJson(LeadSourceResponse instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+      'total': instance.total,
+      'page': instance.page,
+      'page_size': instance.pageSize,
+      'total_pages': instance.totalPages,
+    };
