@@ -21,7 +21,7 @@ class ClientAction {
 }
 
 class ClientDeals extends StatelessWidget {
-  final String leadid;
+  final int leadid;
   final controller = Get.find<ClientsController>();
   ClientDeals({super.key, required this.leadid});
 

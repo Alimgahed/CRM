@@ -6,39 +6,44 @@ part 'leads_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Lead {
-  @JsonKey(name: 'lead_id')
-  final String? leadId;
+  final int? id;
+
+  @JsonKey(name: 'lead_projects')
+  final List<Project>? leadProjects;
+
+  @JsonKey(name: 'project_ids')
+  final List<int>? projectIds;
 
   @JsonKey(name: 'full_name')
-  final String fullName;
+  final String? fullName;
 
   @JsonKey(name: 'full_name_en')
-  final String fullNameEn;
+  final String? fullNameEn;
 
-  final String email;
-  final String phone;
+  final String? email;
+  final String? phone;
 
   @JsonKey(name: 'secondary_phone')
   final String? secondaryPhone;
 
   @JsonKey(name: 'job_title')
-  final String jobTitle;
+  final String? jobTitle;
 
   final num? budget;
 
   @JsonKey(name: 'preferred_contact_method')
-  final String preferredContactMethod;
+  final String? preferredContactMethod;
 
-  final int status;
+  final int? status;
 
   @JsonKey(name: 'lead_source_id')
-  final String leadSourceId;
+  final int? leadSourceId;
 
   @JsonKey(name: 'assigned_to_id')
-  final String? assignedToId;
+  final int? assignedToId;
 
   @JsonKey(name: 'is_deleted')
-  final bool isDeleted;
+  final bool? isDeleted;
 
   @JsonKey(name: 'created_at')
   final String? createdAt;
@@ -47,42 +52,39 @@ class Lead {
   final String? updatedAt;
 
   @JsonKey(name: 'company_id')
-  final String? companyId;
+  final int? companyId;
 
-  // NEW: lead source details
   @JsonKey(name: 'lead_source')
   final LeadSource? leadSource;
 
-  // NEW: attachments
-  final List<Attachment>? attchments;
+  /// API typo: "attchments"
+  @JsonKey(name: 'attchments')
+  final List<Attachment>? attachments;
 
-  // NEW: contracts
   final List<Attachment>? contracts;
 
-  @JsonKey(name: "project_ids")
-  final List<String>? projectIds;
-
   Lead({
-    this.leadId,
-    required this.fullName,
-    required this.fullNameEn,
-    required this.email,
-    required this.phone,
+    this.id,
+    this.leadProjects,
+    this.projectIds,
+    this.fullName,
+    this.fullNameEn,
+    this.email,
+    this.phone,
     this.secondaryPhone,
-    required this.jobTitle,
+    this.jobTitle,
     this.budget,
-    required this.preferredContactMethod,
-    required this.status,
-    required this.leadSourceId,
+    this.preferredContactMethod,
+    this.status,
+    this.leadSourceId,
     this.assignedToId,
-    required this.isDeleted,
+    this.isDeleted,
     this.createdAt,
     this.updatedAt,
     this.companyId,
     this.leadSource,
-    this.attchments,
+    this.attachments,
     this.contracts,
-    this.projectIds,
   });
 
   factory Lead.fromJson(Map<String, dynamic> json) => _$LeadFromJson(json);

@@ -3,8 +3,7 @@ part 'lead_source.g.dart';
 
 @JsonSerializable()
 class LeadSource {
-  @JsonKey(name: 'lead_source_id')
-  final String leadSourceId;
+  final int? id;
 
   @JsonKey(name: 'source_name')
   final String sourceName;
@@ -18,7 +17,7 @@ class LeadSource {
   final String createdAt;
 
   LeadSource({
-    required this.leadSourceId,
+    this.id,
     required this.sourceName,
     required this.description,
     required this.isDeleted,

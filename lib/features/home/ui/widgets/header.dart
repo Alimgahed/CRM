@@ -30,9 +30,6 @@ class _UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Optimization: Grabbing values once at the top of build
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : Colors.black;
 
     final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
       (cubit) => AppLocalizations(cubit.currentLocale),
@@ -50,7 +47,7 @@ class _UserInfo extends StatelessWidget {
               appLocalizations.welcome,
               style: TextStyles.size14(
                 fontWeight: FontWeight.bold,
-                color: textColor,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 4),
@@ -58,7 +55,7 @@ class _UserInfo extends StatelessWidget {
               userName,
               style: TextStyles.size20(
                 fontWeight: FontWeight.bold,
-                color: textColor,
+                color: Colors.white,
               ),
             ),
           ],
@@ -76,7 +73,7 @@ class _UserInfo extends StatelessWidget {
                 child: Icon(
                   isDarkTheme ? Icons.light_mode : Icons.dark_mode_outlined,
                   key: ValueKey(isDarkTheme),
-                  color: textColor,
+                  color: Colors.white,
                   size: 26,
                 ),
               ),
@@ -86,7 +83,11 @@ class _UserInfo extends StatelessWidget {
 
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.notifications_outlined, color: textColor, size: 26),
+          icon: Icon(
+            Icons.notifications_outlined,
+            color: Colors.white,
+            size: 26,
+          ),
         ),
       ],
     );
@@ -121,16 +122,16 @@ class _SearchBar extends StatelessWidget {
         style: TextStyles.size16(color: isDark ? Colors.white : appColor),
         decoration: InputDecoration(
           hintText: loc.search,
-          fillColor: isDark ? darkFieldColor : Colors.white,
           hintStyle: TextStyles.size14(color: secondaryTextColor),
-          prefixIcon: Icon(Icons.search, color: secondaryTextColor),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-              color: isDark ? darkFieldColor : Colors.white,
-            ),
-          ),
+          prefixIcon: const Icon(Icons.search, color: secondaryTextColor),
           contentPadding: const EdgeInsets.symmetric(vertical: 12),
+
+          // 🚫 remove all borders
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
         ),
       ),
     );

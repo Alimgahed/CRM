@@ -2,7 +2,8 @@ import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/actions/data/repo/lead_action.dart';
-import 'package:crm/features/actions/logic/cubit/action_cubit.dart';
+import 'package:crm/features/actions/logic/cubit/get_all_lead_action_cubit.dart';
+import 'package:crm/features/actions/ui/screens/actions/add_action.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/logic/cubit/filiter_cubit.dart';
 import 'package:crm/features/clients/ui/widgets/ClienTtimeLine.dart';
@@ -14,7 +15,6 @@ import 'package:crm/features/clients/ui/widgets/Clientattachment.dart';
 import 'package:crm/features/clients/ui/widgets/Clientmore.dart';
 import 'package:crm/features/clients/ui/widgets/ClientsFiliter.dart';
 import 'package:crm/features/clients/ui/widgets/Clientsdetails.dart';
-import 'package:crm/features/actions/ui/screens/actions/add_client.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
@@ -53,10 +53,8 @@ class ClientsDetails extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
-                  builder: (context) => FractionallySizedBox(
-                    heightFactor: 0.8,
-                    child: const AddClient(),
-                  ),
+                  builder: (context) =>
+                      FractionallySizedBox(child: AddAction(lead: lead)),
                 );
               },
             },
@@ -137,13 +135,13 @@ class ClientsDetails extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  lead.fullName,
+                                  lead.fullName ?? "",
                                   style: Theme.of(context).textTheme.titleMedium
                                       ?.copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                if (lead.jobTitle.isNotEmpty)
+                                if (lead.jobTitle?.isNotEmpty ?? false)
                                   Text(
-                                    lead.jobTitle,
+                                    lead.jobTitle ?? '',
                                     style: Theme.of(context).textTheme.bodySmall
                                         ?.copyWith(color: secondaryTextColor),
                                   ),
@@ -226,7 +224,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 19) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientcomments(leadid: lead.leadId ?? ""),
+                              child: Clientcomments(leadid: lead.id ?? 0),
                             );
                           }
                           return const SizedBox.shrink();
@@ -242,10 +240,8 @@ class ClientsDetails extends StatelessWidget {
                               child: BlocProvider(
                                 create: (context) => ActionCubit(
                                   leadActionRepo: getIt.get<LeadActionRepo>(),
-                                )..getLeadActions(leadId: lead.leadId ?? ""),
-                                child: ClientTimeline(
-                                  leadid: lead.leadId ?? "",
-                                ),
+                                )..getLeadActions(leadId: lead.id!),
+                                child: ClientTimeline(leadid: lead.id ?? 0),
                               ),
                             );
                           }
@@ -260,7 +256,7 @@ class ClientsDetails extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
                               child: ClientAttachment(
-                                attachments: lead.attchments ?? [],
+                                attachments: lead.attachments ?? [],
                               ),
                             );
                           }
@@ -274,7 +270,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 22) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: ClientDeals(leadid: lead.leadId ?? ""),
+                              child: ClientDeals(leadid: lead.id ?? 0),
                             );
                           }
                           return const SizedBox.shrink();
@@ -287,7 +283,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 23) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientchance(leadid: lead.leadId ?? ""),
+                              child: Clientchance(leadid: lead.id ?? 0),
                             );
                           }
                           return const SizedBox.shrink();
@@ -300,7 +296,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 24) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientcli(leadid: lead.leadId ?? ""),
+                              child: Clientcli(leadid: lead.id ?? 0),
                             );
                           }
                           return const SizedBox.shrink();

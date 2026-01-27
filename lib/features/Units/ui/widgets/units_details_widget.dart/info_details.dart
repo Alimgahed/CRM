@@ -28,7 +28,7 @@ class OwnerInfo extends StatelessWidget {
             loaded: (ownersList) {
               // 2. Find the owner safely using firstWhereOrNull
               final owner = ownersList.firstWhere(
-                (element) => element.ownerId == unit.ownerId,
+                (element) => element.id == unit.ownerId,
               );
 
               return Column(
@@ -45,7 +45,7 @@ class OwnerInfo extends StatelessWidget {
                   // 3. Display found name or a fallback string
                   buildInfoRow(
                     appLocalizations.owner,
-                    owner?.fullName ?? appLocalizations.notAssigned,
+                    owner.fullName ?? appLocalizations.notAssigned,
                   ),
                 ],
               );

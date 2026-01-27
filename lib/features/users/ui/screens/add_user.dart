@@ -7,8 +7,6 @@ import 'package:crm/features/auth/login/data/model/roles_model.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/role.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:crm/features/users/data/repo/add_user_repo.dart';
 import 'package:crm/features/users/data/repo/roles_repo.dart';
 import 'package:crm/features/users/data/repo/user_repo.dart';
@@ -41,7 +39,8 @@ class AddUser extends StatelessWidget {
           create: (_) => RolesCubit(rolesRepo: getIt<RolesRepo>())..getRoles(),
         ),
         BlocProvider(
-          create: (_) => UsersCubit(userRepo: getIt<UserRepo>())..getAllUsers(),
+          create: (_) =>
+              UsersCubit(usersRepo: getIt<UserRepo>())..getAllUsers(),
         ),
       ],
       child: BlocConsumer<AddUserCubit, AddUserState>(
@@ -115,8 +114,7 @@ class AddUser extends StatelessWidget {
                           text: l10n.username,
                           labelText: l10n.username,
                           controller: cubit.userNameController,
-                          validator: (v) =>
-                              cubit.validateRequired(v, l10n.username),
+
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 10),
@@ -127,7 +125,6 @@ class AddUser extends StatelessWidget {
                           labelText: l10n.writeEmail,
                           controller: cubit.userEmailController,
                           keyboardType: TextInputType.emailAddress,
-                          validator: cubit.validateEmail,
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 10),
@@ -138,14 +135,14 @@ class AddUser extends StatelessWidget {
                           labelText: l10n.password,
                           controller: cubit.userPasswordController,
                           obscureText: true,
-                          validator: (v) =>
-                              cubit.validateRequired(v, l10n.password),
+
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 10),
 
                         /// ===== Phone =====
                         CountryPhoneField(
+                          label: l10n.phone,
                           hintText: l10n.writePhoneNumber,
                           phoneController: cubit.userPhoneController,
                           country: l10n.selectCountry,
@@ -212,8 +209,9 @@ class AddUser extends StatelessWidget {
                             );
 
                             return CustomDropdownFormField<int>(
-                              text: l10n.sales,
-                              labelText: l10n.selectSalesName,
+                              text: l10n.leaderName,
+                              labelText: l10n.leader,
+                              hintText: l10n.selectLeaderName,
                               items: isLoading
                                   ? [
                                       DropdownMenuItem<int>(
@@ -245,16 +243,16 @@ class AddUser extends StatelessWidget {
                         const SizedBox(height: 10),
 
                         /// ===== User Type =====
-                        CustomDropdownFormField<int>(
+                        CustomDropdownFormField<bool>(
                           text: l10n.status,
                           labelText: l10n.status,
                           items: [
                             DropdownMenuItem(
-                              value: 1,
+                              value: true,
                               child: Text(l10n.active),
                             ),
                             DropdownMenuItem(
-                              value: 2,
+                              value: false,
                               child: Text(l10n.inactive),
                             ),
                           ],
@@ -262,48 +260,18 @@ class AddUser extends StatelessWidget {
                               ? null
                               : (value) {
                                   if (value != null) {
-                                    cubit.setUserType(value);
+                                    cubit.setUserActive(value);
                                   }
                                 },
                         ),
                         const SizedBox(height: 24),
 
-                        /// ===== Save Button =====
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: isLoading ? null : () => cubit.addUser(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: appColor,
-                              disabledBackgroundColor: appColor.withOpacity(
-                                0.5,
+                        isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : CustomButton(
+                                text: l10n.save,
+                                onPressed: () => cubit.addUser(),
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    l10n.save,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          ),
-                        ),
                       ],
                     ),
                   ),

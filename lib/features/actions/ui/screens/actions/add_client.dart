@@ -1,6 +1,7 @@
 import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/Colors.dart';
+import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
@@ -18,13 +19,13 @@ import 'package:crm/features/clients/logic/cubit/leads_source_cubit.dart';
 import 'package:crm/features/clients/logic/states/leads_source_state.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:crm/features/users/data/repo/user_repo.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:crm/features/users/logic/states/users_states.dart';
 import 'package:crm/logic/Features/Country_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 
 class AddClient extends StatelessWidget {
   const AddClient({super.key});
@@ -49,7 +50,7 @@ class AddClient extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              UsersCubit(userRepo: getIt.get<UserRepo>())..getAllUsers(),
+              UsersCubit(usersRepo: getIt.get<UserRepo>())..getAllUsers(),
         ),
         BlocProvider(
           create: (context) =>
@@ -143,101 +144,140 @@ class AddClient extends StatelessWidget {
                           controller: cubit.clientNameEnController,
                         ),
                         const SizedBox(height: 10),
-
-                        // Project Priority
-                        // Project Selection Dropdown
-                        // BlocBuilder<ProjectCubit, ProjectsState>(
-                        //   builder: (context, projectState) {
-                        //     // Extract the list of projects from the state
-                        //     final List<Project> projectsList = projectState
-                        //         .maybeWhen(
-                        //           loaded: (projects) => projects,
-                        //           orElse: () => [],
-                        //         );
-
-                        //     return CustomDropdownFormField<String>(
-                        //       text: appLocalizations.project,
-                        //       useValidator: false,
-                        //       labelText: projectState.maybeWhen(
-                        //         loading: () => appLocalizations.loading,
-                        //         orElse: () => appLocalizations.selectProject,
-                        //       ),
-                        //       value: cubit.projectId,
-                        //       // Disable dropdown while loading
-                        //       onChanged:
-                        //           (projectState is ProjectsStateLoading) ||
-                        //               isLoading
-                        //           ? null
-                        //           : (val) {
-                        //               cubit.setProject(val ?? '');
-                        //             },
-                        //       items: projectsList
-                        //           .fold<List<Project>>([], (list, element) {
-                        //             if (!list.any(
-                        //               (p) => p.id == element.id,
-                        //             )) {
-                        //               list.add(element);
-                        //             }
-                        //             return list;
-                        //           })
-                        //           .map((project) {
-                        //             return DropdownMenuItem<int>(
-                        //               value: project.id,
-                        //               child: Text(
-                        //                 context
-                        //                             .read<LocaleCubit>()
-                        //                             .currentLocale ==
-                        //                         'ar'
-                        //                     ? project.projectName
-                        //                     : project.projectNameEn,
-                        //                 style: TextStyle(
-                        //                   color: isDark
-                        //                       ? Colors.white
-                        //                       : Colors.black,
-                        //                 ),
-                        //               ),
-                        //             );
-                        //           })
-                        //           .toList(),
-                        //     );
-                        //   },
-                        // ),
-                        const SizedBox(height: 10),
                         BlocBuilder<UsersCubit, UsersState>(
-                          builder: (context, userState) {
-                            final List<UsersModel> usersList = userState
-                                .maybeWhen(
-                                  loaded: (users) => users,
-                                  orElse: () => [],
-                                );
+                          builder: (_, usersState) {
+                            final users = usersState.maybeWhen(
+                              loaded: (users) => users,
+                              orElse: () => <UsersModel>[],
+                            );
+
+                            final isLoading = usersState.maybeWhen(
+                              loading: () => true,
+                              orElse: () => false,
+                            );
 
                             return CustomDropdownFormField<int>(
-                              text: appLocalizations.sales,
-                              labelText: userState.maybeWhen(
-                                loading: () => appLocalizations.loading,
-                                orElse: () => appLocalizations.selectSalesName,
-                              ),
-
-                              // Disable dropdown while loading
-                              onChanged: (userState is Loading) || isLoading
+                              text: appLocalizations.salesName,
+                              labelText: appLocalizations.sales,
+                              hintText: appLocalizations.selectSalesName,
+                              items: isLoading
+                                  ? [
+                                      DropdownMenuItem<int>(
+                                        value: null,
+                                        child: Text(
+                                          appLocalizations.loading,
+                                        ), // Show "Loading..." text
+                                      ),
+                                    ]
+                                  : users
+                                        .map(
+                                          (u) => DropdownMenuItem<int>(
+                                            value: u.id,
+                                            child: Text(u.fullName),
+                                          ),
+                                        )
+                                        .toList(),
+                              onChanged: isLoading
                                   ? null
                                   : (val) {
-                                      cubit.setSales(val ?? 0);
+                                      if (val != null) {
+                                        cubit.setSales(val);
+                                      }
                                     },
-                              value: cubit.salesId,
-                              items: usersList.map((user) {
-                                return DropdownMenuItem<int>(
-                                  value: user.id,
-                                  child: Text(
-                                    user.fullName,
-                                    style: TextStyle(
-                                      color: isDark
-                                          ? Colors.white
-                                          : Colors.black,
+                            );
+                          },
+                        ),
+
+                        const SizedBox(height: 10),
+                        BlocBuilder<ProjectCubit, ProjectsState>(
+                          builder: (context, projectState) {
+                            final projectsList = projectState.maybeWhen(
+                              loaded: (projects) {
+                                return projects;
+                              },
+                              orElse: () {
+                                return <Project>[];
+                              },
+                            );
+
+                            // Show loading indicator while projects are loading
+                            if (projectState is ProjectsStateLoading) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    appLocalizations.project,
+                                    style: TextStyles.size14(
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                );
-                              }).toList(),
+                                  const SizedBox(height: 8),
+                                  const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ],
+                              );
+                            }
+
+                            // Show error message if there's an error
+                            if (projectState is ProjectsStateError) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    appLocalizations.project,
+                                    style: TextStyles.size14(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Error loading projects',
+                                    style: TextStyles.size14(color: Colors.red),
+                                  ),
+                                ],
+                              );
+                            }
+
+                            // Create dropdown items
+                            final dropdownItems = projectsList.map((project) {
+                              final isArabic = context
+                                  .read<LocaleCubit>()
+                                  .isArabic;
+                              final label = isArabic
+                                  ? project.projectName ?? ''
+                                  : project.projectNameEn ??
+                                        project.projectName ??
+                                        '';
+
+                              print(
+                                'Creating dropdown item: id=${project.id}, label=$label',
+                              );
+
+                              return DropdownItem<int>(
+                                label: label,
+                                value: project.id!, // must be non-null
+                              );
+                            }).toList();
+
+                            print(
+                              'Dropdown items count: ${dropdownItems.length}',
+                            );
+
+                            return AppMultiDropdown<int>(
+                              label: appLocalizations.project,
+                              hint: projectsList.isEmpty
+                                  ? 'No projects available'
+                                  : appLocalizations.selectProject,
+                              controller: cubit.projectController,
+                              items: dropdownItems,
+                              enabled: projectsList
+                                  .isNotEmpty, // Disable if no projects
+                              onSelectionChange: (selectedIds) {
+                                cubit.setProjects(selectedIds); // pass int list
+                              },
+                              prefixIcon: Icons.business,
+                              maxSelections: 5,
                             );
                           },
                         ),
@@ -245,6 +285,7 @@ class AddClient extends StatelessWidget {
 
                         // Primary Phone
                         CountryPhoneField(
+                          label: appLocalizations.phone,
                           hintText: appLocalizations.writePhoneNumber,
                           country: appLocalizations.selectCountry,
                           phoneController: cubit.phoneController,
@@ -253,6 +294,7 @@ class AddClient extends StatelessWidget {
 
                         // Secondary Phone (Optional)
                         CountryPhoneField(
+                          label: appLocalizations.secondaryPhone,
                           hintText: appLocalizations.writeOtherPhoneNumber,
                           country: appLocalizations.selectCountry,
                           phoneController: cubit.phoneController2,
@@ -267,7 +309,6 @@ class AddClient extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
 
-                        // Email
                         CustomTextFormField(
                           text: appLocalizations.email,
                           labelText: appLocalizations.writeEmail,
@@ -276,7 +317,6 @@ class AddClient extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
 
-                        // Budget
                         CustomTextFormField.number(
                           labelAboveField: appLocalizations.budget,
                           labelText: appLocalizations.budget,
@@ -301,7 +341,7 @@ class AddClient extends StatelessWidget {
                                   orElse: () => [],
                                 );
 
-                            return CustomDropdownFormField<String>(
+                            return CustomDropdownFormField<int>(
                               text: appLocalizations.sales,
                               labelText: userState.maybeWhen(
                                 loading: () => appLocalizations.loading,
@@ -312,12 +352,12 @@ class AddClient extends StatelessWidget {
                               onChanged: (userState is Loading) || isLoading
                                   ? null
                                   : (val) {
-                                      cubit.setChannel(val ?? '');
+                                      cubit.setChannel(val!);
                                     },
                               value: cubit.channel,
                               items: sourcesList.map((source) {
-                                return DropdownMenuItem<String>(
-                                  value: source.leadSourceId,
+                                return DropdownMenuItem<int>(
+                                  value: source.id,
                                   child: Text(
                                     source.sourceName,
                                     style: TextStyle(

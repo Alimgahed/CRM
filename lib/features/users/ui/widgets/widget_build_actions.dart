@@ -2,7 +2,6 @@ import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:flutter/material.dart';
 
 Widget buildActionMenu(
@@ -27,7 +26,7 @@ Widget buildActionMenu(
           ],
         ),
         content: Text(
-          "Are you sure you want to delete ${user.fullName ?? 'this user'}? This action cannot be undone.",
+          "Are you sure you want to delete ${user.fullName}? This action cannot be undone.",
         ),
         actions: [
           TextButton(onPressed: () => (context.pop()), child: Text(loc.cancel)),
@@ -72,10 +71,10 @@ Widget buildActionMenu(
                     ? Icons.block_outlined
                     : Icons.check_circle_outline,
                 size: 20,
-                color: user.isActive == true ? Colors.orange : Colors.green,
+                color: user.isActive == true ? warningColor : successColor,
               ),
               const SizedBox(width: 12),
-              Text(user.isActive == true ? "Deactivate" : "Activate"),
+              Text(user.isActive == true ? loc.deactivate : loc.activate),
             ],
           ),
         ),
@@ -86,7 +85,7 @@ Widget buildActionMenu(
             children: [
               const Icon(Icons.key_outlined, size: 20, color: Colors.blue),
               const SizedBox(width: 12),
-              const Text("View Permissions"),
+              Text(loc.permissions),
             ],
           ),
         ),

@@ -5,33 +5,33 @@ part 'unit_floor.g.dart';
 @JsonSerializable(explicitToJson: true)
 class UnitFloor {
   @JsonKey(name: 'floor_id')
-  final String floorId;
+  final int? floorId;
 
   @JsonKey(name: 'unit_id')
-  final String unitId;
+  final int? unitId;
 
-  final int floor;
+  final int? floor;
 
   @JsonKey(name: 'is_active')
-  final bool isActive;
+  final bool? isActive;
 
   @JsonKey(name: 'is_deleted')
-  final bool isDeleted;
+  final bool? isDeleted;
 
   @JsonKey(name: 'created_at')
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   @JsonKey(name: 'updated_at')
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   UnitFloor({
-    required this.floorId,
-    required this.unitId,
-    required this.floor,
-    required this.isActive,
-    required this.isDeleted,
-    required this.createdAt,
-    required this.updatedAt,
+    this.floorId,
+    this.unitId,
+    this.floor,
+    this.isActive,
+    this.isDeleted,
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory UnitFloor.fromJson(Map<String, dynamic> json) =>

@@ -1,3 +1,4 @@
+import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/features/Units/data/models/unit_model.dart';
 import 'package:crm/features/language/cubit.dart';
@@ -43,7 +44,7 @@ class UnitLocationSection extends StatelessWidget {
 
     return Column(
       children: [
-        buildInfoRow(locale.country, s(unit.countery)),
+        buildInfoRow(locale.country, s(unit.country)),
         buildInfoRow(locale.governorate, s(unit.governate)),
         buildInfoRow(locale.city, s(unit.city)),
         buildInfoRow(locale.district, s(unit.district)),
@@ -73,8 +74,6 @@ class _MapButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return InkWell(
       onTap: _handleLaunch,
       borderRadius: BorderRadius.circular(8),
@@ -82,21 +81,18 @@ class _MapButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: theme.primaryColor.withOpacity(0.08),
+          color: appColor.withOpacity(0.08),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: theme.primaryColor.withOpacity(0.2)),
+          border: Border.all(color: appColor.withOpacity(0.2)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.location_on_outlined, color: theme.primaryColor),
+            Icon(Icons.location_on_outlined, color: appColor),
             const SizedBox(width: 8),
             Text(
               label,
-              style: TextStyle(
-                color: theme.primaryColor,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(color: appColor, fontWeight: FontWeight.bold),
             ),
           ],
         ),

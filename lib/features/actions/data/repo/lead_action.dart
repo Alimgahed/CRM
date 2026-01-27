@@ -9,12 +9,11 @@ class LeadActionRepo {
 
   LeadActionRepo({required this.apiService});
 
-  Future<ApiResult<LeadActionsResponse>> getLeadActions(String leadId) async {
+  Future<ApiResult<LeadActionsResponse>> getLeadActions(int leadId) async {
     try {
-      final response = await apiService.getLeadAgentActions(leadId);
+      final response = await apiService.getLeadAgentActions({"ID": leadId});
       return ApiResult.success(response);
     } on DioException catch (e) {
-      // Backend returned an error response
       if (e.response?.data != null) {
         try {
           final errorModel = ApiErrorModel.fromJson(e.response!.data);

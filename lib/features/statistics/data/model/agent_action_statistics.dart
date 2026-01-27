@@ -1,7 +1,8 @@
-import 'package:crm/features/statistics/data/model/lead_model.dart';
+import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/statistics/data/model/monthly_state.dart';
 import 'package:crm/features/statistics/data/model/yearly_state.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'agent_action_statistics.g.dart';
 
 @JsonSerializable()

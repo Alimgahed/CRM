@@ -1,3 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crm/Core/helpers/shared_preference_contatnt.dart';
+import 'package:crm/Core/helpers/shared_preferences.dart';
+import 'package:crm/Core/network/api_constants.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/widgets/buttons.dart';
@@ -25,12 +29,12 @@ TextStyle smallStyle = TextStyle(
 
 // // ignore: camel_case_types
 // ignore: camel_case_types
+
 class infoChip extends StatelessWidget {
   final IconData icon;
   final String text;
   final Color color;
 
-  // Dictionary-match original function signature: infoChip(icon, text, color)
   const infoChip(this.icon, this.text, this.color, {super.key});
 
   @override
@@ -49,17 +53,15 @@ class infoChip extends StatelessWidget {
         children: [
           Icon(icon, size: 15.sp, color: color),
           SizedBox(width: 5.w),
-          Expanded(
-            child: Text(
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              text,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 10.sp,
-                height: 1.5,
-                color: color,
-              ),
+          Text(
+            text, // ✅ Fix: String comes first
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 10.sp,
+              height: 1.5,
+              color: color,
             ),
           ),
         ],
@@ -84,6 +86,7 @@ class StatusChip extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
       decoration: BoxDecoration(
         color: statusColor.withOpacity(0.15),
+        border: Border.all(color: statusColor.withOpacity(0.15)),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
@@ -464,6 +467,131 @@ class SuccessBottomSheet extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class AppCircleAvatar extends StatelessWidget {
+  final String? imageUrl;
+  final double radius;
+  final BoxDecoration? decoration;
+  final Color themeColor;
+  final IconData fallbackIcon;
+  final int? memCacheWidth;
+  final int? memCacheHeight;
+
+  const AppCircleAvatar({
+    super.key,
+    this.imageUrl,
+    this.radius = 30,
+    this.decoration,
+    this.themeColor = appColor,
+    this.fallbackIcon = Icons.person_rounded,
+    this.memCacheWidth,
+    this.memCacheHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Widget>(
+      future: _buildAvatarImage(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildLoadingAvatar();
+        }
+
+        if (snapshot.hasError) {
+          return _buildErrorAvatar();
+        }
+
+        return Container(
+          decoration:
+              decoration ??
+              BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: themeColor.withOpacity(0.2),
+                  width: 2,
+                ),
+              ),
+          child: snapshot.data ?? _buildFallbackAvatar(),
+        );
+      },
+    );
+  }
+
+  Future<Widget> _buildAvatarImage() async {
+    final bool hasPhoto = imageUrl != null && imageUrl!.isNotEmpty;
+
+    if (!hasPhoto) {
+      return _buildFallbackAvatar();
+    }
+
+    try {
+      final headers = await _getAuthHeaders();
+
+      return CachedNetworkImage(
+        imageUrl: ApiConstants.baseUrl + imageUrl!,
+        httpHeaders: headers,
+        memCacheWidth:
+            memCacheWidth ?? (radius * 2 * 3).toInt(), // 3x for sharp images
+        memCacheHeight: memCacheHeight ?? (radius * 2 * 3).toInt(),
+        imageBuilder: (context, imageProvider) => CircleAvatar(
+          radius: radius,
+          backgroundImage: imageProvider,
+          backgroundColor: Colors.transparent,
+        ),
+        placeholder: (context, url) => _buildLoadingAvatar(),
+        errorWidget: (context, url, error) => _buildErrorAvatar(),
+      );
+    } catch (e) {
+      return _buildErrorAvatar();
+    }
+  }
+
+  Future<Map<String, String>> _getAuthHeaders() async {
+    final token = await SharedPreferencesHelper.getSecureString(
+      SharedPreferenceKeys.userToken,
+    );
+    final refreshToken = await SharedPreferencesHelper.getSecureString(
+      SharedPreferenceKeys.refreshToken,
+    );
+
+    return {
+      "MobileSecret": 'zIwfTeW6BOphToEX2AdmRPgMZw==',
+      "Authorization": token,
+      "refresh_token": refreshToken,
+    };
+  }
+
+  Widget _buildFallbackAvatar() {
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: themeColor.withOpacity(0.1),
+      child: Icon(fallbackIcon, color: themeColor, size: radius * 1.06),
+    );
+  }
+
+  Widget _buildLoadingAvatar() {
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: themeColor.withOpacity(0.1),
+      child: SizedBox(
+        width: radius * 0.8,
+        height: radius * 0.8,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(themeColor),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorAvatar() {
+    return CircleAvatar(
+      radius: radius,
+      backgroundColor: warningColor.withOpacity(0.1),
+      child: Icon(Icons.error_outline, color: warningColor, size: radius * 0.8),
     );
   }
 }

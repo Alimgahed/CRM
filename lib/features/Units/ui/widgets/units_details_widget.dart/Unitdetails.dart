@@ -1,5 +1,6 @@
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/gloable.dart';
+import 'package:crm/features/Projects/ui/widgets/project_details.dart/shareble_widget.dart';
 import 'package:crm/features/Units/data/models/unit_model.dart';
 import 'package:crm/features/Units/ui/widgets/units_details_widget.dart/component_card.dart';
 import 'package:crm/features/Units/ui/widgets/units_details_widget.dart/details_section.dart';
@@ -89,8 +90,16 @@ class UnitDetails extends StatelessWidget {
             //   "https://picsum.photos/200/303",
             //   "https://picsum.photos/200/304",
             // ]),
-            // const SizedBox(height: itemSpacing),
-            // _buildAttachmentsSection(),
+            const SizedBox(height: itemSpacing),
+            if (unit.attachments != null && unit.attachments!.isNotEmpty)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: unit.attachments!.length,
+                itemBuilder: (context, index) {
+                  return AttachmentTile(attachment: unit.attachments![index]);
+                },
+              ),
             // const SizedBox(height: itemSpacing),
             OwnerInfo(unit: unit),
           ],

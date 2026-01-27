@@ -5,7 +5,6 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/attachment_section.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/details.dart';
-import 'package:crm/features/Projects/ui/widgets/project_details.dart/developer_section.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/payment_plan_section.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/price_section.dart';
 import 'package:crm/features/Projects/ui/widgets/project_details.dart/project_header.dart';

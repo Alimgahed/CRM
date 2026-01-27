@@ -12,7 +12,7 @@ part of 'api_services.dart';
 
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'https://hiestate.app/api/';
+    baseUrl ??= 'https://hiestate.app/';
   }
 
   final Dio _dio;
@@ -50,27 +50,25 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<List<Project>> getAllProjects() async {
+  Future<ProjectResponse> getAllProjects() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Project>>(
+    final _options = _setStreamType<ProjectResponse>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/projects',
+            'api/projects/listProjects',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Project> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ProjectResponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Project.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = ProjectResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -88,7 +86,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/dev-companies/listDevCompanies',
+            'api/dev-companies/listDevCompanies',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -115,7 +113,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/agent-actions/statistics',
+            'api/agent-actions/getAgentActionStatistics',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -142,7 +140,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/leads',
+            '/api//leads/getAll',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -170,7 +168,7 @@ class _ApiService implements ApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/leads',
+            'api//leads/saveLead',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -191,7 +189,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/users/getAll',
+            'api//users/getAll',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -218,7 +216,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/leads/leadsorce',
+            '/api/lead-sources',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -246,7 +244,7 @@ class _ApiService implements ApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/users/saveUser',
+            'api//users/saveUser',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -267,7 +265,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/roles/getAll',
+            'api//roles/getAll',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -285,28 +283,6 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<dynamic> editUser(int id, UsersModel body) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _options = _setStreamType<dynamic>(
-      Options(method: 'PUT', headers: _headers, extra: _extra)
-          .compose(
-            _dio.options,
-            '/users/saveUser/${id}',
-            queryParameters: queryParameters,
-            data: _data,
-          )
-          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
-    );
-    final _result = await _dio.fetch(_options);
-    final _value = _result.data;
-    return _value;
-  }
-
-  @override
   Future<UnitResponse> getAllUnit() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -316,7 +292,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/units',
+            'api//units/getAll',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -343,7 +319,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/owners',
+            'api//owners/getAll',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -370,7 +346,7 @@ class _ApiService implements ApiService {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/tasks',
+            'api//tasks',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -398,7 +374,7 @@ class _ApiService implements ApiService {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/tasks',
+            'api//tasks',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -410,16 +386,19 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<LeadActionsResponse> getLeadAgentActions(String leadId) async {
+  Future<LeadActionsResponse> getLeadAgentActions(
+    Map<String, dynamic> body,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _options = _setStreamType<LeadActionsResponse>(
-      Options(method: 'GET', headers: _headers, extra: _extra)
+      Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/api/v1/leads/agent-actions/${leadId}',
+            'api/agent-actions/getAgentActionByLeadID',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -433,6 +412,55 @@ class _ApiService implements ApiService {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
+    return _value;
+  }
+
+  @override
+  Future<CompanyActionsResponse> getCompanyActions() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CompanyActionsResponse>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'api//companyActions/getAllCompanyActions',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CompanyActionsResponse _value;
+    try {
+      _value = CompanyActionsResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<dynamic> addAgentAction(LeadActionModel body) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<dynamic>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'api/agent-actions/saveAgentAction',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
     return _value;
   }
 

@@ -9,7 +9,7 @@ part of 'statistics_response.dart';
 AgentActionStatisticsResponse _$AgentActionStatisticsResponseFromJson(
   Map<String, dynamic> json,
 ) => AgentActionStatisticsResponse(
-  message: json['message'] as String,
+  message: json['message'] as String?,
   data: AgentActionStatisticsData.fromJson(
     json['data'] as Map<String, dynamic>,
   ),

@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
           children: [
             // Header is usually static or has its own logic, move outside the main data builder
             ReusableHeader(
-              height: 140.h,
+              height: 190.h,
               child: HeaderWidget(userName: userName),
             ),
 

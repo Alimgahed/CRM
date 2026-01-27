@@ -8,7 +8,6 @@ part of 'lead_actions_response.dart';
 
 LeadActionsResponse _$LeadActionsResponseFromJson(Map<String, dynamic> json) =>
     LeadActionsResponse(
-      message: json['message'] as String?,
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => LeadActionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -16,4 +15,4 @@ LeadActionsResponse _$LeadActionsResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$LeadActionsResponseToJson(
   LeadActionsResponse instance,
-) => <String, dynamic>{'message': instance.message, 'data': instance.data};
+) => <String, dynamic>{'data': instance.data};

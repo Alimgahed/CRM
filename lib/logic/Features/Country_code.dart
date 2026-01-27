@@ -1,11 +1,34 @@
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/theming/styles.dart';
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class _FieldLabel extends StatelessWidget {
+  final String text;
+  final bool isDark;
+  const _FieldLabel({required this.text, required this.isDark});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: 4),
+    child: Text(
+      text,
+      style: TextStyles.size16(
+        fontWeight: FontWeight.w400,
+        color: isDark ? darkText : Colors.black87,
+      ),
+    ),
+  );
+}
 
 class CountryPhoneField extends StatefulWidget {
   final TextEditingController phoneController;
   final String hintText;
   final String country;
   final bool enabled;
+  final String label;
 
   const CountryPhoneField({
     super.key,
@@ -13,6 +36,7 @@ class CountryPhoneField extends StatefulWidget {
     required this.hintText,
     required this.country,
     this.enabled = true,
+    required this.label,
   });
 
   @override
@@ -98,81 +122,90 @@ class _CountryPhoneFieldState extends State<CountryPhoneField> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
 
-    return TextFormField(
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return 'Phone number is required';
-        }
-        if (value.trim().length < 10) {
-          return 'Phone number must be at least 10 digits';
-        }
-        return null;
-      },
-      enabled: widget.enabled,
-      controller: widget.phoneController,
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-        filled: true, // ← THIS IS THE FIX!
-        fillColor: isDark ? darkFieldColor : fieldColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: appColor, width: 2),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.red, width: 1),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.red, width: 2),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 16,
-        ),
-        hintText: widget.hintText,
-        hintStyle: TextStyle(
-          color: isDark ? darkTextSecondary.withOpacity(0.5) : Colors.grey,
-        ),
-        prefixIcon: GestureDetector(
-          onTap: _showCountryDialog,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(selectedFlag, style: const TextStyle(fontSize: 20)),
-                const SizedBox(width: 6),
-                Text(
-                  selectedCode,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white : secondaryTextColor,
-                  ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _FieldLabel(text: widget.label, isDark: isDark),
+        SizedBox(height: 8),
+
+        TextFormField(
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return appLocalizations.requiredField;
+            }
+
+            return null;
+          },
+          enabled: widget.enabled,
+          controller: widget.phoneController,
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(
+            filled: true, // ← THIS IS THE FIX!
+            fillColor: isDark ? darkFieldColor : fieldColor,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: appColor, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 16,
+            ),
+            hintText: widget.hintText,
+            hintStyle: TextStyle(
+              color: isDark ? darkTextSecondary.withOpacity(0.5) : Colors.grey,
+            ),
+            prefixIcon: GestureDetector(
+              onTap: _showCountryDialog,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(selectedFlag, style: const TextStyle(fontSize: 20)),
+                    const SizedBox(width: 6),
+                    Text(
+                      selectedCode,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white : secondaryTextColor,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      color: isDark ? Colors.white70 : secondaryTextColor,
+                    ),
+                  ],
                 ),
-                Icon(
-                  Icons.arrow_drop_down,
-                  color: isDark ? Colors.white70 : secondaryTextColor,
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

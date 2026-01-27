@@ -1,5 +1,4 @@
 import 'package:crm/features/auth/login/data/model/users_model.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_response.g.dart';

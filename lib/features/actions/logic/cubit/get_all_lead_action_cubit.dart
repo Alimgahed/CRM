@@ -9,7 +9,7 @@ class ActionCubit extends Cubit<LeadActionState> {
   ActionCubit({required this.leadActionRepo})
     : super(const LeadActionState.initial());
 
-  Future<void> getLeadActions({required String leadId}) async {
+  Future<void> getLeadActions({required int leadId}) async {
     emit(const LeadActionState.loading());
 
     final result = await leadActionRepo.getLeadActions(leadId);

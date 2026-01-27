@@ -1,5 +1,8 @@
+import 'package:crm/features/language/cubit.dart';
+import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/theming/styles.dart';
@@ -9,6 +12,7 @@ import 'package:crm/Core/theming/styles.dart';
 /// ============================
 
 import 'package:intl/intl.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 
 // ============= Number Formatter for Thousands Separator =============
 class ThousandsSeparatorInputFormatter extends TextInputFormatter {
@@ -332,7 +336,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -402,7 +408,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 horizontal: 16,
               ),
             ),
-            validator: widget.useValidator ? _getValidator() : null,
+            validator: widget.useValidator
+                ? _getValidator(appLocalizations)
+                : null,
             onChanged: widget.onChanged,
             onFieldSubmitted: widget.onFieldSubmitted,
             onEditingComplete: widget.onEditingComplete,
@@ -476,11 +484,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return null;
   }
 
-  FormFieldValidator<String>? _getValidator() {
+  FormFieldValidator<String>? _getValidator(
+    AppLocalizations? appLocalizations,
+  ) {
     return widget.validator ??
         (value) {
           if (value == null || value.trim().isEmpty) {
-            return "This field cannot be empty";
+            return appLocalizations!.requiredField;
           }
           return null;
         };
@@ -583,7 +593,7 @@ class _IconPrefix extends StatelessWidget {
 /// ============================
 /// DROPDOWN FORM FIELD
 /// ============================
-class CustomDropdownFormField<T> extends StatelessWidget {
+class CustomDropdownFormField<T extends Object> extends StatelessWidget {
   final String labelText;
 
   final String? text;
@@ -614,6 +624,9 @@ class CustomDropdownFormField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
+      (cubit) => AppLocalizations(cubit.currentLocale),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -629,7 +642,8 @@ class CustomDropdownFormField<T> extends StatelessWidget {
             onChanged: readOnly ? null : onChanged,
             validator: useValidator
                 ? validator ??
-                      (val) => val == null ? "This field cannot be empty" : null
+                      (val) =>
+                          val == null ? appLocalizations.requiredField : null
                 : null,
             decoration: InputDecoration(
               labelText: labelText,
@@ -758,4 +772,143 @@ class PopupMenuItemModel {
     this.iconColor,
     this.onTap,
   });
+}
+
+class AppMultiDropdown<T extends Object> extends StatelessWidget {
+  final String label;
+  final String hint;
+  final List<DropdownItem<T>> items;
+  final MultiSelectController<T>? controller;
+  final void Function(List<T>)? onSelectionChange;
+  final String? Function(List<T>?)? validator;
+  final bool enabled;
+  final bool searchEnabled;
+  final int? maxSelections;
+  final IconData? prefixIcon;
+  final bool useValidator;
+
+  const AppMultiDropdown({
+    super.key,
+    required this.label,
+    required this.hint,
+    required this.items,
+    this.controller,
+    this.onSelectionChange,
+    this.validator,
+    this.enabled = true,
+    this.searchEnabled = true,
+    this.maxSelections,
+    this.prefixIcon,
+    this.useValidator = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ---------------- Label ----------------
+        if (label.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              label,
+              style: TextStyles.size14(
+                fontWeight: FontWeight.w600,
+                color: isDark ? darkText : primaryTextColor,
+              ),
+            ),
+          ),
+
+        // ---------------- Dropdown ----------------
+        MultiDropdown<T>(
+          controller: controller,
+          items: items,
+          enabled: enabled,
+          searchEnabled: searchEnabled,
+          singleSelect: false,
+
+          // ✅ Adapter: DropdownItem<T> → T
+          // Inside AppMultiDropdown widget
+          onSelectionChange: onSelectionChange == null
+              ? null
+              : (selectedItems) {
+                  // ✅ CHANGED: Extract value from DropdownItem
+                  final values = selectedItems.map((item) => item).toList();
+                  onSelectionChange!(values);
+                },
+
+          // ---------------- Chip decoration ----------------
+          chipDecoration: ChipDecoration(
+            backgroundColor: appColor.withOpacity(0.1),
+            wrap: true,
+            runSpacing: 6,
+            spacing: 6,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: appColor.withOpacity(0.3)),
+            labelStyle: TextStyles.size12(
+              fontWeight: FontWeight.w600,
+              color: appColor,
+            ),
+            deleteIcon: Icon(Icons.close, size: 14, color: appColor),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          ),
+
+          // ---------------- Field decoration ----------------
+          fieldDecoration: FieldDecoration(
+            hintText: hint,
+            hintStyle: TextStyles.size14(color: secondaryTextColor),
+            prefixIcon: prefixIcon != null
+                ? Icon(prefixIcon, color: appColor, size: 20)
+                : null,
+            suffixIcon: Icon(
+              Icons.arrow_drop_down,
+              color: isDark ? darkText : primaryTextColor,
+            ),
+            backgroundColor: isDark ? darkFieldColor : fieldColor,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: isDark ? darkBorder : borderColor),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: appColor, width: 2),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: isDark
+                    ? darkBorder.withOpacity(0.5)
+                    : borderColor.withOpacity(0.5),
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          ),
+
+          // ---------------- Dropdown decoration ----------------
+          dropdownDecoration: DropdownDecoration(
+            backgroundColor: isDark ? darkCardColor : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            marginTop: 2,
+            elevation: 8,
+            maxHeight: 350,
+          ),
+
+          // ---------------- Dropdown item decoration ----------------
+          dropdownItemDecoration: DropdownItemDecoration(
+            selectedBackgroundColor: appColor.withOpacity(0.1),
+            backgroundColor: Colors.transparent,
+            selectedIcon: Icon(Icons.check_circle, color: appColor, size: 20),
+            disabledIcon: Icon(
+              Icons.circle_outlined,
+              color: isDark ? darkBorder : borderColor,
+              size: 20,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

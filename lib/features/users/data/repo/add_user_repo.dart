@@ -2,7 +2,6 @@ import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_services.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
-import 'package:crm/features/users/data/model/add_user_model.dart';
 import 'package:dio/dio.dart';
 
 class AddUserRepo {

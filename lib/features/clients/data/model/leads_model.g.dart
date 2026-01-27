@@ -7,38 +7,43 @@ part of 'leads_model.dart';
 // **************************************************************************
 
 Lead _$LeadFromJson(Map<String, dynamic> json) => Lead(
-  leadId: json['lead_id'] as String?,
-  fullName: json['full_name'] as String,
-  fullNameEn: json['full_name_en'] as String,
-  email: json['email'] as String,
-  phone: json['phone'] as String,
+  id: (json['id'] as num?)?.toInt(),
+  leadProjects: (json['lead_projects'] as List<dynamic>?)
+      ?.map((e) => Project.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  projectIds: (json['project_ids'] as List<dynamic>?)
+      ?.map((e) => (e as num).toInt())
+      .toList(),
+  fullName: json['full_name'] as String?,
+  fullNameEn: json['full_name_en'] as String?,
+  email: json['email'] as String?,
+  phone: json['phone'] as String?,
   secondaryPhone: json['secondary_phone'] as String?,
-  jobTitle: json['job_title'] as String,
+  jobTitle: json['job_title'] as String?,
   budget: json['budget'] as num?,
-  preferredContactMethod: json['preferred_contact_method'] as String,
-  status: (json['status'] as num).toInt(),
-  leadSourceId: json['lead_source_id'] as String,
-  assignedToId: json['assigned_to_id'] as String?,
-  isDeleted: json['is_deleted'] as bool,
+  preferredContactMethod: json['preferred_contact_method'] as String?,
+  status: (json['status'] as num?)?.toInt(),
+  leadSourceId: (json['lead_source_id'] as num?)?.toInt(),
+  assignedToId: (json['assigned_to_id'] as num?)?.toInt(),
+  isDeleted: json['is_deleted'] as bool?,
   createdAt: json['created_at'] as String?,
   updatedAt: json['updated_at'] as String?,
-  companyId: json['company_id'] as String?,
+  companyId: (json['company_id'] as num?)?.toInt(),
   leadSource: json['lead_source'] == null
       ? null
       : LeadSource.fromJson(json['lead_source'] as Map<String, dynamic>),
-  attchments: (json['attchments'] as List<dynamic>?)
+  attachments: (json['attchments'] as List<dynamic>?)
       ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
       .toList(),
   contracts: (json['contracts'] as List<dynamic>?)
       ?.map((e) => Attachment.fromJson(e as Map<String, dynamic>))
       .toList(),
-  projectIds: (json['project_ids'] as List<dynamic>?)
-      ?.map((e) => e as String)
-      .toList(),
 );
 
 Map<String, dynamic> _$LeadToJson(Lead instance) => <String, dynamic>{
-  'lead_id': instance.leadId,
+  'id': instance.id,
+  'lead_projects': instance.leadProjects?.map((e) => e.toJson()).toList(),
+  'project_ids': instance.projectIds,
   'full_name': instance.fullName,
   'full_name_en': instance.fullNameEn,
   'email': instance.email,
@@ -55,7 +60,6 @@ Map<String, dynamic> _$LeadToJson(Lead instance) => <String, dynamic>{
   'updated_at': instance.updatedAt,
   'company_id': instance.companyId,
   'lead_source': instance.leadSource?.toJson(),
-  'attchments': instance.attchments?.map((e) => e.toJson()).toList(),
+  'attchments': instance.attachments?.map((e) => e.toJson()).toList(),
   'contracts': instance.contracts?.map((e) => e.toJson()).toList(),
-  'project_ids': instance.projectIds,
 };

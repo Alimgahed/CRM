@@ -8,6 +8,7 @@ class LeadsResponse {
   final List<Lead> data;
   final int total;
   final int page;
+
   @JsonKey(name: 'page_size')
   final int pageSize;
   @JsonKey(name: 'total_pages')

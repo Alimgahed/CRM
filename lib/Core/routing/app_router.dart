@@ -11,6 +11,8 @@ import 'package:crm/features/owners/ui/screens/allOwner.dart';
 import 'package:crm/features/statistics/logic/statistics_cubit.dart';
 import 'package:crm/features/tasks/logic/cubit/task_cubit.dart';
 import 'package:crm/features/tasks/ui/screens/alltasks_screen.dart';
+import 'package:crm/features/users/data/repo/add_user_repo.dart';
+import 'package:crm/features/users/logic/cubit/edit_user_cubit.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:crm/features/users/ui/screens/User_managment.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +22,6 @@ import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/Projects/ui/screens/Allprojects.dart';
 import 'package:crm/features/Projects/ui/screens/ProjectDetails.dart';
 import 'package:crm/features/developers/logic/cubit/developer_cubit.dart';
-import 'package:crm/features/developers/ui/screens/AllDeveloper.dart';
 import 'package:crm/features/home/ui/screens/layout.dart';
 import 'package:crm/features/auth/login/ui/screens/Login.dart';
 import 'package:crm/features/auth/forget_password/ui/forget_password.dart';
@@ -89,8 +90,18 @@ class AppRouter {
         );
       case Routes.usersmanamgment:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<UsersCubit>()..getAllUsers(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => getIt<UsersCubit>()..getAllUsers(),
+              ),
+              BlocProvider(
+                create: (context) => EditUserCubit(
+                  editUserRepo: getIt<AddUserRepo>(),
+                  usersCubit: getIt<UsersCubit>(), // Pass UsersCubit dependency
+                ),
+              ),
+            ],
             child: const UserManagement(),
           ),
         );

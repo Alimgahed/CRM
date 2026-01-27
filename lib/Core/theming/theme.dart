@@ -12,7 +12,7 @@ class AppTheme {
       fontFamily: 'Alexandria',
 
       // Color scheme
-      colorScheme: const ColorScheme.light(
+      colorScheme: ColorScheme.light(
         primary: appColor,
         surface: Colors.white,
         onPrimary: Colors.black,

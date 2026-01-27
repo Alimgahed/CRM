@@ -1,6 +1,7 @@
 import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/theming/Icons.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/constant/enums/enums..dart';
 import 'package:crm/features/language/cubit.dart';
@@ -46,12 +47,12 @@ class ClientsListScreen extends StatelessWidget {
               lead: currentLead,
               onCall: () {
                 context.read<CommunicationCubit>().makePhoneCall(
-                  currentLead.phone,
+                  currentLead.phone ?? '',
                 );
               },
               onWhatsapp: () {
                 context.read<CommunicationCubit>().whatsapp(
-                  phone: currentLead.phone,
+                  phone: currentLead.phone ?? "",
                 );
               },
             ),
@@ -104,7 +105,7 @@ class ClientCard extends StatelessWidget {
     );
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final statusColor = getStatusColor(lead.status);
+    final statusColor = getStatusColor(lead.status ?? 0);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -121,7 +122,7 @@ class ClientCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  lead.fullName,
+                  lead.fullName ?? "",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -142,44 +143,46 @@ class ClientCard extends StatelessWidget {
 
           // Phone
           const SizedBox(height: 4),
-          InfoRow(
-            icon: Icons.phone_outlined,
-            text: lead.phone,
-            color: isDark ? Colors.white : secondaryTextColor,
+          Row(
+            children: [
+              infoChip(
+                Icons.phone_outlined,
+                lead.phone ?? "",
+                isDark ? Colors.white : secondaryTextColor,
+              ),
+              Spacer(),
+              infoChip(
+                Icons.calendar_month_outlined,
+                lead.createdAt!.toFormattedDate(appLocalizations),
+                isDark ? Colors.white : secondaryTextColor,
+              ),
+            ],
           ),
+          const SizedBox(height: 8),
 
           if (lead.secondaryPhone != null &&
               lead.secondaryPhone!.isNotEmpty) ...[
             const SizedBox(height: 4),
-            InfoRow(
-              icon: Icons.phone_android_outlined,
-              text: lead.secondaryPhone!,
-              color: isDark ? Colors.white : secondaryTextColor,
+            infoChip(
+              Icons.phone_android_outlined,
+              lead.secondaryPhone!,
+              isDark ? Colors.white : secondaryTextColor,
             ),
           ],
 
-          // Date
-          const SizedBox(height: 4),
-          InfoRow(
-            icon: Icons.calendar_month_outlined,
-            text: lead.createdAt!.toFormattedDate(appLocalizations),
-            color: isDark ? Colors.white : secondaryTextColor,
-          ),
-
           const SizedBox(height: 8),
 
-          // Project Count, Lead Source, Status
           Row(
             children: [
-              if (lead.projectIds != null)
+              if (lead.leadProjects != null)
                 Tag(
                   color: isDark ? darkColor : divColor,
                   iconColor: isDark ? Colors.white : secondaryTextColor,
                   icon: Icons.business_sharp,
                   text:
-                      '${lead.projectIds!.length} ${lead.projectIds!.length == 1 ? 'Project' : 'Projects'}',
+                      '${lead.leadProjects!.length} ${lead.leadProjects!.length == 1 ? 'Project' : 'Projects'}',
                 ),
-              if (lead.projectIds != null) const SizedBox(width: 10),
+              if (lead.leadProjects != null) const SizedBox(width: 10),
 
               if (lead.leadSource != null)
                 Tag(
@@ -191,7 +194,7 @@ class ClientCard extends StatelessWidget {
               const Spacer(),
 
               StatusTag(
-                status: getStatusText(lead.status, appLocalizations),
+                status: getStatusText(lead.status ?? 0, appLocalizations),
                 color: statusColor,
               ),
             ],
@@ -222,9 +225,18 @@ class ClientCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  ActionButton(icon: Icons.call_outlined, onTap: onCall),
+                  ActionButton(
+                    icon: MyFlutterApp.whatsapp,
+                    onTap: onWhatsapp,
+                    color: Colors.green,
+                  ),
                   const SizedBox(width: 10),
-                  ActionButton(icon: MyFlutterApp.whatsapp, onTap: onWhatsapp),
+
+                  ActionButton(
+                    icon: Icons.call_outlined,
+                    onTap: onCall,
+                    color: Colors.green,
+                  ),
                 ],
               );
             },
@@ -236,28 +248,6 @@ class ClientCard extends StatelessWidget {
 }
 
 // Small, efficient reusable UI widgets
-class InfoRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final Color? color;
-  const InfoRow({
-    super.key,
-    required this.icon,
-    required this.text,
-    this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 18, color: color),
-        const SizedBox(width: 5),
-        Text(text, style: TextStyle(color: color)),
-      ],
-    );
-  }
-}
 
 class Tag extends StatelessWidget {
   final IconData icon;

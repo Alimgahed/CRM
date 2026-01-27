@@ -292,7 +292,7 @@ class _DeveloperCard extends StatelessWidget {
           if (developer.contactPerson != null)
             _buildInfoRow(
               Icons.person_outline,
-              lang.contactPerson ?? 'Contact Person',
+              lang.contactPerson,
               developer.contactPerson!,
               isDark,
             ),
@@ -300,7 +300,7 @@ class _DeveloperCard extends StatelessWidget {
             heightSpace(10),
             _buildInfoRow(
               Icons.phone_outlined,
-              lang.contactNumber ?? 'Contact Number',
+              lang.contactNumber,
               developer.contactNumber!,
               isDark,
             ),
@@ -309,8 +309,8 @@ class _DeveloperCard extends StatelessWidget {
             heightSpace(10),
             _buildInfoRow(
               Icons.apartment_outlined,
-              lang.projects ?? 'Projects',
-              '${developer.projectCount} ${lang.projects ?? 'Projects'}',
+              lang.projects,
+              '${developer.projectCount} ${lang.projects}',
               isDark,
               valueColor: appColor,
             ),
@@ -378,7 +378,7 @@ class _DeveloperCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '${lang.projects ?? 'Projects'} (${projects.length})',
+            '${lang.projects} (${projects.length})',
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w600,
@@ -495,7 +495,7 @@ class _DeveloperCard extends StatelessWidget {
         children: [
           Expanded(
             child: CustomButton(
-              text: lang.edit ?? 'Edit',
+              text: lang.edit,
               height: 44.h,
               onPressed: () {
                 // Handle edit
@@ -505,7 +505,6 @@ class _DeveloperCard extends StatelessWidget {
           widthSpace(12),
           ActionButton(
             icon: Icons.delete_outline,
-            color: Colors.red,
             onTap: () {
               // Handle delete
             },

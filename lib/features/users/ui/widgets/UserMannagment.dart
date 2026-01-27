@@ -2,11 +2,7 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:crm/features/users/ui/widgets/header_section..dart';
-import 'package:crm/features/users/ui/widgets/meta_data_widget.dart';
-import 'package:crm/features/users/ui/widgets/role_and_permission.dart';
-import 'package:crm/features/users/ui/widgets/widgt_details_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,15 +44,14 @@ class UserManagementWidget extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          children: [
-            buildHeaderSection(onEdit!, user, context, isDark, loc),
-            const Divider(height: 1),
-            buildDetailsSection(isDark, loc, user),
-            // buildRolePermissionsSection(user, context, isDark, loc, () {}),
-            const Divider(height: 1),
-            buildMetadataSection(user, isDark, loc),
-          ],
+        child: UserHeaderSection(
+          onEdit: onEdit!,
+          onDelete: onDelete!,
+          onViewPermissions: onViewPermissions!,
+          onToggleStatus: onToggleStatus!,
+          user: user,
+          isDark: isDark,
+          loc: loc,
         ),
       ),
     );

@@ -24,22 +24,19 @@ class DetailsWidget extends StatelessWidget {
     final List<_DetailItem> items = [
       _DetailItem(
         appLocalizations.status,
-        getStatusText(lead.status, appLocalizations),
+        getStatusText(lead.status ?? 0, appLocalizations),
       ),
-      _DetailItem(
-        appLocalizations.projectCount,
-        _getProjectCountText(lead.projectIds, appLocalizations),
-      ),
-      _DetailItem(appLocalizations.jobTitle, lead.jobTitle),
-      _DetailItem(appLocalizations.email, lead.email),
-      _DetailItem(appLocalizations.phone, lead.phone),
+      // _DetailItem(
+      //   appLocalizations.projectCount,
+      //   _getProjectCountText(lead.projectIds, appLocalizations),
+      // ),
+      _DetailItem(appLocalizations.jobTitle, lead.jobTitle ?? ''),
+      _DetailItem(appLocalizations.email, lead.email ?? ""),
+      _DetailItem(appLocalizations.phone, lead.phone ?? ""),
       if (lead.secondaryPhone?.isNotEmpty ?? false)
         _DetailItem(appLocalizations.secondaryPhone, lead.secondaryPhone!),
       _DetailItem(appLocalizations.channel, lead.leadSource?.sourceName ?? ""),
-      _DetailItem(
-        appLocalizations.assignedTo,
-        lead.assignedToId ?? appLocalizations.notAssigned,
-      ),
+      _DetailItem(appLocalizations.assignedTo, lead.assignedToId.toString()),
       _DetailItem(
         appLocalizations.creationDate,
         lead.createdAt!.toFormattedDate(appLocalizations),
@@ -64,13 +61,6 @@ class DetailsWidget extends StatelessWidget {
         }).toList(),
       ),
     );
-  }
-
-  // Helper for cleaner logic
-  String _getProjectCountText(List? projects, AppLocalizations loc) {
-    if (projects == null || projects.isEmpty) return '0';
-    final count = projects.length;
-    return '$count ${count == 1 ? loc.project : loc.projects}';
   }
 }
 

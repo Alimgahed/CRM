@@ -1,5 +1,6 @@
 import 'package:crm/Core/helpers/shared_preference_contatnt.dart';
 import 'package:crm/Core/helpers/shared_preferences.dart';
+import 'package:crm/constant/app_permissions/permissions.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,15 @@ class UserService {
   /// Get company ID
   int? get companyId => _currentUser?.companyId;
 
+  /// Check if super admin
+  bool get isSuperAdmin =>
+      _currentUser?.permissions?.containsKey(AppPermissions.superAdmin) ??
+      false;
+
+  /// Check if system admin
+  bool get isSysAdmin =>
+      _currentUser?.permissions?.containsKey(AppPermissions.sysAdmin) ?? false;
+
   /// Initialize - Load user from storage on app start
   Future<void> init() async {
     await loadUser();
@@ -46,6 +56,7 @@ class UserService {
       if (json != null) {
         _currentUser = UsersModel.fromJson(json);
         debugPrint('✅ User loaded: ${_currentUser?.fullName}');
+        debugPrint('📋 Permissions: ${_currentUser?.permissions}');
         return _currentUser;
       }
     } catch (e) {
@@ -64,22 +75,90 @@ class UserService {
     debugPrint('✅ User saved: ${user.fullName}');
   }
 
+  // ==================== PERMISSION CHECKS ====================
+
   /// Check if user has specific permission
   bool hasPermission(String permission) {
-    return _currentUser?.hasPermission(permission) ?? false;
+    if (_currentUser == null) return false;
+    return _currentUser!.hasPermission(permission);
   }
 
   /// Check multiple permissions (user must have ALL)
-  bool hasAllPermissions(List<String> permissions) {
-    if (_currentUser == null) return false;
-    return permissions.every((p) => _currentUser!.hasPermission(p));
-  }
 
   /// Check multiple permissions (user must have ANY)
   bool hasAnyPermission(List<String> permissions) {
     if (_currentUser == null) return false;
-    return permissions.any((p) => _currentUser!.hasPermission(p));
+    return _currentUser!.permissions!.keys.any(
+      (key) => permissions.contains(key),
+    );
   }
+
+  // ==================== MODULE-SPECIFIC PERMISSIONS ====================
+
+  // Users
+  bool get canViewUsers => hasPermission(AppPermissions.viewUser);
+  bool get canCreateUsers => hasPermission(AppPermissions.createUser);
+  bool get canUpdateUsers => hasPermission(AppPermissions.updateUser);
+  bool get canDeleteUsers => hasPermission(AppPermissions.deleteUser);
+  bool get canManageUsers => hasAnyPermission([
+    AppPermissions.createUser,
+    AppPermissions.updateUser,
+    AppPermissions.deleteUser,
+  ]);
+
+  // Projects
+  bool get canViewProjects => hasPermission(AppPermissions.viewProject);
+  bool get canCreateProjects => hasPermission(AppPermissions.createProject);
+  bool get canUpdateProjects => hasPermission(AppPermissions.updateProject);
+  bool get canDeleteProjects => hasPermission(AppPermissions.deleteProject);
+  bool get canManageProjects => hasAnyPermission([
+    AppPermissions.createProject,
+    AppPermissions.updateProject,
+    AppPermissions.deleteProject,
+  ]);
+
+  // Leads
+  bool get canViewLeads => hasPermission(AppPermissions.viewLead);
+  bool get canCreateLeads => hasPermission(AppPermissions.createLead);
+  bool get canUpdateLeads => hasPermission(AppPermissions.updateLead);
+  bool get canDeleteLeads => hasPermission(AppPermissions.deleteLead);
+  bool get canManageLeads => hasAnyPermission([
+    AppPermissions.createLead,
+    AppPermissions.updateLead,
+    AppPermissions.deleteLead,
+  ]);
+
+  // Customers
+  bool get canViewCustomers => hasPermission(AppPermissions.viewCustomer);
+  bool get canCreateCustomers => hasPermission(AppPermissions.createCustomer);
+  bool get canUpdateCustomers => hasPermission(AppPermissions.updateCustomer);
+  bool get canDeleteCustomers => hasPermission(AppPermissions.deleteCustomer);
+
+  // Sales
+  bool get canViewSales => hasPermission(AppPermissions.viewSale);
+  bool get canCreateSales => hasPermission(AppPermissions.createSale);
+  bool get canUpdateSales => hasPermission(AppPermissions.updateSale);
+  bool get canDeleteSales => hasPermission(AppPermissions.deleteSale);
+
+  // Rentals
+  bool get canViewRentals => hasPermission(AppPermissions.viewRental);
+  bool get canCreateRentals => hasPermission(AppPermissions.createRental);
+  bool get canUpdateRentals => hasPermission(AppPermissions.updateRental);
+  bool get canDeleteRentals => hasPermission(AppPermissions.deleteRental);
+
+  // Units
+  bool get canViewUnits => hasPermission(AppPermissions.viewUnit);
+  bool get canCreateUnits => hasPermission(AppPermissions.createUnit);
+  bool get canUpdateUnits => hasPermission(AppPermissions.updateUnit);
+  bool get canDeleteUnits => hasPermission(AppPermissions.deleteUnit);
+
+  // Tasks
+  bool get canViewTasks => hasPermission(AppPermissions.viewTask);
+  bool get canCreateTasks => hasPermission(AppPermissions.createTask);
+  bool get canUpdateTasks => hasPermission(AppPermissions.updateTask);
+  bool get canDeleteTasks => hasPermission(AppPermissions.deleteTask);
+
+  // ==================== USER MANAGEMENT ====================
 
   /// Update user data
   Future<void> updateUser(UsersModel user) async {
@@ -93,6 +172,9 @@ class UserService {
     await SharedPreferencesHelper.deleteSecureString(
       SharedPreferenceKeys.userToken,
     );
+    await SharedPreferencesHelper.deleteSecureString(
+      SharedPreferenceKeys.refreshToken,
+    );
     debugPrint('✅ User cleared');
   }
 
@@ -103,7 +185,14 @@ class UserService {
     );
   }
 
-  /// Save token
+  /// Get refresh token
+  Future<String> getRefreshToken() async {
+    return await SharedPreferencesHelper.getSecureString(
+      SharedPreferenceKeys.refreshToken,
+    );
+  }
+
+  /// Save tokens
   Future<void> saveToken(String token, String refreshToken) async {
     await SharedPreferencesHelper.setSecureString(
       SharedPreferenceKeys.userToken,
@@ -113,5 +202,24 @@ class UserService {
       SharedPreferenceKeys.refreshToken,
       refreshToken,
     );
+  }
+
+  /// Check if user can access a route/screen
+  bool canAccessRoute(String route) {
+    // Map routes to permissions
+    final routePermissions = {
+      '/users': AppPermissions.viewUser,
+      '/projects': AppPermissions.viewProject,
+      '/leads': AppPermissions.viewLead,
+      '/customers': AppPermissions.viewCustomer,
+      '/sales': AppPermissions.viewSale,
+      '/rentals': AppPermissions.viewRental,
+      '/units': AppPermissions.viewUnit,
+      '/tasks': AppPermissions.viewTask,
+    };
+
+    final permission = routePermissions[route];
+    if (permission == null) return true; // No permission required
+    return hasPermission(permission);
   }
 }

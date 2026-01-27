@@ -5,10 +5,9 @@ part 'lead_actions_response.g.dart';
 
 @JsonSerializable()
 class LeadActionsResponse {
-  final String? message;
   final List<LeadActionModel>? data;
 
-  LeadActionsResponse({this.message, this.data});
+  LeadActionsResponse({this.data});
 
   factory LeadActionsResponse.fromJson(Map<String, dynamic> json) =>
       _$LeadActionsResponseFromJson(json);

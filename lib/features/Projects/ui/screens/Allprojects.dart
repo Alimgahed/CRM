@@ -59,7 +59,7 @@ class Allprojects extends StatelessWidget {
                           ),
                         )
                       : ListView.builder(
-                          itemCount: 1,
+                          itemCount: projects.length,
                           itemBuilder: (_, index) {
                             return AllprojectWidget(project: projects[index]);
                           },

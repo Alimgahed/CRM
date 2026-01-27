@@ -240,7 +240,7 @@ class AttachmentTile extends StatelessWidget {
                           ),
                           heightSpace(4),
                           Text(
-                            _formatFileSize(attachment!.fileSize!),
+                            _formatFileSize(attachment.fileSize!),
                             style: TextStyle(
                               fontSize: 11.sp,
                               color: isDark

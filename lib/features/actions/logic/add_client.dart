@@ -5,6 +5,7 @@ import 'package:crm/features/actions/logic/state/add_client_state.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:multi_dropdown/multi_dropdown.dart';
 
 class AddClientCubit extends Cubit<AddClientState> {
   final AddClientRepo addClientRepo;
@@ -25,15 +26,20 @@ class AddClientCubit extends Cubit<AddClientState> {
   final budgetController = TextEditingController();
 
   // ===== Selected Values =====
-  String? projectId;
   int? salesId;
-  String? channel;
+  int? channel;
   String? preferredMethod;
   int? clientStatus;
 
-  // ===== Setters =====
-  void setProject(String value) {
-    projectId = value;
+  // ✅ Holds selected IDs
+  List<int> selectedProjects = [];
+
+  // ✅ Controller for dropdown
+  final MultiSelectController<int> projectController =
+      MultiSelectController<int>();
+
+  void setProjects(List<int> projects) {
+    selectedProjects = projects;
     emit(state);
   }
 
@@ -42,7 +48,7 @@ class AddClientCubit extends Cubit<AddClientState> {
     emit(state);
   }
 
-  void setChannel(String value) {
+  void setChannel(int value) {
     channel = value;
     emit(state);
   }
@@ -61,35 +67,28 @@ class AddClientCubit extends Cubit<AddClientState> {
 
   // ===== Submit =====
   Future<void> addClient() async {
-    if (salesId == null ||
-        preferredMethod == null ||
-        channel == null ||
-        projectId == null) {
-      emit(const AddClientState.error('Please fill all required fields'));
-      return;
-    }
-
     emit(AddClientState.loading());
 
     final budget = budgetController.parseAsDouble;
 
     final lead = Lead(
-      leadId: null,
+      id: null,
       fullName: clientNameController.text.trim(),
       fullNameEn: clientNameEnController.text.trim().isNotEmpty
           ? clientNameEnController.text.trim()
           : clientNameController.text.trim(),
       email: emailController.text.trim(),
       phone: phoneController.text.trim(),
+
       secondaryPhone: phoneController2.text.trim(),
       jobTitle: jobController.text.trim(),
       budget: budget,
-      assignedToId: salesId.toString(),
+      assignedToId: salesId,
       preferredContactMethod: preferredMethod!,
       status: 1,
       leadSourceId: channel!,
+      projectIds: selectedProjects,
       isDeleted: false,
-      projectIds: [projectId!],
       companyId: null,
     );
 
@@ -116,7 +115,7 @@ class AddClientCubit extends Cubit<AddClientState> {
     emailController.clear();
     budgetController.clear();
 
-    projectId = null;
+    selectedProjects = [];
     salesId = null;
     channel = null;
     preferredMethod = null;

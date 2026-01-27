@@ -1,9 +1,9 @@
 import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/theming/theme.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/home/ui/widgets/clients_widget/client_wiidgets.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/statistics/data/model/lead_model.dart';
 import 'package:flutter/material.dart';
 
 class Clients extends StatelessWidget {

@@ -1,30 +1,36 @@
 import 'package:crm/Core/di/dependency_injection.dart';
+import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/Colors.dart';
+import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/features/auth/login/data/model/roles_model.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/users/data/model/role.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
-import 'package:crm/features/users/data/repo/edit_user_repo.dart';
+import 'package:crm/features/users/data/repo/add_user_repo.dart';
 import 'package:crm/features/users/data/repo/roles_repo.dart';
-import 'package:crm/features/users/data/repo/user_repo.dart';
 import 'package:crm/features/users/logic/cubit/edit_user_cubit.dart';
 import 'package:crm/features/users/logic/cubit/roles_cubit.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:crm/features/users/logic/states/edit_user_states.dart';
 import 'package:crm/features/users/logic/states/roles_state.dart';
-import 'package:crm/features/users/logic/states/users_states.dart' hide Loading;
 import 'package:crm/logic/Features/Country_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditUser extends StatelessWidget {
   final UsersModel user;
+  final List<UsersModel> allUsers;
+  final UsersCubit usersCubit; // Add this parameter
 
-  const EditUser({super.key, required this.user});
+  const EditUser({
+    super.key,
+    required this.user,
+    required this.usersCubit, // Required parameter
+    required this.allUsers,
+  });
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -35,32 +41,55 @@ class EditUser extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => EditUserCubit(editUserRepo: getIt<EditUserRepo>()),
+          create: (_) => EditUserCubit(
+            editUserRepo: getIt<AddUserRepo>(),
+            usersCubit: usersCubit, // Use passed parameter
+          ),
         ),
         BlocProvider(
           create: (_) => RolesCubit(rolesRepo: getIt<RolesRepo>())..getRoles(),
         ),
-        BlocProvider(
-          create: (_) => UsersCubit(userRepo: getIt<UserRepo>())..getAllUsers(),
+        BlocProvider.value(
+          value: usersCubit, // Provide the passed UsersCubit
         ),
       ],
       child: BlocConsumer<EditUserCubit, EditUserState>(
         listener: (context, state) {
           state.whenOrNull(
-            error: (msg) =>
-                showAboutDialog(context: context, children: [Text(msg)]),
-
+            error: (msg) => showModalBottomSheet(
+              context: context,
+              isScrollControlled: false,
+              backgroundColor: Colors.transparent,
+              builder: (_) => SuccessBottomSheet(
+                success: false,
+                text: l10n.editUser,
+                text2: msg,
+              ),
+            ),
             loaded: (_) {
-              showAboutDialog(context: context, children: [Text(l10n.success)]);
+              context.pop();
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: false,
+                backgroundColor: Colors.transparent,
+                builder: (_) => SuccessBottomSheet(
+                  success: true,
+                  text: l10n.editUser,
+                  text2: l10n.userEditedSuccessfully,
+                ),
+              );
             },
           );
         },
         builder: (context, state) {
           final cubit = context.read<EditUserCubit>();
-          cubit.userNameController.text = user.fullName ?? "";
-          cubit.userEmailController.text = user.email ?? "";
+          cubit.userNameController.text = user.fullName;
+          cubit.userEmailController.text = user.email;
+          cubit.userPasswordController.text = user.passwordHash!;
+          cubit.userLeadId = user.leaderId;
+          cubit.isActive = user.isActive;
+          cubit.userRoles = user.roles ?? [];
           cubit.userPhoneController.text = user.phone ?? "";
-          cubit.setUserType(user.isActive ?? false);
           final isLoading = state is EditUserLoading;
 
           return Form(
@@ -103,8 +132,6 @@ class EditUser extends StatelessWidget {
                           text: l10n.username,
                           labelText: l10n.username,
                           controller: cubit.userNameController,
-                          validator: (v) =>
-                              cubit.validateRequired(v, l10n.username),
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 10),
@@ -115,7 +142,6 @@ class EditUser extends StatelessWidget {
                           labelText: l10n.writeEmail,
                           controller: cubit.userEmailController,
                           keyboardType: TextInputType.emailAddress,
-                          validator: cubit.validateEmail,
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 10),
@@ -126,13 +152,12 @@ class EditUser extends StatelessWidget {
                           labelText: l10n.password,
                           controller: cubit.userPasswordController,
                           obscureText: true,
-                          validator: (v) =>
-                              cubit.validateRequired(v, l10n.password),
                           enabled: !isLoading,
                         ),
                         const SizedBox(height: 10),
 
                         CountryPhoneField(
+                          label: l10n.phone,
                           hintText: l10n.writePhoneNumber,
                           phoneController: cubit.userPhoneController,
                           country: l10n.selectCountry,
@@ -149,7 +174,7 @@ class EditUser extends StatelessWidget {
 
                             final isRolesLoading = rolesState is Loading;
 
-                            return CustomDropdownFormField<int>(
+                            return CustomDropdownFormField<Role>(
                               text: l10n.jobTitle,
                               hintText: l10n.jobTitle,
                               labelText: rolesState.maybeWhen(
@@ -159,7 +184,7 @@ class EditUser extends StatelessWidget {
                               items: roles
                                   .map(
                                     (Role role) => DropdownMenuItem(
-                                      value: role.id,
+                                      value: role,
                                       child: Text(
                                         isRolesLoading
                                             ? l10n.loading
@@ -172,7 +197,7 @@ class EditUser extends StatelessWidget {
                                   ? null
                                   : (val) {
                                       if (val != null) {
-                                        cubit.setUserRoleId(val);
+                                        cubit.addUserRole(val);
                                       }
                                     },
                             );
@@ -181,45 +206,24 @@ class EditUser extends StatelessWidget {
                         const SizedBox(height: 10),
 
                         /// ===== Leader =====
-                        BlocBuilder<UsersCubit, UsersState>(
-                          builder: (context, usersState) {
-                            final List<UsersModel> users = usersState.maybeWhen(
-                              loaded: (user) => user,
-                              orElse: () => [],
-                            );
-
-                            final isUsersLoading =
-                                usersState is EditUserLoading;
-
-                            return CustomDropdownFormField<int>(
-                              text: l10n.leader,
-                              hintText: l10n.selectLeaderName,
-                              labelText: usersState.maybeWhen(
-                                loading: () => l10n.loading,
-                                orElse: () => "",
-                              ),
-
-                              // Disable dropdown while loading
-                              onChanged: (usersState is Loading) || isLoading
-                                  ? null
-                                  : (val) {
-                                      cubit.setUserLeadId(val ?? 0);
-                                    },
-
-                              items: users
-                                  .map(
-                                    (UsersModel u) => DropdownMenuItem(
-                                      value: u.id,
-                                      child: Text(
-                                        isUsersLoading
-                                            ? l10n.loading
-                                            : u.fullName ?? '',
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            );
-                          },
+                        CustomDropdownFormField<int>(
+                          value: cubit.userLeadId,
+                          text: l10n.leaderName,
+                          hintText: l10n.selectLeaderName,
+                          labelText: l10n.leaderName,
+                          onChanged: isLoading
+                              ? null
+                              : (val) {
+                                  cubit.setUserLeadId(val ?? 0);
+                                },
+                          items: allUsers
+                              .map(
+                                (UsersModel u) => DropdownMenuItem(
+                                  value: u.id,
+                                  child: Text(u.fullName),
+                                ),
+                              )
+                              .toList(),
                         ),
                         const SizedBox(height: 10),
 
@@ -249,43 +253,24 @@ class EditUser extends StatelessWidget {
                         const SizedBox(height: 24),
 
                         /// ===== Save Button =====
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: isLoading
-                                ? null
-                                : () => cubit.editUser(user.id!),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: appColor,
-                              disabledBackgroundColor: appColor.withOpacity(
-                                0.5,
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    l10n.save,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
+                        isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : CustomButton(
+                                text: l10n.save,
+                                onPressed: () => cubit.editUser(
+                                  UsersModel(
+                                    id: user.id,
+                                    fullName: cubit.userNameController.text,
+                                    email: cubit.userEmailController.text,
+                                    phone: cubit.userPhoneController.text,
+                                    passwordHash:
+                                        cubit.userPasswordController.text,
+                                    leaderId: cubit.userLeadId,
+                                    roles: cubit.userRoles,
+                                    isActive: cubit.isActive!,
                                   ),
-                          ),
-                        ),
+                                ),
+                              ),
                       ],
                     ),
                   ),

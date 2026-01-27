@@ -42,7 +42,7 @@ class UnitFloorsSection extends StatelessWidget {
                 if (!isLast) const Divider(height: 24),
               ],
             );
-          }).toList(),
+          }),
         ],
       ),
     );

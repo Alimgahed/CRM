@@ -43,7 +43,7 @@ class UnitHeaderSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${appLocalizations.unitCode} : ${unit.unitId}",
+                      "${appLocalizations.unitCode} : ${unit.id}",
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],

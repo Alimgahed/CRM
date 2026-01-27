@@ -5,7 +5,6 @@ import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 /// CustomTable now supports Widgets in cells and fixed styles.
@@ -185,7 +184,7 @@ class SearchBarWidget extends StatelessWidget {
                 color: isDark ? Colors.white : darkColor,
               ),
               decoration: InputDecoration(
-                fillColor: bg,
+                fillColor: backgroundColor,
                 hintText: hintText.tr,
                 hintStyle: TextStyle(color: icColor, fontSize: 12),
                 isDense: true,
@@ -361,25 +360,18 @@ class ReusableHeader extends StatelessWidget {
     );
 
     return Stack(
-      clipBehavior: Clip.none,
       children: [
-        // Background Image
-        Container(
-          width: double.infinity,
-          height: height,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("images/Top Bar BG.jpg"),
-              fit: BoxFit.cover,
-            ),
-          ),
+        Image.asset(
+          "images/Group 1261154763.png",
+          height: 200,
+
+          width: 900,
+
+          fit: BoxFit.cover,
         ),
 
         // Foreground content
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: _buildContent(context, lang),
-        ),
+        SizedBox(height: height, child: _buildContent(context, lang)),
       ],
     );
   }
@@ -390,31 +382,37 @@ class ReusableHeader extends StatelessWidget {
   ) {
     // CASE 1 → Title mode (title + back arrow)
     if (child == null && title != null) {
-      return Padding(
-        padding: EdgeInsets.only(top: 30.0.h),
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                context.pop();
-              },
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              title!,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      return SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: onBack ?? () => context.pop(),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
-            ),
-          ],
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     // CASE 2 → Custom widget mode (NO back arrow)
-    return child!;
+    return child ?? const SizedBox.shrink();
   }
 }

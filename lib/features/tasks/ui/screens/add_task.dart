@@ -10,7 +10,6 @@ import 'package:crm/features/language/localazation.dart';
 import 'package:crm/features/tasks/data/repo/add_task_repo.dart';
 import 'package:crm/features/tasks/logic/cubit/add_task_cubit.dart';
 import 'package:crm/features/tasks/logic/state/add_task_state.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:crm/features/users/data/repo/user_repo.dart';
 import 'package:crm/features/users/logic/cubit/users_cubit.dart';
 import 'package:crm/features/users/logic/states/users_states.dart';
@@ -35,7 +34,7 @@ class AddTask extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              UsersCubit(userRepo: getIt.get<UserRepo>())..getAllUsers(),
+              UsersCubit(usersRepo: getIt.get<UserRepo>())..getAllUsers(),
         ),
       ],
       child: BlocListener<AddTaskCubit, AddTaskState>(
@@ -151,7 +150,7 @@ class AddTask extends StatelessWidget {
                                     return DropdownMenuItem<int>(
                                       value: user.id,
                                       child: Text(
-                                        user.fullName!,
+                                        user.fullName,
                                         style: TextStyle(
                                           color: isDarkMode
                                               ? Colors.white

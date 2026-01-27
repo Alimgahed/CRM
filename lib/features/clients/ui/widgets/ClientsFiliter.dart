@@ -128,8 +128,9 @@ class FilterButton extends StatelessWidget {
             onTap: () {
               context.read<FiliterCubit>().change(index);
               if (index == 0) _showSheet(context, const AllClientFilter());
-              if (index == 17)
+              if (index == 17) {
                 _showSheet(context, const AllClientDetailsFilter());
+              }
             },
             borderRadius: BorderRadius.circular(10),
             child: Padding(

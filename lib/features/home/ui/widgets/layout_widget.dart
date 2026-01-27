@@ -175,6 +175,7 @@ class CenterFAB extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
+          gradient: appGradient,
           shape: BoxShape.circle,
           border: Border.all(
             color: isDark ? darkColor2 : Colors.white,
@@ -187,10 +188,17 @@ class CenterFAB extends StatelessWidget {
             ),
           ],
         ),
-        child: const CircleAvatar(
+        child: CircleAvatar(
           radius: 28,
-          backgroundColor: appColor,
-          child: Icon(Icons.add, color: Colors.white, size: 28),
+          backgroundColor: Colors.transparent,
+
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Icon(Icons.add, color: appColor, size: 20),
+          ),
         ),
       ),
     );
@@ -217,9 +225,11 @@ class BottomNavBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final color = isSelected
-        ? appColor
-        : (isDark ? secondaryTextColor : Colors.grey);
+
+    // Default color for unselected items
+    final Color defaultColor = isDark ? secondaryTextColor : unselected;
+
+    // Gradient to apply when selected
 
     return Expanded(
       child: InkWell(
@@ -228,16 +238,42 @@ class BottomNavBarItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: color),
+            // Icon with gradient
+            isSelected
+                ? ShaderMask(
+                    shaderCallback: (bounds) => appGradient.createShader(
+                      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                    ),
+                    child: Icon(icon, color: Colors.white),
+                  )
+                : Icon(icon, color: defaultColor),
+
             const SizedBox(height: 4),
-            Text(
-              label.tr,
-              style: TextStyles.size12(
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-                color: color,
-              ),
-              textAlign: TextAlign.center,
-            ),
+
+            // Text with gradient
+            isSelected
+                ? ShaderMask(
+                    shaderCallback: (bounds) => appGradient.createShader(
+                      Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                    ),
+                    child: Text(
+                      label.tr,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white, // white will be replaced by shader
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : Text(
+                    label.tr,
+                    style: TextStyles.size12(
+                      fontWeight: FontWeight.w400,
+                      color: defaultColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
           ],
         ),
       ),

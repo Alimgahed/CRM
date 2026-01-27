@@ -1,7 +1,7 @@
 import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/widgets/gloable.dart';
 import 'package:crm/constant/enums/actioins_enms.dart';
-import 'package:crm/features/actions/logic/cubit/action_cubit.dart';
+import 'package:crm/features/actions/logic/cubit/get_all_lead_action_cubit.dart';
 import 'package:crm/features/actions/logic/state/lead_action_state.dart';
 import 'package:crm/features/actions/data/model/lead_action_model.dart';
 import 'package:crm/features/language/cubit.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClientTimeline extends StatelessWidget {
-  final String leadid;
+  final int leadid;
   const ClientTimeline({super.key, required this.leadid});
 
   void _showActionDetails(BuildContext context, LeadActionModel action) {

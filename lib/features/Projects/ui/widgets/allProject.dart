@@ -50,8 +50,7 @@ class AllprojectWidget extends StatelessWidget {
               child: CachedNetworkImage(
                 memCacheHeight: 600,
                 memCacheWidth: 600,
-                imageUrl:
-                    ApiConstants.baseUrl + (project.attachments![0].filePath!),
+                imageUrl: ApiConstants.baseUrl + (project.logoUrl ?? ""),
                 width: double.infinity,
                 height: 190.h,
                 fit: BoxFit.cover,
@@ -99,7 +98,7 @@ class AllprojectWidget extends StatelessWidget {
                 widthSpace(4),
                 Expanded(
                   child: Text(
-                    project.description ?? appLocalizations.noData,
+                    project.location ?? appLocalizations.noData,
                     style: smallStyle.copyWith(
                       color: textColor,
                       fontSize: 12.sp,
@@ -120,7 +119,6 @@ class AllprojectWidget extends StatelessWidget {
                   Icons.architecture_outlined,
                   _formatAreaRange(project.areaFrom, project.areaTo),
                   textColor,
-                  isDark,
                 ),
                 widthSpace(8),
                 // infoChip(
@@ -165,29 +163,3 @@ class AllprojectWidget extends StatelessWidget {
 
 // Update the infoChip helper function if it exists in Gloable_widget.dart
 // or create it here with dark mode support:
-Widget infoChip(IconData icon, String text, Color textColor, bool isDark) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-    decoration: BoxDecoration(
-      color: isDark ? darkFieldColor : Colors.grey.shade100,
-      borderRadius: BorderRadius.circular(8.r),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 14.sp, color: textColor),
-        SizedBox(width: 4.w),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 11.sp,
-            color: textColor,
-            fontWeight: FontWeight.w500,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
-    ),
-  );
-}

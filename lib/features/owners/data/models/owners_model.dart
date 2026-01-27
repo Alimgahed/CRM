@@ -4,8 +4,7 @@ part 'owners_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Owner {
-  @JsonKey(name: 'owner_id')
-  final String? ownerId;
+  final int? id;
 
   @JsonKey(name: 'full_name')
   final String? fullName;
@@ -25,10 +24,10 @@ class Owner {
   final String? updatedAt;
 
   @JsonKey(name: 'company_id')
-  final String? companyId;
+  final int? companyId;
 
   Owner({
-    this.ownerId,
+    this.id,
     this.fullName,
     this.fullNameEn,
     this.email,

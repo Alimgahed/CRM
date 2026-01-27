@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'users_model.dart';
-part 'login_response.g.dart';
 
 @JsonSerializable()
 class LoginResponse {

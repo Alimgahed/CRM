@@ -67,6 +67,7 @@ class DeleteClient extends StatelessWidget {
                 CustomButton(
                   text: "Save".tr,
                   onPressed: () {},
+
                   backgroundColor: warningColor,
                   bordercolor: warningColor,
                 ),

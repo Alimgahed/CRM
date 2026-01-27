@@ -2,7 +2,7 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
 
 class Clientcomments extends StatelessWidget {
-  final String leadid;
+  final int leadid;
   const Clientcomments({super.key, required this.leadid});
 
   @override

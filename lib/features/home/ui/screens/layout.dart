@@ -88,26 +88,26 @@ class _BottomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               BottomNavBarItem(
-                icon: Icons.home_outlined,
+                icon: Icons.home,
                 label: labels.home,
                 isSelected: currentIndex == 0,
                 onTap: () => cubit.change(0),
               ),
               BottomNavBarItem(
-                icon: Icons.people_outline,
+                icon: Icons.people,
                 label: labels.clients,
                 isSelected: currentIndex == 1,
                 onTap: () => cubit.change(1),
               ),
               const SizedBox(width: 80),
               BottomNavBarItem(
-                icon: Icons.calendar_month_outlined,
+                icon: Icons.calendar_month,
                 label: labels.calendar,
                 isSelected: currentIndex == 2,
                 onTap: () => cubit.change(2),
               ),
               BottomNavBarItem(
-                icon: Icons.more_horiz_outlined,
+                icon: Icons.more_horiz,
                 label: labels.more,
                 isSelected: currentIndex == 3,
                 onTap: () => cubit.change(3),

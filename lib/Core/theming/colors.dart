@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 /// =======================
 /// BRAND / PRIMARY
 /// =======================
-const Color appColor = Color(0xFF1DA1FA);
-const Color buttonColor = Color(0xFF007BFF);
-// Additional helper colors used in this file:
-const Color darkBorder = Color(0xFF334155); // Subtle borders
-const Color darkText = Color(0xFFE2E8F0); // Primary text
-const Color darkTextSecondary = Color(0xFF94A3B8); // Secondary text
-const Color darkDivider = Color(0xFF475569); // Dividers/separastors
+// final Color appColor = Color.lerp(
+//   const Color(0xFF1D9DF4), // light blue
+//   const Color(0xFF292D30), // dark
+//   0.5, // 0.0 = light, 1.0 = dark, 0.5 = middle
+// )!;
+const Color appColor = Color(0xFF236592);
 
-/// =======================ww
+// const Color appColor = Color(0xFF1DA1FA);
+const Color appColor2 = Color(0xFF1D9DF4);
+// ignore: use_full_hex_values_for_flutter_colors
+const Color appColor3 = Color(0xFF292D30CC);
+const Color buttonColor = Color(0xFF007BFF);
+const Color unselected = Color(0xff9DB2CE);
+
+/// =======================
 /// TEXT COLORS
 /// =======================
 const Color primaryTextColor = Color(0xFF1A202C);
@@ -37,6 +43,15 @@ const Color darkCardColor = Color(0xFF141B2D);
 const Color darkFieldColor = Color(0xFF1E293B);
 
 /// =======================
+/// DARK MODE TEXT & UI
+/// =======================
+const Color darkBorder = Color(0xFF334155);
+const Color darkText = Color(0xFFE2E8F0);
+const Color darkTextSecondary = Color(0xFF94A3B8);
+const Color darkDivider = Color(0xFF475569);
+const Color darkBorderColor = Color(0xFF334155);
+
+/// =======================
 /// STATUS / FEEDBACK
 /// =======================
 const Color successColor = Color(0xFF22C55E);
@@ -47,4 +62,11 @@ const Color infoColor = Color(0xFF38BDF8);
 /// BORDERS & DIVIDERS
 /// =======================
 const Color borderColor = Color(0xFFE5E7EB);
-const Color darkBorderColor = Color(0xFF334155);
+
+/// =======================
+/// BADGE & CHIP COLORS
+/// =======================
+const Color activeBadgeColor = Color(0xFF22C55E); // Green for active status
+const Color inactiveBadgeColor = Color(0xFFCB3843); // Orange/Red for inactive
+const Color deletedBadgeColor = Color(0xFFEF4444); // Red for deleted
+// const Color roleBadgeColor = appColor; // Primary color for roles

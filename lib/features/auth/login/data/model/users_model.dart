@@ -22,7 +22,7 @@ class UsersModel {
   final String? passwordHash;
 
   @JsonKey(name: 'user_type')
-  final int userType;
+  final int? userType;
 
   @JsonKey(name: 'is_active')
   final bool? isActive;
@@ -60,7 +60,7 @@ class UsersModel {
     this.fullNameEn,
     required this.email,
     this.passwordHash,
-    required this.userType,
+    this.userType,
     this.isActive,
     this.isDeleted,
     this.createdAt,

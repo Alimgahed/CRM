@@ -5,10 +5,14 @@ import 'package:crm/features/Projects/data/repo/projects_repo.dart';
 import 'package:crm/features/Projects/logic/cubit/project_cubit.dart';
 import 'package:crm/features/Units/data/repos/units.repo.dart';
 import 'package:crm/features/Units/logic/cubit/unit_cubit.dart';
+import 'package:crm/features/actions/data/repo/add_action_repo.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
+import 'package:crm/features/actions/data/repo/company_action_repo.dart';
 import 'package:crm/features/actions/data/repo/lead_action.dart';
 import 'package:crm/features/actions/logic/add_client.dart';
-import 'package:crm/features/actions/logic/cubit/action_cubit.dart';
+import 'package:crm/features/actions/logic/cubit/add_action_cubit.dart';
+import 'package:crm/features/actions/logic/cubit/all_company_actions_cubit.dart';
+import 'package:crm/features/actions/logic/cubit/get_all_lead_action_cubit.dart';
 import 'package:crm/features/auth/login/data/repos/login_repo.dart';
 import 'package:crm/features/auth/login/cubit/login_cubit.dart';
 import 'package:crm/features/clients/data/repo/all_clients.dart';
@@ -26,7 +30,6 @@ import 'package:crm/features/tasks/data/repo/task_repo.dart';
 import 'package:crm/features/tasks/logic/cubit/add_task_cubit.dart';
 import 'package:crm/features/tasks/logic/cubit/task_cubit.dart';
 import 'package:crm/features/users/data/repo/add_user_repo.dart';
-import 'package:crm/features/users/data/repo/edit_user_repo.dart';
 import 'package:crm/features/users/data/repo/roles_repo.dart';
 import 'package:crm/features/users/data/repo/user_repo.dart';
 import 'package:crm/features/users/logic/cubit/add_user_cubit.dart';
@@ -60,25 +63,34 @@ Future<void> setup() async {
   getIt.registerLazySingleton(() => LeadSourceRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => RolesRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => AddUserRepo(apiService: getIt()));
-  getIt.registerLazySingleton(() => EditUserRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => UnitsRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => OwnerRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => TaskRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => AddTaskRepo(apiService: getIt()));
   getIt.registerLazySingleton(() => LeadActionRepo(apiService: getIt()));
+  getIt.registerLazySingleton(() => AddActionRepo(apiService: getIt()));
+
+  getIt.registerLazySingleton(() => CompanyActionRepo(apiService: getIt()));
 
   // ⭐⭐⭐ Cubits - Register LoginCubit as Factory
   getIt.registerFactory(() => LoginCubit(loginRepo: getIt()));
+  getIt.registerFactory(() => AddActionCubit(addActionRepo: getIt()));
+
   getIt.registerFactory(() => AddClientCubit(addClientRepo: getIt()));
   getIt.registerFactory(() => OwnerCubit(ownerRepo: getIt()));
   getIt.registerFactory(() => TaskCubit(taskRepo: getIt()));
   getIt.registerFactory(() => ActionCubit(leadActionRepo: getIt()));
+  getIt.registerFactory(
+    () => AllCompanyActionsCubit(companyActionRepo: getIt()),
+  );
 
   getIt.registerFactory(() => StatisticsCubit(getIt()));
   getIt.registerFactory(() => AddTaskCubit(addTaskRepo: getIt()));
   getIt.registerFactory(() => ProjectCubit(projectsRepo: getIt()));
-  getIt.registerFactory(() => EditUserCubit(editUserRepo: getIt()));
-  getIt.registerFactory(() => UsersCubit(userRepo: getIt()));
+  getIt.registerFactory(
+    () => EditUserCubit(editUserRepo: getIt(), usersCubit: getIt()),
+  );
+  getIt.registerFactory(() => UsersCubit(usersRepo: getIt()));
   getIt.registerFactory(() => UnitCubit(unitsRepo: getIt()));
   getIt.registerFactory(() => DeveloperCubit(developersRepo: getIt()));
   getIt.registerFactory(() => LeadsCubit(projectsRepo: getIt()));

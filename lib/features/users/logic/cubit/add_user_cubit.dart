@@ -23,14 +23,14 @@ class AddUserCubit extends Cubit<AddUserState> {
 
   // ===== Selected Values =====
   int? userLeadId;
-  int? isActive;
+  bool? isActive;
   List<Role> userRoles = [];
 
   // ===== Setters =====
   void addUserRole(Role value) {
     if (!userRoles.any((r) => r.id == value.id)) {
+      userRoles.clear();
       userRoles.add(value);
-      print(userRoles);
     }
   }
 
@@ -38,34 +38,11 @@ class AddUserCubit extends Cubit<AddUserState> {
     userLeadId = value;
   }
 
-  void setUserType(int value) {
+  void setUserActive(bool value) {
     isActive = value;
   }
 
   // ===== Validation =====
-  String? validateRequired(String? value, String fieldName) {
-    if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required';
-    }
-    return null;
-  }
-
-  String? validateEmail(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegex.hasMatch(value.trim())) {
-      return 'Invalid email format';
-    }
-    return null;
-  }
-
-  String? validatePhone(String? value) {
-    if (value == null || value.trim().isEmpty) return null;
-    if (value.trim().length < 10) {
-      return 'Phone number must be at least 10 digits';
-    }
-    return null;
-  }
 
   // ===== Submit =====
   Future<void> addUser() async {
@@ -86,7 +63,7 @@ class AddUserCubit extends Cubit<AddUserState> {
       passwordHash: userPasswordController.text,
       leaderId: userLeadId,
       roles: userRoles,
-      userType: isActive!,
+      isActive: isActive!,
     );
 
     final result = await addUserRepo.addUser(user);

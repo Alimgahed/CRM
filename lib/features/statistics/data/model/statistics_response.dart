@@ -4,10 +4,10 @@ part 'statistics_response.g.dart';
 
 @JsonSerializable()
 class AgentActionStatisticsResponse {
-  final String message;
+  final String? message;
   final AgentActionStatisticsData data;
 
-  AgentActionStatisticsResponse({required this.message, required this.data});
+  AgentActionStatisticsResponse({this.message, required this.data});
 
   factory AgentActionStatisticsResponse.fromJson(Map<String, dynamic> json) =>
       _$AgentActionStatisticsResponseFromJson(json);

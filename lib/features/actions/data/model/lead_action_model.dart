@@ -1,21 +1,19 @@
 import 'package:crm/features/auth/login/data/model/users_model.dart';
-import 'package:crm/features/users/data/model/users_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'lead_action_model.g.dart';
 
 @JsonSerializable()
 class LeadActionModel {
-  @JsonKey(name: 'action_id')
-  final String? actionId;
+  final int? id;
 
   @JsonKey(name: 'user_id')
-  final String? userId;
+  final int? userId;
 
   @JsonKey(name: 'lead_id')
-  final String? leadId;
+  final int? leadId;
 
   @JsonKey(name: 'company_action_id')
-  final String? companyActionId;
+  final int? companyActionId;
 
   @JsonKey(name: 'action_type')
   final int? actionType;
@@ -30,7 +28,7 @@ class LeadActionModel {
   final int? nextFollow;
 
   @JsonKey(name: 'unit_id')
-  final String? unitId;
+  final int? unitId;
 
   @JsonKey(name: 'unit_price')
   final int? unitPrice;
@@ -64,10 +62,10 @@ class LeadActionModel {
   final DateTime? updatedAt;
 
   @JsonKey(name: 'company_id')
-  final String? companyId;
+  final int? companyId;
 
   LeadActionModel({
-    this.actionId,
+    this.id,
     this.userId,
     this.leadId,
     this.companyActionId,

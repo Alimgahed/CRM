@@ -4,24 +4,24 @@ import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/constant/enums/enums..dart';
+import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
-import 'package:crm/features/statistics/data/model/lead_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 extension LeadUIExtension on Lead {
   String getDisplayName(String locale) =>
-      locale == 'ar' ? fullName : fullNameEn;
+      locale == 'ar' ? fullName ?? '' : fullNameEn ?? '';
 
   String getProjectDisplay(String locale) {
-    if (projects.isEmpty) return '-';
+    if (leadProjects?.isEmpty ?? true) return 'لا يوجد';
     final firstProject = locale == 'ar'
-        ? projects.first.projectName
-        : projects.first.projectNameEn;
-    if (projects.length == 1) return firstProject!;
-    return '$firstProject +${projects.length - 1}';
+        ? leadProjects!.first.projectName
+        : leadProjects!.first.projectNameEn;
+    if (leadProjects!.length == 1) return firstProject!;
+    return '$firstProject +${leadProjects!.length - 1}';
   }
 }
 
@@ -38,8 +38,8 @@ class ClientsWidget extends StatelessWidget {
     );
     final loc = AppLocalizations(currentLocale);
 
-    final statusColor = getStatusColor(lead.status);
-    final statusText = getStatusText(lead.status, loc);
+    final statusColor = getStatusColor(lead.status ?? 0);
+    final statusText = getStatusText(lead.status ?? 0, loc);
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
@@ -75,7 +75,7 @@ class ClientsWidget extends StatelessWidget {
                     ),
                     heightSpace(4),
                     Text(
-                      lead.jobTitle,
+                      lead.jobTitle ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyles.size12(
@@ -91,20 +91,16 @@ class ClientsWidget extends StatelessWidget {
           heightSpace(12),
           Row(
             children: [
-              Expanded(
-                child: infoChip(
-                  Icons.email_outlined,
-                  lead.email,
-                  isDark ? Colors.white : secondaryTextColor,
-                ),
+              infoChip(
+                Icons.email_outlined,
+                lead.email ?? '',
+                isDark ? Colors.white : secondaryTextColor,
               ),
               widthSpace(8),
-              Expanded(
-                child: infoChip(
-                  Icons.phone_outlined,
-                  lead.phone,
-                  isDark ? Colors.white : secondaryTextColor,
-                ),
+              infoChip(
+                Icons.phone_outlined,
+                lead.phone ?? '',
+                isDark ? Colors.white : secondaryTextColor,
               ),
             ],
           ),
@@ -115,7 +111,7 @@ class ClientsWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: infoChip(
-                  Icons.folder_outlined,
+                  Icons.business_sharp,
                   lead.getProjectDisplay(currentLocale),
                   isDark ? Colors.white : secondaryTextColor,
                 ),

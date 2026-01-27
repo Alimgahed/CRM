@@ -7,7 +7,7 @@ part of 'lead_source.dart';
 // **************************************************************************
 
 LeadSource _$LeadSourceFromJson(Map<String, dynamic> json) => LeadSource(
-  leadSourceId: json['lead_source_id'] as String,
+  id: (json['id'] as num?)?.toInt(),
   sourceName: json['source_name'] as String,
   description: json['description'] as String,
   isDeleted: json['is_deleted'] as bool,
@@ -16,7 +16,7 @@ LeadSource _$LeadSourceFromJson(Map<String, dynamic> json) => LeadSource(
 
 Map<String, dynamic> _$LeadSourceToJson(LeadSource instance) =>
     <String, dynamic>{
-      'lead_source_id': instance.leadSourceId,
+      'id': instance.id,
       'source_name': instance.sourceName,
       'description': instance.description,
       'is_deleted': instance.isDeleted,

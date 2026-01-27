@@ -6,14 +6,39 @@ class AppLocalizations {
   // Assuming you have this somewhereص
   bool get isArabic => locale == 'ar';
 
+  String get permissions => isArabic ? 'الصلاحيات' : 'Permissions';
+
+  String get activate => isArabic ? 'تفعيل' : 'Activate';
+  String get actionType => isArabic ? 'نوع الإجراء' : 'Action Type';
+  String get actionDate => isArabic ? 'تاريخ الإجراء' : 'Action Date';
+  String get unitName => isArabic ? 'اسم الوحدة' : 'Unit Name';
+  String get floorNumber => isArabic ? 'رقم الطابق' : 'Floor Number';
+  String get meetingType => isArabic ? 'نوع الاجتماع' : 'Meeting Type';
+  String get meetingLocation => isArabic ? 'موقع الاجتماع' : 'Meeting Location';
+
+  String get actionSavedSuccessfully =>
+      isArabic ? 'تم إضافة الإجراء بنجاح' : 'Action saved successfully';
+
+  String get addAction => isArabic ? 'إضافة إجراء' : 'Add Action';
+
+  String get deactivate => isArabic ? 'تعطيل' : 'Deactivate';
+
   String get userAddedSuccessfully =>
       isArabic ? 'تم إضافة المستخدم بنجاح' : 'User added successfully';
+
+  String get deleted => isArabic ? 'تم حذفه' : 'Deleted';
+
+  String get editUser => isArabic ? 'تعديل المستخدم' : 'Edit User';
+
+  String get userEditedSuccessfully =>
+      isArabic ? 'تم تعديل المستخدم بنجاح' : 'User edited successfully';
+
   String get newUser => isArabic ? 'مستخدم جديد' : 'New User';
   String get clientAddedSuccessfully =>
       isArabic ? 'تم إضافة العميل بنجاح' : 'Client added successfully';
 
   String get online => isArabic ? 'اونلاين' : 'Online';
-  String get offline => isArabic ? 'اونلاين' : 'Offline';
+  String get offline => isArabic ? 'أوفلاين' : 'Offline';
   String get indoor => isArabic ? 'في المكتب' : 'Indoor';
   String get outdoor => isArabic ? 'في الخارج' : 'Outdoor';
 
@@ -23,7 +48,8 @@ class AppLocalizations {
   String get interested => isArabic ? 'مهتم' : 'Interested';
   String get executor => isArabic ? 'المنفذ' : 'Executor';
   String get date => isArabic ? 'التاريخ' : 'Date';
-  String get actionType => isArabic ? 'نوع الإجراء' : 'Action Type';
+  String get selectActionType =>
+      isArabic ? 'اختر نوع الإجراء' : 'Select Action Type';
   String get vieew => isArabic ? 'عرض' : 'View';
   String get hours => isArabic ? ' ساعة' : 'Hours';
   String get twoHours => isArabic ? 'ساعتين' : 'Two Hours';
@@ -76,6 +102,7 @@ class AppLocalizations {
   String get leader => isArabic ? 'قائد' : 'Leader';
   String get selectLeaderName =>
       isArabic ? 'اختر اسم القائد  ' : 'Select Leader Name';
+  String get leaderName => isArabic ? 'قائد' : 'Leader';
 
   String get unitPriceAndArea =>
       isArabic ? 'سعر الوحدة و المساحة' : 'Unit Price And Area';

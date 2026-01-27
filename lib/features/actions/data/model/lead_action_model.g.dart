@@ -8,17 +8,17 @@ part of 'lead_action_model.dart';
 
 LeadActionModel _$LeadActionModelFromJson(Map<String, dynamic> json) =>
     LeadActionModel(
-      actionId: json['action_id'] as String?,
-      userId: json['user_id'] as String?,
-      leadId: json['lead_id'] as String?,
-      companyActionId: json['company_action_id'] as String?,
+      id: (json['id'] as num?)?.toInt(),
+      userId: (json['user_id'] as num?)?.toInt(),
+      leadId: (json['lead_id'] as num?)?.toInt(),
+      companyActionId: (json['company_action_id'] as num?)?.toInt(),
       actionType: (json['action_type'] as num?)?.toInt(),
       isAnswered: json['is_answered'] as bool?,
       actionDate: json['action_date'] == null
           ? null
           : DateTime.parse(json['action_date'] as String),
       nextFollow: (json['next_follow'] as num?)?.toInt(),
-      unitId: json['unit_id'] as String?,
+      unitId: (json['unit_id'] as num?)?.toInt(),
       unitPrice: (json['unit_price'] as num?)?.toInt(),
       rentalDuration: (json['rental_duration'] as num?)?.toInt(),
       rentalCost: (json['rental_cost'] as num?)?.toInt(),
@@ -36,12 +36,12 @@ LeadActionModel _$LeadActionModelFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updated_at'] == null
           ? null
           : DateTime.parse(json['updated_at'] as String),
-      companyId: json['company_id'] as String?,
+      companyId: (json['company_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LeadActionModelToJson(LeadActionModel instance) =>
     <String, dynamic>{
-      'action_id': instance.actionId,
+      'id': instance.id,
       'user_id': instance.userId,
       'lead_id': instance.leadId,
       'company_action_id': instance.companyActionId,

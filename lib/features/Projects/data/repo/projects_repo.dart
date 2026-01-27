@@ -1,13 +1,13 @@
 import 'package:crm/Core/network/api_error_model.dart';
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/Core/network/api_services.dart';
-import 'package:crm/features/Projects/data/model/projects_model.dart';
+import 'package:crm/features/Projects/data/model/project_response.dart';
 import 'package:dio/dio.dart';
 
 class ProjectsRepo {
   final ApiService apiService;
   ProjectsRepo({required this.apiService});
-  Future<ApiResult<List<Project>>> getAllProjects() async {
+  Future<ApiResult<ProjectResponse>> getAllProjects() async {
     try {
       final response = await apiService.getAllProjects();
       return ApiResult.success(response);

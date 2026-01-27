@@ -27,7 +27,7 @@ class ProjectHeader extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: appColor.withOpacity(isDark ? 0.2 : 0.1),
+              color: appColor.withValues(alpha: isDark ? 0.2 : 0.1),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Icon(Icons.apartment_rounded, size: 32.sp, color: appColor),
