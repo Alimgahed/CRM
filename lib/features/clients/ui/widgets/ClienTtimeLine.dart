@@ -78,7 +78,8 @@ class ClientTimeline extends StatelessWidget {
                     ),
                     Text(
                       ActionHelper.getActionType(
-                        action.actionType,
+                        ActionType.fromValue(action.actionType) ??
+                            ActionType.call,
                         appLocalizations,
                       ),
                       style: const TextStyle(fontSize: 10),
@@ -149,7 +150,7 @@ class _ActionDetailsSheet extends StatelessWidget {
           _DetailCard(
             label: 'نوع الإجراء',
             value: ActionHelper.getActionType(
-              action.actionType,
+              ActionType.fromValue(action.actionType) ?? ActionType.call,
               appLocalizations,
             ),
             icon: Icons.work_outline,

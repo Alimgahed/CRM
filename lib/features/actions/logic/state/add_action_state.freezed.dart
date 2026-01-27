@@ -55,7 +55,7 @@ extension AddActionStatePatterns<T> on AddActionState<T> {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddActionStateInitial<T> value)?  initial,TResult Function( AddActionStateLoading<T> value)?  loading,TResult Function( AddActionStateLoaded<T> value)?  loaded,TResult Function( AddActionStateError<T> value)?  error,TResult Function( AddActionStateActionTypeChanged<T> value)?  actionTypeChanged,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AddActionStateInitial<T> value)?  initial,TResult Function( AddActionStateLoading<T> value)?  loading,TResult Function( AddActionStateLoaded<T> value)?  loaded,TResult Function( AddActionStateError<T> value)?  error,TResult Function( AddActionStateActionTypeChanged<T> value)?  actionTypeChanged,TResult Function( AddActionStateFormChanged<T> value)?  formChanged,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AddActionStateInitial() when initial != null:
@@ -63,7 +63,8 @@ return initial(_that);case AddActionStateLoading() when loading != null:
 return loading(_that);case AddActionStateLoaded() when loaded != null:
 return loaded(_that);case AddActionStateError() when error != null:
 return error(_that);case AddActionStateActionTypeChanged() when actionTypeChanged != null:
-return actionTypeChanged(_that);case _:
+return actionTypeChanged(_that);case AddActionStateFormChanged() when formChanged != null:
+return formChanged(_that);case _:
   return orElse();
 
 }
@@ -81,7 +82,7 @@ return actionTypeChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddActionStateInitial<T> value)  initial,required TResult Function( AddActionStateLoading<T> value)  loading,required TResult Function( AddActionStateLoaded<T> value)  loaded,required TResult Function( AddActionStateError<T> value)  error,required TResult Function( AddActionStateActionTypeChanged<T> value)  actionTypeChanged,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AddActionStateInitial<T> value)  initial,required TResult Function( AddActionStateLoading<T> value)  loading,required TResult Function( AddActionStateLoaded<T> value)  loaded,required TResult Function( AddActionStateError<T> value)  error,required TResult Function( AddActionStateActionTypeChanged<T> value)  actionTypeChanged,required TResult Function( AddActionStateFormChanged<T> value)  formChanged,}){
 final _that = this;
 switch (_that) {
 case AddActionStateInitial():
@@ -89,7 +90,8 @@ return initial(_that);case AddActionStateLoading():
 return loading(_that);case AddActionStateLoaded():
 return loaded(_that);case AddActionStateError():
 return error(_that);case AddActionStateActionTypeChanged():
-return actionTypeChanged(_that);case _:
+return actionTypeChanged(_that);case AddActionStateFormChanged():
+return formChanged(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -106,7 +108,7 @@ return actionTypeChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddActionStateInitial<T> value)?  initial,TResult? Function( AddActionStateLoading<T> value)?  loading,TResult? Function( AddActionStateLoaded<T> value)?  loaded,TResult? Function( AddActionStateError<T> value)?  error,TResult? Function( AddActionStateActionTypeChanged<T> value)?  actionTypeChanged,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AddActionStateInitial<T> value)?  initial,TResult? Function( AddActionStateLoading<T> value)?  loading,TResult? Function( AddActionStateLoaded<T> value)?  loaded,TResult? Function( AddActionStateError<T> value)?  error,TResult? Function( AddActionStateActionTypeChanged<T> value)?  actionTypeChanged,TResult? Function( AddActionStateFormChanged<T> value)?  formChanged,}){
 final _that = this;
 switch (_that) {
 case AddActionStateInitial() when initial != null:
@@ -114,7 +116,8 @@ return initial(_that);case AddActionStateLoading() when loading != null:
 return loading(_that);case AddActionStateLoaded() when loaded != null:
 return loaded(_that);case AddActionStateError() when error != null:
 return error(_that);case AddActionStateActionTypeChanged() when actionTypeChanged != null:
-return actionTypeChanged(_that);case _:
+return actionTypeChanged(_that);case AddActionStateFormChanged() when formChanged != null:
+return formChanged(_that);case _:
   return null;
 
 }
@@ -131,14 +134,15 @@ return actionTypeChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( T data)?  loaded,TResult Function( String message)?  error,TResult Function( int actionType)?  actionTypeChanged,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( T data)?  loaded,TResult Function( String message)?  error,TResult Function( int actionType)?  actionTypeChanged,TResult Function()?  formChanged,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AddActionStateInitial() when initial != null:
 return initial();case AddActionStateLoading() when loading != null:
 return loading();case AddActionStateLoaded() when loaded != null:
 return loaded(_that.data);case AddActionStateError() when error != null:
 return error(_that.message);case AddActionStateActionTypeChanged() when actionTypeChanged != null:
-return actionTypeChanged(_that.actionType);case _:
+return actionTypeChanged(_that.actionType);case AddActionStateFormChanged() when formChanged != null:
+return formChanged();case _:
   return orElse();
 
 }
@@ -156,14 +160,15 @@ return actionTypeChanged(_that.actionType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( T data)  loaded,required TResult Function( String message)  error,required TResult Function( int actionType)  actionTypeChanged,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( T data)  loaded,required TResult Function( String message)  error,required TResult Function( int actionType)  actionTypeChanged,required TResult Function()  formChanged,}) {final _that = this;
 switch (_that) {
 case AddActionStateInitial():
 return initial();case AddActionStateLoading():
 return loading();case AddActionStateLoaded():
 return loaded(_that.data);case AddActionStateError():
 return error(_that.message);case AddActionStateActionTypeChanged():
-return actionTypeChanged(_that.actionType);case _:
+return actionTypeChanged(_that.actionType);case AddActionStateFormChanged():
+return formChanged();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -180,14 +185,15 @@ return actionTypeChanged(_that.actionType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( T data)?  loaded,TResult? Function( String message)?  error,TResult? Function( int actionType)?  actionTypeChanged,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( T data)?  loaded,TResult? Function( String message)?  error,TResult? Function( int actionType)?  actionTypeChanged,TResult? Function()?  formChanged,}) {final _that = this;
 switch (_that) {
 case AddActionStateInitial() when initial != null:
 return initial();case AddActionStateLoading() when loading != null:
 return loading();case AddActionStateLoaded() when loaded != null:
 return loaded(_that.data);case AddActionStateError() when error != null:
 return error(_that.message);case AddActionStateActionTypeChanged() when actionTypeChanged != null:
-return actionTypeChanged(_that.actionType);case _:
+return actionTypeChanged(_that.actionType);case AddActionStateFormChanged() when formChanged != null:
+return formChanged();case _:
   return null;
 
 }
@@ -456,5 +462,37 @@ as int,
 
 
 }
+
+/// @nodoc
+
+
+class AddActionStateFormChanged<T> implements AddActionState<T> {
+  const AddActionStateFormChanged();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddActionStateFormChanged<T>);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AddActionState<$T>.formChanged()';
+}
+
+
+}
+
+
+
 
 // dart format on

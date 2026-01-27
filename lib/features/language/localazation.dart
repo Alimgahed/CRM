@@ -7,10 +7,21 @@ class AppLocalizations {
   bool get isArabic => locale == 'ar';
 
   String get permissions => isArabic ? 'الصلاحيات' : 'Permissions';
+  String get cancelReason => isArabic ? 'سبب الإلغاء' : 'Cancel Reason';
+  String get rentalPrice => isArabic ? 'سعر الإيجار' : 'Rental Price';
+  String get rentalPeriod => isArabic ? 'فترة الإيجار' : 'Rental Period';
+  String get writeCancelReason =>
+      isArabic ? 'اكتب سبب الإلغاء' : 'Write Cancel Reason';
 
+  String get selectMeetingLocation =>
+      isArabic ? 'اختر موقع الاجتماع' : 'Please select meeting location';
+  String get selectMeetingType =>
+      isArabic ? 'اختر نوع الاجتماع' : 'Please select meeting type';
   String get activate => isArabic ? 'تفعيل' : 'Activate';
   String get actionType => isArabic ? 'نوع الإجراء' : 'Action Type';
   String get actionDate => isArabic ? 'تاريخ الإجراء' : 'Action Date';
+  String get selectActionType =>
+      isArabic ? 'اختر نوع الإجراء' : 'Select Action Type';
   String get unitName => isArabic ? 'اسم الوحدة' : 'Unit Name';
   String get floorNumber => isArabic ? 'رقم الطابق' : 'Floor Number';
   String get meetingType => isArabic ? 'نوع الاجتماع' : 'Meeting Type';
@@ -48,8 +59,7 @@ class AppLocalizations {
   String get interested => isArabic ? 'مهتم' : 'Interested';
   String get executor => isArabic ? 'المنفذ' : 'Executor';
   String get date => isArabic ? 'التاريخ' : 'Date';
-  String get selectActionType =>
-      isArabic ? 'اختر نوع الإجراء' : 'Select Action Type';
+
   String get vieew => isArabic ? 'عرض' : 'View';
   String get hours => isArabic ? ' ساعة' : 'Hours';
   String get twoHours => isArabic ? 'ساعتين' : 'Two Hours';

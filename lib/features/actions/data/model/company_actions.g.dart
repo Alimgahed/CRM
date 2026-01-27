@@ -9,7 +9,7 @@ part of 'company_actions.dart';
 CompanyActionsModel _$CompanyActionsModelFromJson(Map<String, dynamic> json) =>
     CompanyActionsModel(
       id: (json['id'] as num?)?.toInt(),
-      actionType: (json['actionType'] as num?)?.toInt(),
+      actionType: (json['action_type'] as num?)?.toInt(),
       name: json['Name'] as String?,
       nameEn: json['NameEn'] as String?,
       companyId: (json['companyId'] as num?)?.toInt(),
@@ -22,7 +22,7 @@ Map<String, dynamic> _$CompanyActionsModelToJson(
   CompanyActionsModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'actionType': instance.actionType,
+  'action_type': instance.actionType,
   'Name': instance.name,
   'NameEn': instance.nameEn,
   'companyId': instance.companyId,

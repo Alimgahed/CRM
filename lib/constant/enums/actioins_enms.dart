@@ -1,34 +1,56 @@
 import 'package:crm/features/language/localazation.dart';
 import 'package:intl/intl.dart';
 
+/// Action Type Enum
+enum ActionType {
+  call(1),
+  cancelled(2),
+  interested(3),
+  deal(4),
+  booked(5),
+  meeting(6),
+  rental(7);
+
+  final int value;
+  const ActionType(this.value);
+
+  /// Get ActionType from int value
+  static ActionType? fromValue(int? value) {
+    if (value == null) return null;
+    try {
+      return ActionType.values.firstWhere((e) => e.value == value);
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
 /// Helper class for action-related utility functions
 /// Optimized for performance with const constructors and static methods
 class ActionHelper {
   // Private constructor to prevent instantiation
   const ActionHelper._();
 
-  /// Formats a DateTime object to a readable string
-  /// Returns '-' if date is null
-
   /// Gets the localized action type string based on the type code
-  static String getActionType(int? type, AppLocalizations appLocalizations) {
+  static String getActionType(
+    ActionType type,
+    AppLocalizations appLocalizations,
+  ) {
     switch (type) {
-      case 1:
+      case ActionType.call:
         return appLocalizations.call;
-      case 2:
+      case ActionType.cancelled:
         return appLocalizations.cancelled;
-      case 3:
+      case ActionType.interested:
         return appLocalizations.interested;
-      case 4:
+      case ActionType.deal:
         return appLocalizations.deal;
-      case 5:
+      case ActionType.booked:
         return appLocalizations.booked;
-      case 6:
+      case ActionType.meeting:
         return appLocalizations.meeting;
-      case 7:
+      case ActionType.rental:
         return appLocalizations.rental;
-      default:
-        return '-';
     }
   }
 
@@ -48,6 +70,7 @@ class ActionHelper {
     }
   }
 
+  /// Gets the localized meeting type string
   static String getMeetingType(int? type, AppLocalizations appLocalizations) {
     switch (type) {
       case 1:
@@ -59,6 +82,7 @@ class ActionHelper {
     }
   }
 
+  /// Gets the localized meeting location string
   static String getMeetingLocation(
     int? location,
     AppLocalizations appLocalizations,
@@ -68,7 +92,6 @@ class ActionHelper {
         return appLocalizations.indoor;
       case 2:
         return appLocalizations.outdoor;
-
       default:
         return '-';
     }
@@ -101,8 +124,20 @@ class ActionHelper {
   }
 }
 
-/// Extension on int for action type checking
-extension ActionTypeExtension on int {
+/// Extension on ActionType for easy checking
+extension ActionTypeExtension on ActionType {
+  bool get isCall => this == ActionType.call;
+  bool get isCancelled => this == ActionType.cancelled;
+  bool get isInterested => this == ActionType.interested;
+  bool get isDeal => this == ActionType.deal;
+  bool get isBooked => this == ActionType.booked;
+  bool get isMeeting => this == ActionType.meeting;
+  bool get isRental => this == ActionType.rental;
+}
+
+/// Extension on int for backward compatibility
+/// Use ActionType.fromValue(int) instead for better type safety
+extension ActionTypeIntExtension on int {
   bool get isCall => this == 1;
   bool get isCancelled => this == 2;
   bool get isInterested => this == 3;
