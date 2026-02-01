@@ -1,5 +1,6 @@
 import 'package:crm/Core/helpers/extesions.dart';
 import 'package:crm/Core/theming/colors.dart';
+import 'package:crm/Core/theming/styles.dart';
 import 'package:crm/logic/Features/ImageController.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
@@ -51,17 +52,22 @@ class CustomTable extends StatelessWidget {
 
   /// ===== HEADER =====
   Widget _buildHeader() {
-    const headerStyle = TextStyle(
-      fontWeight: FontWeight.bold,
-      color: appColor, // Fixed color (example appColor)
-      fontSize: 10,
-    );
-
     return IntrinsicHeight(
       child: Row(
         children: [
           for (int i = 0; i < headers.length; i++) ...[
-            _buildCell(Text(headers[i], style: headerStyle), isHeader: true),
+            _buildCell(
+              ShaderMask(
+                shaderCallback: (bounds) => appGradient.createShader(
+                  Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                ),
+                child: Text(
+                  headers[i],
+                  style: TextStyles.size12(fontWeight: FontWeight.bold),
+                ),
+              ),
+              isHeader: true,
+            ),
             if (i != headers.length - 1) _verticalDivider(),
           ],
         ],

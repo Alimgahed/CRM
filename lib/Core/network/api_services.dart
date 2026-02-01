@@ -7,9 +7,11 @@ import 'package:crm/features/actions/data/model/lead_actions_response.dart';
 import 'package:crm/features/auth/login/data/model/login_ipa_response.dart';
 import 'package:crm/features/auth/login/data/model/login_request_body.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
+import 'package:crm/features/clients/data/model/comment_response.dart';
 import 'package:crm/features/clients/data/model/lead_sorce_response.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/data/model/leads_response.dart';
+import 'package:crm/features/clients/data/model/request_model.dart';
 import 'package:crm/features/developers/data/models/developers_response.dart';
 import 'package:crm/features/owners/data/models/owner_respone.dart';
 import 'package:crm/features/statistics/data/model/statistics_response.dart';
@@ -65,4 +67,12 @@ abstract class ApiService {
   Future<CompanyActionsResponse> getCompanyActions();
   @POST(ApiConstants.saveAgentAction)
   Future<dynamic> addAgentAction(@Body() LeadActionModel body);
+  @POST(ApiConstants.leadComments)
+  Future<CommentResponse> getLeadComments(@Body() Map<String, dynamic> body);
+  @POST(ApiConstants.saveLeadComment)
+  Future<dynamic> addLeadComment(@Body() Map<String, dynamic> body);
+  @POST(ApiConstants.getLeadBuyingRequests)
+  Future<RequestResponse> getLeadBuyingRequests(
+    @Body() Map<String, dynamic> body,
+  );
 }

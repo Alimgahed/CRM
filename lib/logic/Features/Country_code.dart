@@ -29,9 +29,11 @@ class CountryPhoneField extends StatefulWidget {
   final String country;
   final bool enabled;
   final String label;
+  final bool useValidator;
 
   const CountryPhoneField({
     super.key,
+    this.useValidator = true,
     required this.phoneController,
     required this.hintText,
     required this.country,
@@ -133,15 +135,17 @@ class _CountryPhoneFieldState extends State<CountryPhoneField> {
         SizedBox(height: 8),
 
         TextFormField(
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return appLocalizations.requiredField;
-            }
-
-            return null;
-          },
           enabled: widget.enabled,
           controller: widget.phoneController,
+          validator: widget.useValidator
+              ? (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return appLocalizations.requiredField;
+                  }
+
+                  return null;
+                }
+              : null,
           keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             filled: true, // ← THIS IS THE FIX!

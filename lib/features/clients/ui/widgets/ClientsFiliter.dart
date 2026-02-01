@@ -114,6 +114,7 @@ class FilterButton extends StatelessWidget {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
+            gradient: isSelected ? appGradient : null,
             color: isSelected
                 ? appColor
                 : (isDark ? darkFieldColor : Colors.white),

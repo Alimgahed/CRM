@@ -3,14 +3,6 @@ import 'package:crm/Core/theming/colors.dart';
 import 'package:flutter/material.dart';
 
 /// Shared app gradient
-const LinearGradient appGradient = LinearGradient(
-  colors: [
-    Color(0xFF1D9DF4), // light blue
-    Color(0xff292D30), // darks
-  ],
-  begin: Alignment.topCenter,
-  end: Alignment.bottomCenter,
-);
 
 class FloatingCloseButton extends StatelessWidget {
   final Color iconColor;

@@ -14,6 +14,7 @@ import 'package:crm/features/actions/logic/state/add_client_state.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
 import 'package:crm/features/auth/login/data/model/users_model.dart';
 import 'package:crm/features/clients/data/model/lead_source.dart';
+import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/data/repo/lead_soure.dart';
 import 'package:crm/features/clients/logic/cubit/leads_source_cubit.dart';
 import 'package:crm/features/clients/logic/states/leads_source_state.dart';
@@ -27,8 +28,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_dropdown/multi_dropdown.dart';
 
-class AddClient extends StatelessWidget {
-  const AddClient({super.key});
+class EditClients extends StatelessWidget {
+  final Lead lead;
+  const EditClients({super.key, required this.lead});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class AddClient extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 builder: (_) => SuccessBottomSheet(
                   success: false,
-                  text: appLocalizations.newClients,
+                  text: appLocalizations.editClient,
                   text2: message,
                 ),
               );
@@ -82,8 +84,8 @@ class AddClient extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 builder: (_) => SuccessBottomSheet(
                   success: true,
-                  text: appLocalizations.newClients,
-                  text2: appLocalizations.clientAddedSuccessfully,
+                  text: appLocalizations.editClient,
+                  text2: appLocalizations.clientEditedSuccessfully,
                 ),
               );
             },
@@ -91,6 +93,21 @@ class AddClient extends StatelessWidget {
         },
         builder: (context, state) {
           final cubit = context.read<AddClientCubit>();
+          cubit.leadId = lead.id;
+          cubit.channel = lead.leadSourceId;
+          cubit.clientStatus = lead.status;
+          cubit.salesId = lead.assignedToId;
+          cubit.preferredMethod = lead.preferredContactMethod;
+          cubit.clientNameController.text = lead.fullName ?? '';
+          cubit.clientNameEnController.text = lead.fullNameEn ?? '';
+          cubit.phoneController.text = lead.phone ?? '';
+          cubit.phoneController2.text = lead.secondaryPhone ?? '';
+          cubit.jobController.text = lead.jobTitle ?? '';
+          cubit.emailController.text = lead.email ?? '';
+          cubit.budgetController.text = lead.budget.toString();
+          cubit.selectedProjects = lead.projectIds ?? [];
+          cubit.attachments = lead.attachments ?? [];
+          cubit.contracts = lead.contracts ?? [];
           final isLoading = state is AddClientStateLoading;
 
           return Form(
@@ -144,6 +161,7 @@ class AddClient extends StatelessWidget {
                           controller: cubit.clientNameEnController,
                         ),
                         const SizedBox(height: 10),
+
                         BlocBuilder<UsersCubit, UsersState>(
                           builder: (_, usersState) {
                             final users = usersState.maybeWhen(
@@ -160,6 +178,7 @@ class AddClient extends StatelessWidget {
                               text: appLocalizations.salesName,
                               labelText: appLocalizations.sales,
                               hintText: appLocalizations.selectSalesName,
+                              value: cubit.salesId,
                               items: isLoading
                                   ? [
                                       DropdownMenuItem<int>(
@@ -263,7 +282,18 @@ class AddClient extends StatelessWidget {
                             print(
                               'Dropdown items count: ${dropdownItems.length}',
                             );
+                            final initialIds = lead.projectIds ?? [];
 
+                            if (initialIds.isNotEmpty) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                // This matches the IDs from the 'lead' model to the items in the dropdown
+                                cubit.projectController.selectWhere(
+                                  (item) => initialIds.contains(item.value),
+                                );
+                                // Sync the cubit list as well
+                                cubit.selectedProjects = List.from(initialIds);
+                              });
+                            }
                             return AppMultiDropdown<int>(
                               label: appLocalizations.project,
                               hint: projectsList.isEmpty
@@ -281,6 +311,7 @@ class AddClient extends StatelessWidget {
                             );
                           },
                         ),
+
                         const SizedBox(height: 10),
 
                         // Primary Phone
@@ -294,6 +325,7 @@ class AddClient extends StatelessWidget {
 
                         // Secondary Phone (Optional)
                         CountryPhoneField(
+                          useValidator: false,
                           label: appLocalizations.secondaryPhone,
                           hintText: appLocalizations.writeOtherPhoneNumber,
                           country: appLocalizations.selectCountry,
@@ -382,11 +414,11 @@ class AddClient extends StatelessWidget {
                           value: cubit.preferredMethod,
                           items: [
                             DropdownMenuItem(
-                              value: 'Phone',
+                              value: 'phone',
                               child: Text(appLocalizations.phone),
                             ),
                             DropdownMenuItem(
-                              value: 'Email',
+                              value: 'email',
                               child: Text(appLocalizations.email),
                             ),
                             DropdownMenuItem(

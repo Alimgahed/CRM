@@ -6,8 +6,40 @@ class AppLocalizations {
   // Assuming you have this somewhereص
   bool get isArabic => locale == 'ar';
 
+  String get allCommentsandFollowups =>
+      isArabic ? 'جميع التعليقات والمتابعات' : 'All Comments and Followups';
+  String get answerd => isArabic ? 'تم الرد' : 'Answered';
+  String get actionDetails => isArabic ? 'تفاصيل الإجراء' : 'Action Details';
+  String get executedBy => isArabic ? 'تم التنفيذ بواسطة' : 'Executed By';
+  String get rentalCost => isArabic ? 'تكلفة الإيجار' : 'Rental Cost';
+  String get notes => isArabic ? 'ملاحظات' : 'Notes';
   String get permissions => isArabic ? 'الصلاحيات' : 'Permissions';
+  String get nextFollowup => isArabic ? 'التواصل التالي' : 'Next Followup';
+  String get rentalDuration => isArabic ? 'فترة الإيجار' : 'Rental Duration';
+  String get executedDate => isArabic ? 'تاريخ التنفيذ' : 'Executed Date';
+  String get status => isArabic ? 'الحالة' : 'Status';
+  String get area => isArabic ? 'مساحة' : 'Area';
+  String get totalArea => isArabic ? 'مساحة' : 'Total Area';
+  String get parking => isArabic ? 'الموقف' : 'Parking';
+  String get editClient => isArabic ? 'تعديل العميل' : 'Edit Client';
+
+  String get noActions => isArabic ? 'لا توجد إجراءات' : 'No Actions';
+  String get requestDetails => isArabic ? 'تفاصيل الطلب' : 'Request Details';
+  String get listingType => isArabic ? 'نوع المنشآت' : 'Listing Type';
+  String get sellingPurpose => isArabic ? 'غرض المبيعات' : 'Selling Purpose';
+  String get unitType => isArabic ? 'نوع الوحدة' : 'Unit Type';
+  String get hasParking => isArabic ? 'هل يوجد موقف' : 'Has Parking';
+  String get hasFurnished => isArabic ? 'هل يوجد مفروش' : 'Has Furnished';
+
   String get cancelReason => isArabic ? 'سبب الإلغاء' : 'Cancel Reason';
+  String get reply => isArabic ? 'رد' : 'Reply';
+  String get replies => isArabic ? 'ردود' : 'Replies';
+  String get writeReply => isArabic ? 'اكتب رد' : 'Write Reply';
+  String get send => isArabic ? 'إرسال' : 'Send';
+  String get addfirstcomment =>
+      isArabic ? 'أضف أول تعليق' : 'Add first comment';
+  String get noComments => isArabic ? 'لا تعليقات' : 'No Comments';
+
   String get rentalPrice => isArabic ? 'سعر الإيجار' : 'Rental Price';
   String get rentalPeriod => isArabic ? 'فترة الإيجار' : 'Rental Period';
   String get writeCancelReason =>
@@ -98,7 +130,6 @@ class AppLocalizations {
   String get minutesAgo => isArabic ? 'دقائق مضت' : 'Minutes ago';
   String get unitBasicDetails =>
       isArabic ? 'تفاصيل الوحدة' : 'Unit Basic Details';
-  String get unitType => isArabic ? 'نوع الوحدة' : 'Unit Type';
   String get hasElevator => isArabic ? 'المصعد' : 'Has Elevator';
   String get sellPurpose => isArabic ? 'الغرض من البيع' : 'Sell Purpose';
   String get isStandalone => isArabic ? 'وحدة مستقلة' : 'Is Standalone';
@@ -199,7 +230,6 @@ class AppLocalizations {
 
   // Lead status translations as getters
   String get notAssigned => isArabic ? 'غير مكلف' : 'Not Assigned';
-  String get status => isArabic ? 'الحالة' : 'Status';
   String get project => isArabic ? 'مشروع' : 'Project';
   String get englishName => isArabic ? 'الاسم بالإنجليزية' : 'English Name';
   String get projectCount => isArabic ? 'عدد المشاريع' : 'Project Count';
@@ -402,10 +432,11 @@ class AppLocalizations {
   String get client => isArabic ? 'عميل' : 'Client';
   String get clientName => isArabic ? 'اسم العميل' : 'Client Name';
   String get clientDetails => isArabic ? 'تفاصيل العميل' : 'Client Details';
-  String get editClient => isArabic ? 'تعديل العميل' : 'Edit Client';
+  String get clientEditedSuccessfully =>
+      isArabic ? 'تم تعديل العميل' : 'Client edited successfully';
   String get deleteClient => isArabic ? 'حذف العميل' : 'Delete Client';
 
-  // =============================================================
+  // =============================================================w
   // UNITS
   // =============================================================
   String get units => isArabic ? 'الوحدات' : 'Units';

@@ -9,6 +9,14 @@ import 'package:flutter/material.dart';
 //   0.5, // 0.0 = light, 1.0 = dark, 0.5 = middle
 // )!;
 const Color appColor = Color(0xFF236592);
+const LinearGradient appGradient = LinearGradient(
+  colors: [
+    Color(0xFF1D9DF4), // light blue
+    Color(0xff292D30), // darks
+  ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+);
 
 // const Color appColor = Color(0xFF1DA1FA);
 const Color appColor2 = Color(0xFF1D9DF4);

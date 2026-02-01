@@ -1,8 +1,10 @@
 class ApiConstants {
   static const baseUrl = "https://hiestate.app/";
-  static const String login = "/users/login";
+  static const String login = "api/users/login";
   static const String registerEndpoint = 'register';
   static const String allprojects = 'api/projects/listProjects';
+  static const String leadComments = 'api/leads/getCommentsForLead';
+
   static const String getAllDevelopmentCompanies =
       "api/dev-companies/listDevCompanies";
   static const String getAllLeads = "/api//leads/getAll";
@@ -24,4 +26,7 @@ class ApiConstants {
       "api/agent-actions/getAgentActionByLeadID";
   static const String saveAgentAction = "api/agent-actions/saveAgentAction";
   static const String getLeadComments = "api/leads/getCommentsForLead";
+  static const String saveLeadComment = "api/leads/comments";
+  static const String getLeadBuyingRequests =
+      "api/leads/getallBuyingRequstBylead";
 }

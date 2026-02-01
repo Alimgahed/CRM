@@ -6,6 +6,30 @@ part of 'users_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+UsersModel _$UsersModelFromJson(Map<String, dynamic> json) => UsersModel(
+  id: (json['id'] as num?)?.toInt(),
+  leaderId: (json['leader_id'] as num?)?.toInt(),
+  fullName: json['full_name'] as String,
+  fullNameEn: json['full_name_en'] as String?,
+  email: json['email'] as String,
+  passwordHash: json['PASSWORD_HASH'] as String?,
+  userType: (json['user_type'] as num?)?.toInt(),
+  isActive: json['is_active'] as bool?,
+  isDeleted: json['is_deleted'] as bool?,
+  createdAt: json['created_at'] as String?,
+  updatedAt: json['updated_at'] as String?,
+  companyId: (json['company_id'] as num?)?.toInt(),
+  photoUrl: json['photo_url'] as String?,
+  leaderName: json['leader_name'] as String?,
+  phone: json['phone'] as String?,
+  permissions: (json['permissions'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(k, e as bool),
+  ),
+  roles: (json['roles'] as List<dynamic>?)
+      ?.map((e) => Role.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
 Map<String, dynamic> _$UsersModelToJson(UsersModel instance) =>
     <String, dynamic>{
       'id': instance.id,

@@ -1,5 +1,6 @@
 import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/network/api_result.dart';
+import 'package:crm/features/Projects/data/model/projects_model.dart';
 import 'package:crm/features/actions/data/repo/add_client_repo.dart';
 import 'package:crm/features/actions/logic/state/add_client_state.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
@@ -13,10 +14,8 @@ class AddClientCubit extends Cubit<AddClientState> {
   AddClientCubit({required this.addClientRepo})
     : super(const AddClientState.initial());
 
-  // ===== Form =====
   final formKey = GlobalKey<FormState>();
 
-  // ===== Controllers =====
   final clientNameController = TextEditingController();
   final clientNameEnController = TextEditingController();
   final phoneController = TextEditingController();
@@ -24,68 +23,76 @@ class AddClientCubit extends Cubit<AddClientState> {
   final jobController = TextEditingController();
   final emailController = TextEditingController();
   final budgetController = TextEditingController();
+  List<Attachment> attachments = [];
+  List<Attachment> contracts = [];
 
-  // ===== Selected Values =====
+  int? leadId;
   int? salesId;
   int? channel;
   String? preferredMethod;
   int? clientStatus;
 
-  // ✅ Holds selected IDs
+  /// ✅ Selected project IDs
   List<int> selectedProjects = [];
+  // Inside AddClientCubit
 
-  // ✅ Controller for dropdown
+  void initializeProjects(List<int> initialIds) {
+    selectedProjects = initialIds;
+
+    // This tells the MultiSelectController which items to highlight
+    projectController.selectWhere((item) => initialIds.contains(item.value));
+
+    emit(const AddClientState.initial());
+  }
+
+  /// ✅ Dropdown controller
   final MultiSelectController<int> projectController =
       MultiSelectController<int>();
 
   void setProjects(List<int> projects) {
     selectedProjects = projects;
-    emit(state);
+    emit(const AddClientState.initial());
   }
 
   void setSales(int value) {
     salesId = value;
-    emit(state);
+    emit(const AddClientState.initial());
   }
 
   void setChannel(int value) {
     channel = value;
-    emit(state);
+    emit(const AddClientState.initial());
   }
 
   void setPreferredMethod(String value) {
     preferredMethod = value;
-    emit(state);
+    emit(const AddClientState.initial());
   }
 
   void setClientStatus(int value) {
     clientStatus = value;
-    emit(state);
+    emit(const AddClientState.initial());
   }
 
-  // ===== Validation =====
-
-  // ===== Submit =====
   Future<void> addClient() async {
     emit(AddClientState.loading());
 
-    final budget = budgetController.parseAsDouble;
-
     final lead = Lead(
-      id: null,
+      id: leadId,
+      attachments: attachments,
+      contracts: contracts,
       fullName: clientNameController.text.trim(),
       fullNameEn: clientNameEnController.text.trim().isNotEmpty
           ? clientNameEnController.text.trim()
           : clientNameController.text.trim(),
       email: emailController.text.trim(),
       phone: phoneController.text.trim(),
-
       secondaryPhone: phoneController2.text.trim(),
       jobTitle: jobController.text.trim(),
-      budget: budget,
+      budget: budgetController.parseAsDouble,
       assignedToId: salesId,
       preferredContactMethod: preferredMethod!,
-      status: 1,
+      status: clientStatus!,
       leadSourceId: channel!,
       projectIds: selectedProjects,
       isDeleted: false,
@@ -116,10 +123,12 @@ class AddClientCubit extends Cubit<AddClientState> {
     budgetController.clear();
 
     selectedProjects = [];
+    projectController.clearAll(); // ✅ IMPORTANT
     salesId = null;
     channel = null;
     preferredMethod = null;
     clientStatus = null;
+
     emit(const AddClientState.initial());
   }
 
@@ -132,6 +141,7 @@ class AddClientCubit extends Cubit<AddClientState> {
     jobController.dispose();
     emailController.dispose();
     budgetController.dispose();
+    projectController.dispose(); // ✅ IMPORTANT
     return super.close();
   }
 }

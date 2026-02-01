@@ -99,10 +99,23 @@ class ActionHelper {
 
   /// Formats currency values with proper formatting
   /// Returns '-' if value is null
-  static String formatCurrency(int? value, {String currency = 'EGP'}) {
+  static String formatCurrency(num? value, {String currency = 'EGP'}) {
     if (value == null) return '-';
     final formatter = NumberFormat('#,###');
     return '${formatter.format(value)} $currency';
+  }
+
+  static String getBooleanValue(bool? value) {
+    if (value == null) return '-';
+    return value ? 'نعم' : 'لا';
+  }
+
+  static String getLocation(String? country, String? governate) {
+    if (country == null && governate == null) return '-';
+    if (country != null && governate != null) {
+      return '$governate, $country';
+    }
+    return country ?? governate ?? '-';
   }
 
   /// Formats duration in months
@@ -118,7 +131,6 @@ class ActionHelper {
     return value == null || value.isEmpty;
   }
 
-  /// Returns the value or a default placeholder
   static String valueOrDefault(String? value, {String defaultValue = '-'}) {
     return isNullOrEmpty(value) ? defaultValue : value!;
   }

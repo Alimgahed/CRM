@@ -2,14 +2,16 @@ import 'package:crm/Core/di/dependency_injection.dart';
 import 'package:crm/Core/theming/colors.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/features/actions/data/repo/lead_action.dart';
+import 'package:crm/features/actions/logic/cubit/add_client.dart';
 import 'package:crm/features/actions/logic/cubit/get_all_lead_action_cubit.dart';
 import 'package:crm/features/actions/ui/screens/actions/add_action.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/clients/logic/cubit/filiter_cubit.dart';
+import 'package:crm/features/clients/ui/screens/Clients_add/edit_clients.dart';
 import 'package:crm/features/clients/ui/widgets/ClienTtimeLine.dart';
 import 'package:crm/features/clients/ui/widgets/ClientChance.dart';
 import 'package:crm/features/clients/ui/widgets/ClientCli.dart';
-import 'package:crm/features/clients/ui/widgets/ClientComments.dart';
+import 'package:crm/features/clients/ui/widgets/comments/ClientComments.dart';
 import 'package:crm/features/clients/ui/widgets/ClientDeals.dart';
 import 'package:crm/features/clients/ui/widgets/Clientattachment.dart';
 import 'package:crm/features/clients/ui/widgets/Clientmore.dart';
@@ -17,6 +19,7 @@ import 'package:crm/features/clients/ui/widgets/ClientsFiliter.dart';
 import 'package:crm/features/clients/ui/widgets/Clientsdetails.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,7 +65,15 @@ class ClientsDetails extends StatelessWidget {
               'icon': Icons.edit_outlined,
               'index': 29,
               'onTap': () {
-                // Open edit client screen/modal
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (modalContext) => FractionallySizedBox(
+                    heightFactor: 0.8,
+                    child: EditClients(lead: lead),
+                  ),
+                ).then((_) {});
               },
             },
             {
@@ -296,7 +307,7 @@ class ClientsDetails extends StatelessWidget {
                           if (selectedFilter == 24) {
                             return Padding(
                               padding: const EdgeInsets.only(top: 16),
-                              child: Clientcli(leadid: lead.id ?? 0),
+                              child: ClientRequests(leadid: lead.id ?? 0),
                             );
                           }
                           return const SizedBox.shrink();
@@ -417,21 +428,24 @@ class _ActionIconButton extends StatelessWidget {
           // Smooth transition between colors
           duration: const Duration(milliseconds: 200),
           margin: const EdgeInsets.symmetric(horizontal: 4),
-          child: Material(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(10),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: onTap,
-              child: Container(
-                width: 55,
-                height: 40,
-                decoration: BoxDecoration(
-                  border: Border.all(color: borderColor, width: 1.5),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(icon, color: iconColor, size: 20),
+          child: InkWell(
+            onTap: onTap,
+            child: Container(
+              width: 55,
+              height: 40,
+              decoration: BoxDecoration(
+                gradient: isSelected ? appGradient : null,
+                border: Border.all(color: borderColor, width: 1.5),
+                borderRadius: BorderRadius.circular(10),
               ),
+              child: isSelected
+                  ? Icon(icon, color: iconColor)
+                  : ShaderMask(
+                      shaderCallback: (bounds) => appGradient.createShader(
+                        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                      ),
+                      child: Icon(icon, color: Colors.white),
+                    ),
             ),
           ),
         );
