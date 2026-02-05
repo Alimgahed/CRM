@@ -22,7 +22,7 @@ class LeadActionModel {
   final bool? isAnswered;
 
   @JsonKey(name: 'action_date')
-  final DateTime? actionDate;
+  final String? actionDate;
 
   @JsonKey(name: 'next_follow')
   final int? nextFollow;
@@ -31,13 +31,13 @@ class LeadActionModel {
   final int? unitId;
 
   @JsonKey(name: 'unit_price')
-  final int? unitPrice;
+  final num? unitPrice;
 
   @JsonKey(name: 'rental_duration')
   final int? rentalDuration;
 
   @JsonKey(name: 'rental_cost')
-  final int? rentalCost;
+  final num? rentalCost;
 
   final String? notes;
 

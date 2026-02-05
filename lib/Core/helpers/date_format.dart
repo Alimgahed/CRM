@@ -3,6 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 /// Extension on String to handle date operations if the string is a valid date
+/// import 'package:intl/intl.dart';
+
+class DateUtilsHelper {
+  // Create formatter ONCE (static = reused, less CPU & memory)
+  static final DateFormat _utcFormatter = DateFormat(
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS'+00:00'",
+  );
+
+  /// Converts any date input to UTC formatted string
+  static String toUtcString(dynamic date) {
+    if (date == null) return '';
+
+    final DateTime parsedDate = date is DateTime
+        ? date
+        : DateTime.parse(date.toString());
+
+    return _utcFormatter.format(parsedDate.toUtc());
+  }
+}
+
 extension DateTimeLocalization on String {
   /// Helper to convert the string to a DateTime safely
   DateTime? _toDateTime() => DateTime.tryParse(this);

@@ -14,9 +14,7 @@ LeadActionModel _$LeadActionModelFromJson(Map<String, dynamic> json) =>
       companyActionId: (json['company_action_id'] as num?)?.toInt(),
       actionType: (json['action_type'] as num?)?.toInt(),
       isAnswered: json['is_answered'] as bool?,
-      actionDate: json['action_date'] == null
-          ? null
-          : DateTime.parse(json['action_date'] as String),
+      actionDate: json['action_date'] as String?,
       nextFollow: (json['next_follow'] as num?)?.toInt(),
       unitId: (json['unit_id'] as num?)?.toInt(),
       unitPrice: (json['unit_price'] as num?)?.toInt(),
@@ -47,7 +45,7 @@ Map<String, dynamic> _$LeadActionModelToJson(LeadActionModel instance) =>
       'company_action_id': instance.companyActionId,
       'action_type': instance.actionType,
       'is_answered': instance.isAnswered,
-      'action_date': instance.actionDate?.toIso8601String(),
+      'action_date': instance.actionDate,
       'next_follow': instance.nextFollow,
       'unit_id': instance.unitId,
       'unit_price': instance.unitPrice,

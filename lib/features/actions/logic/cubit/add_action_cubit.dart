@@ -1,3 +1,4 @@
+import 'package:crm/Core/helpers/date_format.dart';
 import 'package:crm/Core/network/api_result.dart';
 import 'package:crm/features/actions/data/model/lead_action_model.dart';
 import 'package:crm/features/actions/data/repo/add_action_repo.dart';
@@ -11,102 +12,61 @@ class AddActionCubit extends Cubit<AddActionState> {
   AddActionCubit({required this.addActionRepo})
     : super(const AddActionState.initial());
 
-  // Form key
+  /// Form key
   final formKey = GlobalKey<FormState>();
 
-  // Controllers - use lazy initialization to save memory
-  TextEditingController? _dateController;
-  TextEditingController get dateController =>
-      _dateController ??= TextEditingController();
+  /// Controllers
+  final dateController = TextEditingController();
+  final floorNumberController = TextEditingController();
+  final unitPriceController = TextEditingController();
+  final rentalPriceController = TextEditingController();
+  final rentalPeriodController = TextEditingController();
+  final cancelReasonController = TextEditingController();
 
-  // Text controllers for conditional fields
-  TextEditingController? _unitNameController;
-  TextEditingController? _floorNumberController;
-  TextEditingController? _unitPriceController;
-  TextEditingController? _rentalPriceController;
-  TextEditingController? _rentalPeriodController;
-  TextEditingController? _cancelReasonController;
+  /// 🔴 IMPORTANT
+  /// selectedActionId   -> backend
+  /// selectedActionType -> UI logic (enum)
+  int? selectedActionId;
+  int? selectedUnitId;
+  int? selectedActionType;
 
-  TextEditingController get unitNameController =>
-      _unitNameController ??= TextEditingController();
-  TextEditingController get floorNumberController =>
-      _floorNumberController ??= TextEditingController();
-  TextEditingController get unitPriceController =>
-      _unitPriceController ??= TextEditingController();
-  TextEditingController get rentalPriceController =>
-      _rentalPriceController ??= TextEditingController();
-  TextEditingController get rentalPeriodController =>
-      _rentalPeriodController ??= TextEditingController();
-  TextEditingController get cancelReasonController =>
-      _cancelReasonController ??= TextEditingController();
-
-  // State variables
-  int? actionType;
   int? meetingType;
   int? meetingLocation;
   DateTime? date;
 
-  /// Sets action type and clears related fields
-  void setActionType(int value) {
-    if (actionType == value) return; // Avoid unnecessary state changes
+  /// Called from dropdown
+  void setAction({required int actionId, required int actionType}) {
+    selectedActionId = actionId;
+    selectedActionType = actionType;
+    selectedUnitId = null;
 
-    actionType = value;
-
-    // Clear dependent fields when action type changes
     meetingType = null;
     meetingLocation = null;
-
-    // Clear text controllers for previous action type
     _clearConditionalFields();
 
-    emit(AddActionState.actionTypeChanged(value));
+    emit(const AddActionState.formChanged());
   }
 
-  /// Sets meeting type - only emits if changed
   void setMeetingType(int? value) {
-    if (meetingType == value) return;
     meetingType = value;
     emit(const AddActionState.formChanged());
   }
 
-  /// Sets meeting location - only emits if changed
   void setMeetingLocation(int? value) {
-    if (meetingLocation == value) return;
     meetingLocation = value;
     emit(const AddActionState.formChanged());
   }
 
-  /// Sets date with formatted output
   void setDate(DateTime value) {
     date = value;
-    dateController.text = _formatDate(value);
+    dateController.text = DateUtilsHelper.toUtcString(value);
     emit(const AddActionState.formChanged());
   }
 
-  /// Formats date to ISO8601 string
-  String _formatDate(DateTime dateTime) {
-    return dateTime.toUtc().toIso8601String();
-  }
-
-  /// Clears conditional field controllers
-  void _clearConditionalFields() {
-    _unitNameController?.clear();
-    _floorNumberController?.clear();
-    _unitPriceController?.clear();
-    _rentalPriceController?.clear();
-    _rentalPeriodController?.clear();
-    _cancelReasonController?.clear();
-  }
-
-  /// Saves action with validation
-  Future<void> saveAction(LeadActionModel action) async {
-    if (isClosed) return; // Prevent operations on closed cubit
-
+  Future<void> saveAction(int leadId) async {
     emit(const AddActionState.loading());
 
-    final result = await addActionRepo.addAgentAction(action);
-
-    if (isClosed) return; // Check again before emitting
+    final result = await addActionRepo.addAgentAction(buildActionModel(leadId));
 
     result.when(
       success: (data) {
@@ -119,58 +79,58 @@ class AddActionCubit extends Cubit<AddActionState> {
     );
   }
 
-  /// Builds LeadActionModel from current state
   LeadActionModel buildActionModel(int leadId) {
     return LeadActionModel(
-      actionType: actionType,
-      actionDate: date,
       leadId: leadId,
+      companyActionId: selectedActionId,
+      actionType: selectedActionType,
+      actionDate: DateUtilsHelper.toUtcString(date),
       meetingType: meetingType,
       meetingLocation: meetingLocation,
-      unitId: _parseIntOrNull(unitNameController.text),
-      unitPrice: _parseIntOrNull(unitPriceController.text),
-      rentalCost: _parseIntOrNull(rentalPriceController.text),
-      rentalDuration: _parseIntOrNull(rentalPeriodController.text),
-      cancelReason: cancelReasonController.text.isNotEmpty
-          ? cancelReasonController.text
-          : null,
+      unitId: selectedUnitId,
+      unitPrice: unitPriceController.parseAsDouble,
+      rentalCost: rentalPriceController.parseAsDouble,
+      rentalDuration: _parseInt(rentalPeriodController.text),
+      cancelReason: cancelReasonController.text.isEmpty
+          ? null
+          : cancelReasonController.text,
     );
   }
 
-  /// Helper to parse int safely
-  int? _parseIntOrNull(String value) {
-    if (value.isEmpty) return null;
-    return int.tryParse(value);
+  int? _parseInt(String v) => v.isEmpty ? null : int.tryParse(v);
+
+  void _clearConditionalFields() {
+    selectedUnitId = null;
+    floorNumberController.clear();
+    unitPriceController.clear();
+    rentalPriceController.clear();
+    rentalPeriodController.clear();
+    cancelReasonController.clear();
   }
 
-  /// Resets all form data
   void reset() {
     formKey.currentState?.reset();
 
-    // Clear all controllers
-    _dateController?.clear();
-    _clearConditionalFields();
-
-    // Reset state
-    actionType = null;
+    selectedActionId = null;
+    selectedActionType = null;
     meetingType = null;
     meetingLocation = null;
     date = null;
+
+    dateController.clear();
+    _clearConditionalFields();
 
     emit(const AddActionState.initial());
   }
 
   @override
   Future<void> close() {
-    // Dispose all controllers
-    _dateController?.dispose();
-    _unitNameController?.dispose();
-    _floorNumberController?.dispose();
-    _unitPriceController?.dispose();
-    _rentalPriceController?.dispose();
-    _rentalPeriodController?.dispose();
-    _cancelReasonController?.dispose();
-
+    dateController.dispose();
+    floorNumberController.dispose();
+    unitPriceController.dispose();
+    rentalPriceController.dispose();
+    rentalPeriodController.dispose();
+    cancelReasonController.dispose();
     return super.close();
   }
 }

@@ -15,49 +15,42 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClientsListScreen extends StatelessWidget {
   const ClientsListScreen({super.key, required this.lead});
+
   final List<Lead> lead;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CommunicationCubit(),
-      child: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: lead.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          final currentLead = lead[index];
-
-          return BlocListener<CommunicationCubit, CommunicationState>(
-            listener: (context, state) {
-              if (state is CommunicationError) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.message)));
-              } else if (state is CommunicationSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Action completed successfully'),
-                  ),
-                );
-              }
-            },
-            child: ClientCard(
-              lead: currentLead,
-              onCall: () {
-                context.read<CommunicationCubit>().makePhoneCall(
-                  currentLead.phone ?? '',
-                );
-              },
-              onWhatsapp: () {
-                context.read<CommunicationCubit>().whatsapp(
-                  phone: currentLead.phone ?? "",
-                );
-              },
-            ),
-          );
+      child: BlocListener<CommunicationCubit, CommunicationState>(
+        listener: (context, state) {
+          if (state is CommunicationError) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
+          } else if (state is CommunicationSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Action completed successfully')),
+            );
+          }
         },
+        child: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: lead.length,
+          itemBuilder: (context, index) {
+            final currentLead = lead[index];
+
+            return ClientCard(
+              lead: currentLead,
+              onCall: () => context.read<CommunicationCubit>().makePhoneCall(
+                currentLead.phone ?? '',
+              ),
+              onWhatsapp: () => context.read<CommunicationCubit>().whatsapp(
+                phone: currentLead.phone ?? '',
+              ),
+            );
+          },
+        ),
       ),
     );
   }

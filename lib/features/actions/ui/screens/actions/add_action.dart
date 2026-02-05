@@ -5,14 +5,23 @@ import 'package:crm/Core/widgets/Gloable_widget.dart';
 import 'package:crm/Core/widgets/fields.dart';
 import 'package:crm/Core/widgets/buttons.dart';
 import 'package:crm/Core/helpers/app_helpers.dart';
+import 'package:crm/features/Units/data/models/unit_model.dart';
+import 'package:crm/features/Units/data/repos/units.repo.dart';
+import 'package:crm/features/Units/logic/cubit/unit_cubit.dart';
+import 'package:crm/features/Units/logic/state/units_state.dart';
+import 'package:crm/features/actions/data/model/company_actions.dart';
 import 'package:crm/features/actions/data/repo/add_action_repo.dart';
+import 'package:crm/features/actions/data/repo/company_action_repo.dart';
 import 'package:crm/features/actions/logic/cubit/add_action_cubit.dart';
+import 'package:crm/features/actions/logic/cubit/all_company_actions_cubit.dart';
 import 'package:crm/features/actions/logic/state/add_action_state.dart';
+import 'package:crm/features/actions/logic/state/company_actions.dart';
 import 'package:crm/features/clients/data/model/leads_model.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:crm/features/language/localazation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class AddAction extends StatelessWidget {
   final Lead lead;
@@ -20,8 +29,22 @@ class AddAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AddActionCubit(addActionRepo: getIt.get<AddActionRepo>()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              AddActionCubit(addActionRepo: getIt.get<AddActionRepo>()),
+        ),
+        BlocProvider(
+          create: (_) => AllCompanyActionsCubit(
+            companyActionRepo: getIt.get<CompanyActionRepo>(),
+          )..getCompanyActions(),
+        ),
+        BlocProvider(
+          create: (_) =>
+              UnitCubit(unitsRepo: getIt.get<UnitsRepo>())..getUnits(),
+        ),
+      ],
       child: _AddActionContent(lead: lead),
     );
   }
@@ -84,7 +107,7 @@ class _AddActionContent extends StatelessWidget {
                       const SizedBox(height: 16),
                       _buildActionTypeDropdown(cubit, appLocalizations),
                       const SizedBox(height: 10),
-                      _buildConditionalFields(cubit, appLocalizations),
+                      _buildConditionalFields(context, cubit, appLocalizations),
                       _buildDateField(cubit, appLocalizations, context),
                       const SizedBox(height: 12),
                       _buildSubmitButton(cubit, appLocalizations, isLoading),
@@ -122,34 +145,42 @@ class _AddActionContent extends StatelessWidget {
     AddActionCubit cubit,
     AppLocalizations appLocalizations,
   ) {
-    return CustomDropdownFormField<int>(
-      labelText: appLocalizations.actionType,
-      hintText: appLocalizations.selectActionType,
-      value: cubit.actionType,
-      items: ActionType.values
-          .map(
-            (actionType) => DropdownMenuItem<int>(
-              value: actionType.value,
-              child: Text(
-                ActionHelper.getActionType(actionType, appLocalizations),
-              ),
-            ),
-          )
-          .toList(),
-      onChanged: (value) {
-        if (value != null) {
-          cubit.setActionType(value);
-        }
+    return BlocBuilder<AllCompanyActionsCubit, CompanyActionState>(
+      builder: (_, state) {
+        final actions = state.maybeWhen(
+          loaded: (data) => data,
+          orElse: () => <CompanyActionsModel>[],
+        );
+
+        return CustomDropdownFormField<CompanyActionsModel>(
+          labelText: appLocalizations.actionType,
+          hintText: appLocalizations.selectActionType,
+          items: actions.map((a) {
+            return DropdownMenuItem<CompanyActionsModel>(
+              value: a,
+              child: Text(a.name ?? ''),
+            );
+          }).toList(),
+          onChanged: (val) {
+            if (val != null) {
+              cubit.setAction(
+                actionId: val.id!,
+                actionType: val.actionType!, // 👈 enum value
+              );
+            }
+          },
+        );
       },
     );
   }
 
   /// Conditional fields based on action type
   Widget _buildConditionalFields(
+    BuildContext context,
     AddActionCubit cubit,
     AppLocalizations appLocalizations,
   ) {
-    final actionTypeEnum = ActionType.fromValue(cubit.actionType);
+    final actionTypeEnum = ActionType.fromValue(cubit.selectedActionType);
     if (actionTypeEnum == null) return const SizedBox.shrink();
 
     // Meeting fields
@@ -168,9 +199,33 @@ class _AddActionContent extends StatelessWidget {
     if (actionTypeEnum.isDeal || actionTypeEnum.isInterested) {
       return Column(
         children: [
-          CustomTextFormField(
-            labelText: appLocalizations.unitName,
-            controller: cubit.unitNameController,
+          BlocBuilder<UnitCubit, UnitsState>(
+            builder: (_, state) {
+              final units = state.maybeWhen(
+                loaded: (data) => data,
+                orElse: () => <Unit>[],
+              );
+
+              return CustomDropdownFormField<Unit>(
+                labelText: appLocalizations.unitName,
+                hintText: appLocalizations.selectUnit,
+                items: units.map((a) {
+                  return DropdownMenuItem<Unit>(
+                    value: a,
+                    child: Text(
+                      context.watch<LocaleCubit>().isArabic
+                          ? a.unitName ?? ''
+                          : a.unitNameEn ?? a.unitName ?? "",
+                    ),
+                  );
+                }).toList(),
+                onChanged: (val) {
+                  if (val != null) {
+                    cubit.selectedUnitId = val.id;
+                  }
+                },
+              );
+            },
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
@@ -179,10 +234,9 @@ class _AddActionContent extends StatelessWidget {
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
-          CustomTextFormField(
+          CustomTextFormField.number(
             labelText: appLocalizations.unitPrice,
             controller: cubit.unitPriceController,
-            keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
         ],
@@ -193,10 +247,60 @@ class _AddActionContent extends StatelessWidget {
     if (actionTypeEnum.isRental) {
       return Column(
         children: [
-          CustomTextFormField(
-            labelText: appLocalizations.unitName,
-            controller: cubit.unitNameController,
+          BlocBuilder<UnitCubit, UnitsState>(
+            builder: (_, state) {
+              final allUnits = state.maybeWhen(
+                loaded: (data) => data,
+                orElse: () => <Unit>[],
+              );
+
+              final rentableUnits = allUnits
+                  .where((u) => u.status == 2)
+                  .toList();
+
+              final isArabic = context.watch<LocaleCubit>().isArabic;
+
+              return CustomDropdownFormField<Unit>(
+                labelText: appLocalizations.unitName,
+                hintText: rentableUnits.isEmpty
+                    ? (isArabic ? 'لا توجد وحدات للإيجار' : 'no units for rent')
+                    : appLocalizations.selectUnit,
+
+                items: rentableUnits.isEmpty
+                    ? [
+                        DropdownMenuItem<Unit>(
+                          enabled: false,
+                          value: null,
+                          child: Text(
+                            isArabic
+                                ? 'لا توجد وحدات للإيجار'
+                                : 'no units for rent',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ]
+                    : rentableUnits.map((a) {
+                        return DropdownMenuItem<Unit>(
+                          value: a,
+                          child: Text(
+                            isArabic
+                                ? a.unitName ?? ''
+                                : a.unitNameEn ?? a.unitName ?? '',
+                          ),
+                        );
+                      }).toList(),
+
+                onChanged: rentableUnits.isEmpty
+                    ? null
+                    : (val) {
+                        if (val != null) {
+                          cubit.selectedUnitId = val.id;
+                        }
+                      },
+              );
+            },
           ),
+
           const SizedBox(height: 10),
           CustomTextFormField(
             labelText: appLocalizations.floorNumber,
@@ -204,16 +308,14 @@ class _AddActionContent extends StatelessWidget {
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
-          CustomTextFormField(
+          CustomTextFormField.number(
             labelText: appLocalizations.rentalPrice,
             controller: cubit.rentalPriceController,
-            keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
-          CustomTextFormField(
+          CustomTextFormField.number(
             labelText: appLocalizations.rentalPeriod,
             controller: cubit.rentalPeriodController,
-            keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
         ],
@@ -286,14 +388,21 @@ class _AddActionContent extends StatelessWidget {
 
   /// Date picker dialog
   Future<void> _selectDate(BuildContext context, AddActionCubit cubit) async {
-    final picked = await showDatePicker(
+    final value = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
       lastDate: DateTime(2100),
     );
-    if (picked != null) {
-      cubit.setDate(picked);
+    if (value != null) {
+      cubit.dateController.text = DateFormat.yMMMd().format(value);
+      cubit.date = DateTime(
+        value.year,
+        value.month,
+        value.day,
+        value.hour,
+        value.minute,
+      );
     }
   }
 
@@ -311,7 +420,7 @@ class _AddActionContent extends StatelessWidget {
       text: appLocalizations.save,
       onPressed: () {
         if (cubit.formKey.currentState!.validate()) {
-          cubit.saveAction(cubit.buildActionModel(lead.id!));
+          cubit.saveAction(lead.id!);
         }
       },
     );

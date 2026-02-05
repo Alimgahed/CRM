@@ -294,6 +294,7 @@ class AddClient extends StatelessWidget {
 
                         // Secondary Phone (Optional)
                         CountryPhoneField(
+                          useValidator: false,
                           label: appLocalizations.secondaryPhone,
                           hintText: appLocalizations.writeOtherPhoneNumber,
                           country: appLocalizations.selectCountry,
@@ -310,6 +311,7 @@ class AddClient extends StatelessWidget {
                         const SizedBox(height: 10),
 
                         CustomTextFormField(
+                          useValidator: false,
                           text: appLocalizations.email,
                           labelText: appLocalizations.writeEmail,
                           controller: cubit.emailController,

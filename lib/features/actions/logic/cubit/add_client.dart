@@ -92,11 +92,8 @@ class AddClientCubit extends Cubit<AddClientState> {
       budget: budgetController.parseAsDouble,
       assignedToId: salesId,
       preferredContactMethod: preferredMethod!,
-      status: clientStatus!,
       leadSourceId: channel!,
       projectIds: selectedProjects,
-      isDeleted: false,
-      companyId: null,
     );
 
     final result = await addClientRepo.addClient(lead);

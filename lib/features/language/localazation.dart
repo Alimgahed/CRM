@@ -8,6 +8,8 @@ class AppLocalizations {
 
   String get allCommentsandFollowups =>
       isArabic ? 'جميع التعليقات والمتابعات' : 'All Comments and Followups';
+  String get selectUnit => isArabic ? 'اختر الوحدة' : 'Select Unit';
+  String get allcliientfilter => isArabic ? 'فلترة العميل' : 'Client Filter';
   String get answerd => isArabic ? 'تم الرد' : 'Answered';
   String get actionDetails => isArabic ? 'تفاصيل الإجراء' : 'Action Details';
   String get executedBy => isArabic ? 'تم التنفيذ بواسطة' : 'Executed By';

@@ -66,7 +66,7 @@ class UserAvatar extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: appColor.withOpacity(0.2), width: 2),
       ),
-      child: AppCircleAvatar(imageUrl: user.photoUrl!, radius: 30),
+      child: AppCircleAvatar(imageUrl: user.photoUrl ?? "", radius: 30),
     );
   }
 }

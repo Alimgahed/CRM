@@ -1,92 +1,89 @@
 import 'package:crm/features/clients/logic/cubit/filiter_cubit.dart';
+import 'package:crm/features/clients/logic/cubit/leads_cubit.dart';
 import 'package:crm/features/language/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:crm/Core/theming/colors.dart';
-import 'package:crm/features/language/localazation.dart'; // Ensure correct path
-import 'package:crm/Core/widgets/buttons.dart'; // For FloatingCloseButton
-
-// --- 1. DATA MODEL ---
+import 'package:crm/features/language/localazation.dart';
+import 'package:crm/Core/widgets/buttons.dart';
 
 class FilterItem {
   final int index;
   final String Function(AppLocalizations) label;
   final IconData? icon;
 
-  FilterItem({required this.index, required this.label, this.icon});
+  const FilterItem({required this.index, required this.label, this.icon});
 }
 
-// Data for Client Status (Horizontal Bar)
 final List<FilterItem> clientStatusFilters = [
-  FilterItem(index: 1, label: (l) => l.allClients),
-  FilterItem(index: 2, label: (l) => l.myClients),
-  FilterItem(index: 3, label: (l) => l.newClients),
-  FilterItem(index: 4, label: (l) => l.deferredClients),
-  FilterItem(index: 5, label: (l) => l.followUp),
-  FilterItem(index: 6, label: (l) => l.rent),
-  FilterItem(index: 7, label: (l) => l.comment),
-  FilterItem(index: 8, label: (l) => l.reservation),
-  FilterItem(index: 9, label: (l) => l.interest),
-  FilterItem(index: 10, label: (l) => l.archive),
-  FilterItem(index: 11, label: (l) => l.meeting),
-  FilterItem(index: 12, label: (l) => l.followAfterMeeting),
-  FilterItem(index: 13, label: (l) => l.meetingSchedule),
-  FilterItem(index: 14, label: (l) => l.sold),
-  FilterItem(index: 15, label: (l) => l.newLabel),
-  FilterItem(index: 16, label: (l) => l.cancel),
+  FilterItem(index: 0, label: (l) => l.allClients),
+  FilterItem(index: 1, label: (l) => l.newClients),
+  FilterItem(index: 2, label: (l) => l.conected),
+  FilterItem(index: 3, label: (l) => l.qualified),
+  FilterItem(index: 4, label: (l) => l.deals),
+  FilterItem(index: 5, label: (l) => l.customer),
 ];
 
-// Data for Client Details (Bottom Sheet)
 final List<FilterItem> clientDetailsFilters = [
-  FilterItem(index: 18, label: (l) => l.details),
-  FilterItem(index: 19, label: (l) => l.comments),
-  FilterItem(index: 20, label: (l) => l.attachments),
-  FilterItem(index: 21, label: (l) => l.timeline),
-  FilterItem(index: 22, label: (l) => l.deals),
-  FilterItem(index: 23, label: (l) => l.chances),
-  FilterItem(index: 24, label: (l) => l.cliRequest),
-  FilterItem(index: 25, label: (l) => l.contracts),
-  FilterItem(index: 26, label: (l) => l.paymentPlan),
-  FilterItem(index: 27, label: (l) => l.checkIn),
+  FilterItem(index: 100, label: (l) => l.details),
+  FilterItem(index: 101, label: (l) => l.comments),
+  FilterItem(index: 102, label: (l) => l.attachments),
+  FilterItem(index: 103, label: (l) => l.timeline),
+  FilterItem(index: 104, label: (l) => l.deals),
+  FilterItem(index: 105, label: (l) => l.chances),
+  FilterItem(index: 106, label: (l) => l.cliRequest),
+  FilterItem(index: 107, label: (l) => l.contracts),
+  FilterItem(index: 108, label: (l) => l.paymentPlan),
+  FilterItem(index: 109, label: (l) => l.checkIn),
 ];
 
-// --- 2. MAIN FILTER SECTION ---
+/// =======================
+/// 3. FILTER BAR
+/// =======================
 
 class ClientsFilterSection extends StatelessWidget {
   const ClientsFilterSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
-      (cubit) => AppLocalizations(cubit.currentLocale),
+    final loc = context.select<LocaleCubit, AppLocalizations>(
+      (c) => AppLocalizations(c.currentLocale),
     );
-    return Container(
+
+    return SizedBox(
       height: 56,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        scrollDirection: Axis.horizontal,
-        itemCount: clientStatusFilters.length + 1,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (context, i) {
-          if (i == 0) {
-            return const FilterButton(
-              index: 0,
-              icon: Icons.now_widgets_outlined,
-            );
-          }
-          final item = clientStatusFilters[i - 1];
-          return FilterButton(
-            index: item.index,
-            label: item.label(appLocalizations),
-          );
-        },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              FilterButton(
+                index: 6,
+                label: loc.allClients,
+                icon: Icons.now_widgets_outlined,
+              ),
+              const SizedBox(width: 8),
+              ...clientStatusFilters.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: FilterButton(
+                    index: item.index,
+                    label: item.label(loc),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-// --- 3. REUSABLE FILTER BUTTON ---
+/// =======================
+/// 4. FILTER BUTTON
+/// =======================
 
 class FilterButton extends StatelessWidget {
   final int index;
@@ -105,11 +102,14 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final loc = context.select<LocaleCubit, AppLocalizations>(
+      (c) => AppLocalizations(c.currentLocale),
+    );
 
     return BlocBuilder<FiliterCubit, int>(
       buildWhen: (prev, curr) => prev == index || curr == index,
       builder: (context, selectedIndex) {
-        final bool isSelected = selectedIndex == index;
+        final isSelected = selectedIndex == index;
 
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
@@ -126,14 +126,42 @@ class FilterButton extends StatelessWidget {
             ),
           ),
           child: InkWell(
+            borderRadius: BorderRadius.circular(10),
             onTap: () {
+              /// 1️⃣ Custom behavior (OTHER SCREENS)
+              if (onTap != null) {
+                onTap!();
+                return;
+              }
+
+              /// 2️⃣ Default filter behavior
               context.read<FiliterCubit>().change(index);
-              if (index == 0) _showSheet(context, const AllClientFilter());
-              if (index == 17) {
-                _showSheet(context, const AllClientDetailsFilter());
+              context.read<LeadsCubit>().filterByStatus(index);
+
+              if (index == 6) {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      // Reuse existing FiliterCubit
+                      BlocProvider.value(value: context.read<FiliterCubit>()),
+
+                      // Reuse existing LeadsCubit
+                      BlocProvider.value(value: context.read<LeadsCubit>()),
+
+                      // You can add more cubits here if needed
+                      // BlocProvider.value(value: context.read<AnotherCubit>()),
+                    ],
+                    child: GenericFilterSheet(
+                      title: loc.allcliientfilter,
+                      items: clientStatusFilters,
+                    ),
+                  ),
+                );
               }
             },
-            borderRadius: BorderRadius.circular(10),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Center(
@@ -162,18 +190,11 @@ class FilterButton extends StatelessWidget {
       },
     );
   }
-
-  void _showSheet(BuildContext context, Widget content) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => content,
-    );
-  }
 }
 
-// --- 4. BOTTOM SHEETS ---
+/// =======================
+/// 5. GENERIC SHEET
+/// =======================
 
 class GenericFilterSheet extends StatelessWidget {
   final String title;
@@ -187,47 +208,38 @@ class GenericFilterSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
-      (cubit) => AppLocalizations(cubit.currentLocale),
+    final loc = context.select<LocaleCubit, AppLocalizations>(
+      (c) => AppLocalizations(c.currentLocale),
     );
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 50), // Space for status bar
-        const FloatingCloseButton(),
-        Expanded(
-          child: Container(
-            margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.all(20),
+    /// Wrap Column with SingleChildScrollView to avoid layout errors
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const FloatingCloseButton(),
+          const SizedBox(height: 20),
+          Container(
             decoration: BoxDecoration(
-              color: isDark ? darkColor : Colors.white,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.now_widgets_outlined,
-                      color: isDark ? Colors.white : appColor,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(width: 12),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(height: 30),
-                Expanded(
-                  child: GridView.builder(
+                  ),
+                  const Divider(height: 30),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: items.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -235,49 +247,20 @@ class GenericFilterSheet extends StatelessWidget {
                           crossAxisSpacing: 12,
                           childAspectRatio: 3.2,
                         ),
-                    itemCount: items.length,
-                    itemBuilder: (context, i) => FilterButton(
-                      index: items[i].index,
-                      label: items[i].label(appLocalizations),
+                    itemBuilder: (_, i) => Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: FilterButton(
+                        index: items[i].index,
+                        label: items[i].label(loc),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class AllClientFilter extends StatelessWidget {
-  const AllClientFilter({super.key});
-  @override
-  Widget build(BuildContext context) {
-    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
-      (cubit) => AppLocalizations(cubit.currentLocale),
-    );
-    return BlocProvider(
-      create: (context) => FiliterCubit(),
-      child: GenericFilterSheet(
-        title: appLocalizations.deals,
-        items: clientStatusFilters,
+        ],
       ),
-    );
-  }
-}
-
-class AllClientDetailsFilter extends StatelessWidget {
-  const AllClientDetailsFilter({super.key});
-  @override
-  Widget build(BuildContext context) {
-    final appLocalizations = context.select<LocaleCubit, AppLocalizations>(
-      (cubit) => AppLocalizations(cubit.currentLocale),
-    );
-    return GenericFilterSheet(
-      title: appLocalizations.clientDetails,
-      items: clientDetailsFilters,
     );
   }
 }
